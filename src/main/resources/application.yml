@@ -8,8 +8,6 @@ spring:
       active: test
 
   datasource:
-#    url: jdbc:h2:./data/Spring
-#    username: DatabaseH2
     url: jdbc:h2:mem:InMemory
     username: MemH2
     password:
