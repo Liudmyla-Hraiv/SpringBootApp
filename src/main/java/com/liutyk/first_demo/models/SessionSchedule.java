@@ -1,10 +1,10 @@
 package com.liutyk.first_demo.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,11 +19,11 @@ public class SessionSchedule {
     @Column(name = "schedule_id")
     private Integer scheduleId;
 
-    @NotNull
+    @NotBlank
     @Column(name = "time_slot_id")
     private Integer timeSlotId;
 
-    @NotBlank
+    @Size(min =1, max=30)
     @Column(name = "room")
     private String room;
 

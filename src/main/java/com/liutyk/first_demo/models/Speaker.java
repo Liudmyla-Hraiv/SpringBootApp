@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,24 +22,32 @@ public class Speaker {
     @Column(name = "speaker_id")
     private  Long speakerId;
 
-    @NotEmpty
+    @Size(min = 3, max =30)
     @Column(name = "first_name")
     private String firstName;
-    @NotEmpty
+
+    @Size(min = 3, max = 30)
     @Column(name = "last_name")
     private String lastName;
-    @NotBlank
+
+    @Size(min = 3, max = 40)
     @Column(name = "title")
     private String title;
+
     @Column(name = "company")
+    @Size(max = 50)
     private String company;
+
     @Column(name = "speaker_bio")
+    @Size(max = 2000)
     private String speakerBio;
 
 
     @JsonIgnore
-    @Column (name = "speaker_photo", columnDefinition="BYTEA")
+    @Size(max = 3145728)
+    @Column (name = "speaker_photo", columnDefinition="BLOB")
     private byte[] speakerPhoto;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "speakers", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private List<Session> sessions;

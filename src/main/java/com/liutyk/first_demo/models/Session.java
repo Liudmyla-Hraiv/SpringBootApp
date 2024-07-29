@@ -2,9 +2,10 @@ package com.liutyk.first_demo.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,13 +22,17 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "session_id")
     private Long sessionId;
+
     @NotEmpty
+    @Size(min = 3, max = 80)
     @Column(name = "session_name")
     private String sessionName;
 
+    @Size(min = 1, max = 1024)
     @Column(name = "session_description")
     private String sessionDescription;
 
+    @Positive
     @Column(name = "session_length" )
     private Integer sessionLength;
 

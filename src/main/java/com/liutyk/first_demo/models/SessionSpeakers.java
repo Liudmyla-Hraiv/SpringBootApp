@@ -25,10 +25,10 @@ public class SessionSpeakers {
     @MapsId("speakerId")
     @JoinColumn(name = "speaker_id")
     private Speaker speakerId;
-    private SessionSpeakers(){
+    public SessionSpeakers(){
     }
 
-    private SessionSpeakers(SessionSpeakersKey id, Session session, Speaker speaker){
+    public SessionSpeakers(SessionSpeakersKey id, Session session, Speaker speaker){
         this.id = id;
         this.sessionId =session;
         this.speakerId =speaker;
