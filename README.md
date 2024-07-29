@@ -1,2 +1,4 @@
-# mvn clean test
-# mvn clean test -X
+Run App
+For Start tests: 
+      # mvn clean test
+      # mvn clean test -X
