@@ -30,10 +30,10 @@ public class SessionScheduleAPITests {
     @Order(1)
     public void testGetScheduleList(){
         given()
-        .when()
+                .when()
                 .get("")
-        .then()
-                .statusCode(200);
+                .then()
+                    .statusCode(200);
 
     }
     @Test
@@ -48,8 +48,8 @@ public class SessionScheduleAPITests {
                 .when()
                 .get("/search/ByRoom")
                 .then()
-                .statusCode(200)
-                .body("room", everyItem(containsStringIgnoringCase(randomRoomPart)));
+                    .statusCode(200)
+                    .body("room", everyItem(containsStringIgnoringCase(randomRoomPart)));
     }
     @Test
     @Order(3)
@@ -61,8 +61,8 @@ public class SessionScheduleAPITests {
                 .when()
                 .get("/search/BySession")
                 .then()
-                .statusCode(200)
-                .body("[0].sessionId.sessionId", equalTo(SesID));
+                    .statusCode(200)
+                    .body("[0].sessionId.sessionId", equalTo(SesID));
     }
 
 }

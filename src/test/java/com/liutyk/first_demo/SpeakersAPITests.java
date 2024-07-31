@@ -29,9 +29,9 @@ class SpeakersAPITests {
     @Order(1)
     public void testGetSpeakersList(){
     given()
-    .when()
+            .when()
             .get("")
-    .then()
+            .then()
             .statusCode(200);
 
     }
@@ -50,9 +50,9 @@ class SpeakersAPITests {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .body(reqBody)
-        .when()
+                .when()
                 .post("/")
-        .then()
+                .then()
                 .statusCode(201)
                 .body("speakerId", notNullValue())
                 .body("firstName", equalTo("Sergio"))
@@ -67,9 +67,9 @@ class SpeakersAPITests {
     public void testGetSpeakersByID(){
         given()
                 .pathParam("id", testSpeaker)
-        .when()
+                .when()
                 .get("/{id}")
-         .then()
+                .then()
                     .statusCode(200)
                     .body("speakerId", notNullValue())
                     .body("speakerId", equalTo(testSpeaker));
@@ -83,12 +83,12 @@ class SpeakersAPITests {
 
         given()
                 .queryParam("name", randomNamePart)
-       .when()
+                .when()
                 .get("/search/ByName")
-       .then()
-                .statusCode(200)
-                .body("$", not(empty()))
-                .body("findAll { it.firstName.toLowerCase().contains('" + randomNamePart.toLowerCase() + "') || it.lastName.toLowerCase().contains('" + randomNamePart.toLowerCase() + "') || it.company.toLowerCase().contains('" + randomNamePart.toLowerCase() + "') }", hasSize(greaterThan(0)));
+                .then()
+                    .statusCode(200)
+                    .body("$", not(empty()))
+                    .body("findAll { it.firstName.toLowerCase().contains('" + randomNamePart.toLowerCase() + "') || it.lastName.toLowerCase().contains('" + randomNamePart.toLowerCase() + "') || it.company.toLowerCase().contains('" + randomNamePart.toLowerCase() + "') }", hasSize(greaterThan(0)));
         }
 
     @Test
@@ -97,9 +97,9 @@ class SpeakersAPITests {
 
     given()
             .queryParam("id", testSessionID)
-    .when()
+            .when()
             .get("/search/BySession")
-    .then()
+            .then()
             .statusCode(200);
     }
 
@@ -120,15 +120,15 @@ class SpeakersAPITests {
                 .contentType(ContentType.JSON)
                 .pathParam("id", testSpeaker)
                 .body(reqBody)
-        .when()
+                .when()
                 .put("/{id}")
-        .then()
-                .statusCode(200)
-                .body("speakerId", equalTo(testSpeaker))
-                .body("firstName", equalTo("Mario Bros"))
-                .body("lastName", equalTo("Mario"))
-                .body("title", equalTo("Mario adventure 2"))
-                .body("company", equalTo("Nintendo"));
+                .then()
+                    .statusCode(200)
+                    .body("speakerId", equalTo(testSpeaker))
+                    .body("firstName", equalTo("Mario Bros"))
+                    .body("lastName", equalTo("Mario"))
+                    .body("title", equalTo("Mario adventure 2"))
+                    .body("company", equalTo("Nintendo"));
     }
     @Test
     @Order(7)
@@ -142,12 +142,12 @@ class SpeakersAPITests {
                 .contentType(ContentType.JSON)
                 .pathParam("id", testSpeaker)
                 .body(reqBody)
-        .when()
+                .when()
                 .patch("/{id}")
-        .then()
-                .statusCode(200)
-                .body("speakerId", equalTo(testSpeaker))
-                .body("title", equalTo("Mario NEW Adventures"));
+                .then()
+                    .statusCode(200)
+                    .body("speakerId", equalTo(testSpeaker))
+                    .body("title", equalTo("Mario NEW Adventures"));
     }
     @Test
     @Order(8)

@@ -50,15 +50,15 @@ public class SessionsAPITests {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .body(reqBody)
-        .when()
+                .when()
                 .post("/")
-        .then()
-                .statusCode(201)
-                .body("sessionId", notNullValue())
-                .body("sessionName", equalTo("Dicaprio's session"))
-                .body("sessionDescription", equalTo("Dicaprio's's meeting with manager"))
-                .body("sessionLength", equalTo(30))
-                .body("speakers", hasItem(hasEntry("speakerId", testSpeakerID)))
+                .then()
+                    .statusCode(201)
+                    .body("sessionId", notNullValue())
+                    .body("sessionName", equalTo("Dicaprio's session"))
+                    .body("sessionDescription", equalTo("Dicaprio's's meeting with manager"))
+                    .body("sessionLength", equalTo(30))
+                    .body("speakers", hasItem(hasEntry("speakerId", testSpeakerID)))
         .extract().response();
         testSessionID = response.path("sessionId");
     }
@@ -67,12 +67,12 @@ public class SessionsAPITests {
     public void testGetSessionByID(){
         given()
                 .pathParam("id", testSessionID)
-        .when()
+                .when()
                 .get("/{id}")
-        .then()
-                .statusCode(200)
-                .body("sessionId", notNullValue())
-                .body("sessionId", equalTo(testSessionID));
+                .then()
+                    .statusCode(200)
+                    .body("sessionId", notNullValue())
+                    .body("sessionId", equalTo(testSessionID));
     }
     @Test
     @Order(4)
@@ -83,11 +83,11 @@ public class SessionsAPITests {
 
         given()
                 .queryParam("name", randomNamePart)
-        .when()
+                .when()
                 .get("/search/ByName")
-        .then()
-                .statusCode(200)
-                .body("sessionName", everyItem(containsStringIgnoringCase(randomNamePart)));
+                .then()
+                    .statusCode(200)
+                    .body("sessionName", everyItem(containsStringIgnoringCase(randomNamePart)));
     }
     @Test
     @Order(5)
@@ -102,13 +102,13 @@ public class SessionsAPITests {
                 .contentType(ContentType.JSON)
                 .pathParam("id", testSessionID)
                 .body(reqBody)
-        .when()
+                .when()
                 .put("/{id}")
-        .then()
-                .statusCode(200)
-                .body("sessionName", equalTo("Dicaprio's session"))
-                .body("sessionDescription", equalTo("Dicaprio meeting"))
-                .body("speakers", hasItem(hasEntry("speakerId", testSpeakerID)));
+                .then()
+                    .statusCode(200)
+                    .body("sessionName", equalTo("Dicaprio's session"))
+                    .body("sessionDescription", equalTo("Dicaprio meeting"))
+                    .body("speakers", hasItem(hasEntry("speakerId", testSpeakerID)));
     }
     @Test
     @Order(6)
@@ -123,35 +123,35 @@ public class SessionsAPITests {
                 .contentType(ContentType.JSON)
                 .pathParam("id", testSessionID)
                 .body(reqBody)
-        .when()
+                .when()
                 .patch("/{id}")
-        .then()
-                .statusCode(200)
-                .body("sessionName", equalTo("Dicaprio's session"))
-                .body("sessionDescription", equalTo("Dicaprio meeting"))
-                .body("speakers", hasItem(hasEntry("speakerId", testSpeakerID)));
+                .then()
+                    .statusCode(200)
+                    .body("sessionName", equalTo("Dicaprio's session"))
+                    .body("sessionDescription", equalTo("Dicaprio meeting"))
+                    .body("speakers", hasItem(hasEntry("speakerId", testSpeakerID)));
     }
     @Test
     @Order(7)
     public void testDeleteSessions(){
         given()
                 .pathParam("id", testSessionID)
-        .when()
+                .when()
                 .delete("/{id}")
-        .then()
-                .statusCode(200)
-                .body(equalTo("Sessions "+ testSessionID + " and associated schedules deleted successfully"));
+        .       then()
+                    .statusCode(200)
+                    .body(equalTo("Sessions "+ testSessionID + " and associated schedules deleted successfully"));
     }
     @Test
     @Order(8)
     public void testGetSessionsBySpeakerID(){
         given()
                 .queryParam("id", testSpeakerID)
-        .when()
+                .when()
                 .get("/search/BySpeaker")
-        .then()
-                .statusCode(200)
-                .body("speakers", everyItem(hasItem(hasEntry("speakerId", testSpeakerID))));
+                .then()
+                    .statusCode(200)
+                    .body("speakers", everyItem(hasItem(hasEntry("speakerId", testSpeakerID))));
     }
 
 }

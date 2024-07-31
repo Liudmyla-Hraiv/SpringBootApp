@@ -21,8 +21,8 @@ public class VersionTest {
         given()
          .when()
                 .get("")
-                .then()
+         .then()
                 .statusCode(200)
-                .body("app-version", equalTo("1.0.0"));
+                .body("version", equalTo("1.0.0"));
     }
 }

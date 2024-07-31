@@ -22,10 +22,10 @@ public class SessionSpeakerAPITests {
     @Order(1)
     public void testGetSession_SpeakerList(){
         given()
-        .when()
+                .when()
                 .get("")
-        .then()
-                .statusCode(200);
+                .then()
+                    .statusCode(200);
 
     }
     @Test
@@ -37,8 +37,8 @@ public class SessionSpeakerAPITests {
                 .when()
                 .get("/search/BySession")
                 .then()
-                .statusCode(200)
-                .body("[0].sessionId.sessionId", equalTo(SesID));
+                    .statusCode(200)
+                    .body("[0].sessionId.sessionId", equalTo(SesID));
     }
     @Test
     @Order(3)
@@ -49,7 +49,7 @@ public class SessionSpeakerAPITests {
                 .when()
                 .get("/search/BySpeaker")
                 .then()
-                .statusCode(200)
-                .body("[0].sessionId.speakers.find { it.speakerId == " + SpeakID + " }.speakerId", equalTo(SpeakID));
+                    .statusCode(200)
+                    .body("[0].sessionId.speakers.find { it.speakerId == " + SpeakID + " }.speakerId", equalTo(SpeakID));
     }
 }
