@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class VersionTest {
     @BeforeAll
     public static void setup(){
-        RestAssured.baseURI = "http://localhost:5000/api/v1/";
+        RestAssured.baseURI = "http://localhost";
         RestAssured.port= 5000;
     }
     @Test
@@ -20,8 +20,8 @@ public class VersionTest {
 
         given()
          .when()
-                .get("")
-         .then()
+                .get("/api/v1/")
+                .then()
                 .statusCode(200)
                 .body("version", equalTo("1.0.0"));
     }
