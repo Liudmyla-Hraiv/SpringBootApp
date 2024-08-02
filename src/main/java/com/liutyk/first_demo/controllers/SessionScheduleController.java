@@ -1,11 +1,9 @@
 package com.liutyk.first_demo.controllers;
 
 import com.liutyk.first_demo.models.SessionSchedule;
-import com.liutyk.first_demo.models.Speaker;
 import com.liutyk.first_demo.repositories.SessionScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

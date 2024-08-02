@@ -31,9 +31,6 @@ public class SessionSchedule {
     @JoinColumn(name = "session_id")
     private Session sessionId;
 
-
-
-
     public SessionSchedule(){
     }
 
