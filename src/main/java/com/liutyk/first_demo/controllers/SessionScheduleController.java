@@ -2,6 +2,7 @@ package com.liutyk.first_demo.controllers;
 
 import com.liutyk.first_demo.models.SessionSchedule;
 import com.liutyk.first_demo.repositories.SessionScheduleRepository;
+import com.liutyk.first_demo.services.SessionScheduleServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/session_schedule")
 public class SessionScheduleController {
+    private final SessionScheduleServer sessionScheduleServer;
     @Autowired
-    private SessionScheduleRepository sessionScheduleRepository;
+    public SessionScheduleController(SessionScheduleServer sessionScheduleServer) {
+        this.sessionScheduleServer = sessionScheduleServer;
+    }
+
     @GetMapping
     public ResponseEntity<?> getAllSessionSchedule() {
         try {
-            List<SessionSchedule> list= sessionScheduleRepository.findAll();
+            List<SessionSchedule> list= sessionScheduleServer.getAllSessionSchedules();
             if (list.isEmpty()){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Content");
             }
@@ -38,7 +43,7 @@ public class SessionScheduleController {
     @GetMapping("/search/BySession")
     public ResponseEntity<?> findScheduleBySessionId(@RequestParam("id") Long id){
       try {
-        List<SessionSchedule> schedules = sessionScheduleRepository.findScheduleBySessionId(id);
+        List<SessionSchedule> schedules = sessionScheduleServer.findScheduleBySessionId(id);
         if (schedules.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Session Schedule  have not found by Session ID = " + id);
         }
@@ -51,7 +56,7 @@ public class SessionScheduleController {
     @GetMapping("/search/ByRoom")
     public ResponseEntity<?> findByRoomIgnoreCase(@RequestParam("room") String room){
         try {
-            List<SessionSchedule> schedules = sessionScheduleRepository.findByRoomIgnoreCase(room);
+            List<SessionSchedule> schedules = sessionScheduleServer.findByRoomIgnoreCase(room);
             if (schedules.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Session Schedule  have not found by Room : " + room );
             }

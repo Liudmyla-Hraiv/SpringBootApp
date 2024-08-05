@@ -1,7 +1,7 @@
 package com.liutyk.first_demo.controllers;
 
 import com.liutyk.first_demo.models.SessionSpeakers;
-import com.liutyk.first_demo.repositories.SessionSpeakersRepository;
+import com.liutyk.first_demo.services.SessionSpeakersServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/session_speakers")
 public class SessionSpeakersController {
+    private final SessionSpeakersServer sessionSpeakersServer;
     @Autowired
-    private SessionSpeakersRepository sessionSpeakersRepository;
+    public SessionSpeakersController(SessionSpeakersServer sessionSpeakersServer) {
+        this.sessionSpeakersServer = sessionSpeakersServer;
+    }
+
     @GetMapping
     public ResponseEntity<?> list() {
         try {
-            List<SessionSpeakers> list= sessionSpeakersRepository.findAll();
+            List<SessionSpeakers> list= sessionSpeakersServer.getAllSessionSpeakers();
             if (list.isEmpty()){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Content");
             }
@@ -38,7 +42,7 @@ public class SessionSpeakersController {
     @GetMapping("/search/BySession")
     public ResponseEntity<?> findBySessionId(@RequestParam("id") Long id){
         try {
-            List<SessionSpeakers> sort = sessionSpeakersRepository.findBySessionId(id);
+            List<SessionSpeakers> sort = sessionSpeakersServer.findBySessionId(id);
             if (sort.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("SessionSpeakers  have not found by Session ID = " + id);
             }
@@ -51,7 +55,7 @@ public class SessionSpeakersController {
     @GetMapping("/search/BySpeaker")
     public ResponseEntity<?> findBySpeakerId(@RequestParam("id") Long id){
         try {
-            List<SessionSpeakers> sort = sessionSpeakersRepository.findBySpeakerId(id);
+            List<SessionSpeakers> sort = sessionSpeakersServer.findBySpeakerId(id);
             if (sort.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("SessionSpeakers  have not found by Speaker ID = " + id);
             }

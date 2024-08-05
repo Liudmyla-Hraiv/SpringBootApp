@@ -2,11 +2,9 @@ package com.liutyk.first_demo.repositories;
 
 import com.liutyk.first_demo.models.Speaker;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +18,4 @@ public interface SpeakerRepository extends JpaRepository<Speaker, Long> {
 
     @Query("SELECT s FROM speakers s WHERE LOWER(s.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(s.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(s.company) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Speaker> findByKeywordIgnoreCase(@Param("keyword") String keyword);
-
-
 }
