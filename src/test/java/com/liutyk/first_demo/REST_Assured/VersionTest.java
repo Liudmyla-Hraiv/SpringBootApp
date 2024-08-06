@@ -1,4 +1,4 @@
-package com.liutyk.first_demo;
+package com.liutyk.first_demo.REST_Assured;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;

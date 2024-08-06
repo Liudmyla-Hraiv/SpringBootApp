@@ -5,15 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
  @Query("SELECT s FROM sessions s WHERE LOWER(s.sessionName) LIKE LOWER(CONCAT('%', :sessionName, '%'))")
  List<Session> findBySessionNameContainingIgnoreCase(@Param("sessionName") String sessionName);
+
 
  @Query(value = "SELECT * FROM sessions s WHERE s.session_id IN " +
             "(SELECT sps.session_id FROM session_speakers sps WHERE sps.speaker_id = :speakerId)", nativeQuery = true)

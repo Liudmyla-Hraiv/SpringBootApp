@@ -1,4 +1,4 @@
-package com.liutyk.first_demo;
+package com.liutyk.first_demo.REST_Assured;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
@@ -38,7 +38,7 @@ public class SessionSpeakerAPITests {
                 .get("/search/BySession")
                 .then()
                     .statusCode(200)
-                    .body("[0].sessionId.sessionId", equalTo(SesID));
+                    .body("[0].session.sessionId", equalTo(SesID));
     }
     @Test
     @Order(3)
@@ -50,6 +50,6 @@ public class SessionSpeakerAPITests {
                 .get("/search/BySpeaker")
                 .then()
                     .statusCode(200)
-                    .body("[0].sessionId.speakers.find { it.speakerId == " + SpeakID + " }.speakerId", equalTo(SpeakID));
+                    .body("[0].session.speakers.find { it.speakerId == " + SpeakID + " }.speakerId", equalTo(SpeakID));
     }
 }

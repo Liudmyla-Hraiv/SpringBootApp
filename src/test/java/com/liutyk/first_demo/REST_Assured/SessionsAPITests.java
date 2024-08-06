@@ -1,4 +1,4 @@
-package com.liutyk.first_demo;
+package com.liutyk.first_demo.REST_Assured;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -77,14 +77,14 @@ public class SessionsAPITests {
     @Test
     @Order(4)
     public void testGetSessionByName() {
-        List<String> nameParts = Arrays.asList("dic", "DIC");
+        List<String> nameParts = Arrays.asList("dic", "DIC, spr, SPR, get, gET");
         Random random = new Random();
         String randomNamePart = nameParts.get(random.nextInt(nameParts.size()));
 
         given()
                 .queryParam("name", randomNamePart)
                 .when()
-                .get("/search/ByName")
+                .get("/search/byName")
                 .then()
                     .statusCode(200)
                     .body("sessionName", everyItem(containsStringIgnoringCase(randomNamePart)));
@@ -148,7 +148,7 @@ public class SessionsAPITests {
         given()
                 .queryParam("id", testSpeakerID)
                 .when()
-                .get("/search/BySpeaker")
+                .get("/search/bySpeaker")
                 .then()
                     .statusCode(200)
                     .body("speakers", everyItem(hasItem(hasEntry("speakerId", testSpeakerID))));

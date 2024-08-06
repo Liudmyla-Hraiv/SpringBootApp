@@ -18,20 +18,14 @@ public class SessionSpeakers {
     @ManyToOne
     @MapsId("sessionId")
     @JoinColumn(name = "session_id")
-    private Session sessionId;
+    private Session session;
 
     @JsonIgnore
     @ManyToOne
     @MapsId("speakerId")
     @JoinColumn(name = "speaker_id")
-    private Speaker speakerId;
+    private Speaker speaker;
     public SessionSpeakers(){
-    }
-
-    public SessionSpeakers(SessionSpeakersKey id, Session session, Speaker speaker){
-        this.id = id;
-        this.sessionId =session;
-        this.speakerId =speaker;
     }
 
 }

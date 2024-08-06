@@ -1,4 +1,4 @@
-package com.liutyk.first_demo;
+package com.liutyk.first_demo.REST_Assured;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -84,7 +84,7 @@ class SpeakersAPITests {
         given()
                 .queryParam("name", randomNamePart)
                 .when()
-                .get("/search/ByName")
+                .get("/search/byName")
                 .then()
                     .statusCode(200)
                     .body("$", not(empty()))
@@ -98,7 +98,7 @@ class SpeakersAPITests {
     given()
             .queryParam("id", testSessionID)
             .when()
-            .get("/search/BySession")
+            .get("/search/bySession")
             .then()
             .statusCode(200);
     }

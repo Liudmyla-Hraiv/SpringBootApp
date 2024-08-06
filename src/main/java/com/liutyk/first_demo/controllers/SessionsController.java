@@ -42,14 +42,14 @@ public class SessionsController {
         }
     }
 
-    @GetMapping("/search/ByName")
+    @GetMapping("/search/byName")
     public ResponseEntity<?> getSessionByPartialName(@RequestParam String name) {
         try {
             List<Session> sessions = sessionService.getSessionByPartialName(name);
             if (!sessions.isEmpty()) {
                 return ResponseEntity.ok(sessions);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Session with name " + name + " not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Session with name " + name + " not found" );
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +57,7 @@ public class SessionsController {
                     .body("ERROR: GET Session by Name Request: " + e.getMessage());
         }
     }
-    @GetMapping("/search/BySpeaker")
+    @GetMapping("/search/bySpeaker")
     public ResponseEntity<?> getSessionsBySpeakerId(@RequestParam Long id) {
         try {
             List<Session> sessions = sessionService.getSessionsBySpeakerId(id);

@@ -1,6 +1,5 @@
-package com.liutyk.first_demo;
+package com.liutyk.first_demo.REST_Assured;
 
-import com.liutyk.first_demo.models.Session;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.Random;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.sessionId;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.Matchers.*;

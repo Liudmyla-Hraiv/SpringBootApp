@@ -8,6 +8,7 @@ import com.liutyk.first_demo.repositories.SessionSpeakersRepository;
 import com.liutyk.first_demo.services.SpeakerService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class SpeakersController {
         }else  return ResponseEntity.ok(speaker);
     }
 //GET by part of First/Last or company name with ignore CASE
-    @GetMapping("/search/ByName")
+    @GetMapping("/search/byName")
     public ResponseEntity<?> findByKeywordIgnoreCase(@RequestParam String name) {
         try {
             List<Speaker> speakers = speakerService.findByKeywordIgnoreCase(name);
@@ -58,7 +59,7 @@ public class SpeakersController {
         }
     }
 //GET speaker by sessionId
-    @GetMapping("/search/BySession")
+    @GetMapping("/search/bySession")
     public ResponseEntity<?> findSpeakerBySessionId(@RequestParam Long id) {
         try {
             List<Speaker> speakers = speakerService.findBySessionId(id);

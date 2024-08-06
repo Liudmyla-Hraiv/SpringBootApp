@@ -12,8 +12,8 @@ import lombok.Setter;
 import java.util.List;
 
 
-@Setter
 @Getter
+@Setter
 @Entity(name = "speakers")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Speaker {

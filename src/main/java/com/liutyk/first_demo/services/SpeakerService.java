@@ -1,6 +1,7 @@
 package com.liutyk.first_demo.services;
 
 import com.liutyk.first_demo.models.Speaker;
+import com.liutyk.first_demo.repositories.SessionSpeakersRepository;
 import com.liutyk.first_demo.repositories.SpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,12 @@ import java.util.Optional;
 @Service
 public class SpeakerService {
     private final SpeakerRepository speakerRepository;
+    private final SessionSpeakersRepository sessionSpeakersRepository;
 
     @Autowired
-    public SpeakerService(SpeakerRepository speakerRepository) {
+    public SpeakerService(SpeakerRepository speakerRepository, SessionSpeakersRepository sessionSpeakersRepository) {
         this.speakerRepository = speakerRepository;
+        this.sessionSpeakersRepository = sessionSpeakersRepository;
     }
 
     public List<Speaker> getAllSpeakers() {
@@ -79,6 +82,7 @@ public class SpeakerService {
         if (!speakerRepository.existsById(id)) {
             throw new RuntimeException("Speaker with ID = " + id + " does not exist");
         }
+        sessionSpeakersRepository.deleteBySpeakerId(id);
         speakerRepository.deleteById(id);
     }
 }

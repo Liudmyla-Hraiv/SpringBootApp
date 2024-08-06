@@ -44,7 +44,7 @@ public class SessionService {
     }
 
     public Session createSession(Session session) {
-        if (!session.getSpeakers().isEmpty()) {
+        if (session.getSpeakers()!=null && !session.getSpeakers().isEmpty()) {
             List<Speaker> attachedSpeaker = new ArrayList<>();
             for (Speaker speaker : session.getSpeakers()) {
                 Optional<Speaker> optional = speakerRepository.findById(speaker.getSpeakerId());
