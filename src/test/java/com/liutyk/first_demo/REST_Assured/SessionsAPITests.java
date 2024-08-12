@@ -77,7 +77,7 @@ public class SessionsAPITests {
     @Test
     @Order(4)
     public void testGetSessionByName() {
-        List<String> nameParts = Arrays.asList("dic", "DIC, spr, SPR, get, gET");
+        List<String> nameParts = Arrays.asList("des", "DES", "spr", "SPR", "get", "gET");
         Random random = new Random();
         String randomNamePart = nameParts.get(random.nextInt(nameParts.size()));
 
