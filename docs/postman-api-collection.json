@@ -1,0 +1,2410 @@
+{
+  "info": {
+    "_postman_id": "540378de-3b46-4614-be2f-73efc861f573",
+    "name": "SpringDemoApp",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "9005161"
+  },
+  "item": [
+    {
+      "name": "Sessions_req",
+      "item": [
+        {
+          "name": "SessionList",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "  pm.expect(pm.response.code).to.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response Content-Type is application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate sessionId, sessionName, sessionDescription, sessionLength, and speakers fields in the response\", function () {\r",
+                  "  const responseData = pm.response.json();\r",
+                  "  \r",
+                  "  pm.expect(responseData).to.be.an('array');\r",
+                  "  responseData.forEach(function(session) {\r",
+                  "    pm.expect(session).to.be.an('object');\r",
+                  "    pm.expect(session.sessionId).to.exist.and.to.be.a('number');\r",
+                  "    pm.expect(session.sessionName).to.exist.and.to.be.a('string');\r",
+                  "    pm.expect(session.sessionDescription).to.exist.and.to.be.a('string');\r",
+                  "    pm.expect(session.sessionLength).to.exist.and.to.be.a('number');\r",
+                  "    \r",
+                  "    pm.expect(session.speakers).to.exist.and.to.be.an('array');\r",
+                  "    session.speakers.forEach(function(speaker) {\r",
+                  "      pm.expect(speaker).to.be.an('object');\r",
+                  "      pm.expect(speaker.speakerId).to.exist.and.to.be.a('number');\r",
+                  "      pm.expect(speaker.firstName).to.exist.and.to.be.a('string');\r",
+                  "      pm.expect(speaker.lastName).to.exist.and.to.be.a('string');\r",
+                  "      pm.expect(speaker.title).to.exist.and.to.be.a('string');\r",
+                  "      pm.expect(speaker.company).to.exist.and.to.be.a('string');\r",
+                  "      pm.expect(speaker.speakerBio).to.exist.and.to.be.a('string');\r",
+                  "    });\r",
+                  "  });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Verify the format of speakers array fields\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array');\r",
+                  "    \r",
+                  "    responseData.forEach(function(session) {\r",
+                  "        session.speakers.forEach(function(speaker) {\r",
+                  "            pm.expect(speaker).to.be.an('object');\r",
+                  "            pm.expect(speaker.firstName).to.be.a('string');\r",
+                  "            pm.expect(speaker.lastName).to.be.a('string');\r",
+                  "            pm.expect(speaker.title).to.be.a('string');\r",
+                  "            pm.expect(speaker.company).to.be.a('string');\r",
+                  "            pm.expect(speaker.speakerBio).to.be.a('string');\r",
+                  "        });\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 2000ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/sessions",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "sessions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionsBySpeakerID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "  pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response Content-Type is application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is within an acceptable range\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(300);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the session object\", function () {\r",
+                  "  const responseData = pm.response.json();\r",
+                  "  \r",
+                  "  pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+                  "  responseData.forEach(function(session) {\r",
+                  "    pm.expect(session).to.be.an('object');\r",
+                  "    pm.expect(session).to.have.property('sessionId');\r",
+                  "    pm.expect(session).to.have.property('sessionName');\r",
+                  "    pm.expect(session).to.have.property('sessionDescription');\r",
+                  "    pm.expect(session).to.have.property('sessionLength');\r",
+                  "    pm.expect(session).to.have.property('speakers').that.is.an('array').that.is.not.empty;\r",
+                  "  });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the speakers array and its properties\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+                  "\r",
+                  "    responseData.forEach(function(session) {\r",
+                  "        pm.expect(session.speakers).to.be.an('array').that.is.not.empty;\r",
+                  "\r",
+                  "        session.speakers.forEach(function(speaker) {\r",
+                  "            pm.expect(speaker).to.have.property('speakerId').that.is.a('number');\r",
+                  "            pm.expect(speaker).to.have.property('firstName').that.is.a('string');\r",
+                  "            pm.expect(speaker).to.have.property('lastName').that.is.a('string');\r",
+                  "            pm.expect(speaker).to.have.property('title').that.is.a('string');\r",
+                  "            pm.expect(speaker).to.have.property('company').that.is.a('string');\r",
+                  "            pm.expect(speaker).to.have.property('speakerBio').that.is.a('string');\r",
+                  "        });\r",
+                  "    });\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/sessions/search/bySpeaker?id={{randomSpId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "sessions",
+                "search",
+                "bySpeaker"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{randomSpId}}"
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionByName",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the required fields\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array');\r",
+                  "    responseData.forEach(function(session) {\r",
+                  "        pm.expect(session.sessionId).to.exist;\r",
+                  "        pm.expect(session.sessionName).to.exist;\r",
+                  "        pm.expect(session.sessionDescription).to.exist;\r",
+                  "        pm.expect(session.sessionLength).to.exist;\r",
+                  "        pm.expect(session.speakers).to.exist;\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Session length is a non-negative integer\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    responseData.forEach(function(session) {\r",
+                  "        pm.expect(session.sessionLength).to.be.a('number');\r",
+                  "        pm.expect(session.sessionLength).to.be.at.least(0);\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Speakers is an array\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array');\r",
+                  "    responseData.forEach(function(session) {\r",
+                  "        pm.expect(session.speakers).to.be.an('array');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 400ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/sessions/search/byName?name=des",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "sessions",
+                "search",
+                "byName"
+              ],
+              "query": [
+                {
+                  "key": null,
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "APP",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "app",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "des"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionByID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Content-Type is application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the session object\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('object');\r",
+                  "    pm.expect(responseData.sessionId).to.exist.and.to.be.a('number');\r",
+                  "    pm.expect(responseData.sessionName).to.exist.and.to.be.a('string');\r",
+                  "    pm.expect(responseData.sessionDescription).to.exist.and.to.be.a('string');\r",
+                  "    pm.expect(responseData.sessionLength).to.exist.and.to.be.a('number');\r",
+                  "    \r",
+                  "    pm.expect(responseData.speakers).to.exist.and.to.be.an('array');\r",
+                  "    responseData.speakers.forEach(function(speaker) {\r",
+                  "        pm.expect(speaker.speakerId).to.exist.and.to.be.a('number');\r",
+                  "        pm.expect(speaker.firstName).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(speaker.lastName).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(speaker.title).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(speaker.company).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(speaker.speakerBio).to.exist.and.to.be.a('string');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the speakers array and its elements\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('object');\r",
+                  "    pm.expect(responseData.speakers).to.be.an('array');\r",
+                  "    \r",
+                  "    responseData.speakers.forEach(function(speaker) {\r",
+                  "        pm.expect(speaker).to.be.an('object');\r",
+                  "        pm.expect(speaker.speakerId).to.exist.and.to.be.a('number');\r",
+                  "        pm.expect(speaker.firstName).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(speaker.lastName).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(speaker.title).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(speaker.company).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(speaker.speakerBio).to.exist.and.to.be.a('string');\r",
+                  "    });\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const min = 1;\r",
+                  "const max = 70;\r",
+                  "\r",
+                  "\r",
+                  "function getRandomInt(min, max) {\r",
+                  "    return Math.floor(Math.random() * (max - min + 1)) + min;\r",
+                  "}\r",
+                  "\r",
+                  "\r",
+                  "const randomSesId = getRandomInt(min, max);\r",
+                  "pm.collectionVariables.set(\"randomSesId\", randomSesId);\r",
+                  "\r",
+                  "console.log(\"Random ID generated:\", randomSesId);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/sessions/{{randomSesId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "sessions",
+                "{{randomSesId}}"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionCreate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the required fields\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('object');\r",
+                  "    pm.expect(responseData.sessionId).to.exist;\r",
+                  "    pm.expect(responseData.sessionName).to.exist;\r",
+                  "    pm.expect(responseData.sessionDescription).to.exist;\r",
+                  "    pm.expect(responseData.sessionLength).to.exist;\r",
+                  "    pm.expect(responseData.speakers).to.exist;\r",
+                  "});\r",
+                  "pm.test(\"Extract ID from response and save it to a variable\", function () {\r",
+                  "    const responseJson = pm.response.json();\r",
+                  "    const sesID = responseJson.sessionId; \r",
+                  "    pm.collectionVariables.set(\"sesID\", sesID);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the speakers array and its elements\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(responseData).to.be.an('object');\r",
+                  "    pm.expect(responseData.speakers).to.be.an('array').that.is.not.empty;\r",
+                  "\r",
+                  "    responseData.speakers.forEach(function(speaker) {\r",
+                  "        pm.expect(speaker).to.be.an('object');\r",
+                  "        pm.expect(speaker.speakerId).to.be.a('number');\r",
+                  "        pm.expect(speaker.firstName).to.be.a('string');\r",
+                  "        pm.expect(speaker.lastName).to.be.a('string');\r",
+                  "        pm.expect(speaker.title).to.be.a('string');\r",
+                  "        pm.expect(speaker.company).to.be.a('string');\r",
+                  "        pm.expect(speaker.speakerBio).to.be.a('string');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is within an acceptable range time below 2000\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"sessionName\": \"Dicaprio's session\",\r\n    \"sessionDescription\": \"Dicaprio's's meeting with manager\",\r\n    \"sessionLength\": 30,\r\n    \"speakers\": [ \r\n         { \"speakerId\": {{randomSpId}}} \r\n        ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/v1/sessions/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "sessions",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionModify",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is within an acceptable range time below 1000\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the response schema for sessionId, sessionName, sessionDescription, sessionLength, and speakers array\", function () {\r",
+                  "  const responseData = pm.response.json();\r",
+                  "\r",
+                  "  pm.expect(responseData).to.be.an('object');\r",
+                  "  pm.expect(responseData.sessionId).to.exist.and.to.be.a('number');\r",
+                  "  pm.expect(responseData.sessionName).to.exist.and.to.be.a('string');\r",
+                  "  pm.expect(responseData.sessionDescription).to.exist.and.to.be.a('string');\r",
+                  "  pm.expect(responseData.sessionLength).to.exist.and.to.be.a('number');\r",
+                  "  pm.expect(responseData.speakers).to.exist.and.to.be.an('array');\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Each speaker object in the speakers array contains required properties\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData.speakers).to.be.an('array');\r",
+                  "    responseData.speakers.forEach(function(speaker) {\r",
+                  "        pm.expect(speaker).to.have.property('speakerId').that.is.a('number');\r",
+                  "        pm.expect(speaker).to.have.property('firstName').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('lastName').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('title').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('company').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('speakerBio').that.is.a('string');\r",
+                  "    });\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"sessionName\": \"SOLID\",\r\n    \"sessionDescription\": \"SOLID Principles in Java\",\r\n    \"sessionLength\": 60,\r\n    \"speakers\": [\r\n        {\r\n            \"speakerId\": 21,\r\n            \"firstName\": \"Linda\",\r\n            \"lastName\": \"Carver\",\r\n            \"title\": \"Senior Developer\",\r\n            \"company\": \"Chicago Technology Research\",\r\n            \"speakerBio\": \"Test\"\r\n        }\r\n    ]\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/v1/sessions/{{randomSesId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "sessions",
+                "{{randomSesId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionUpdate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the required fields\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('object');\r",
+                  "    pm.expect(responseData.sessionId).to.exist;\r",
+                  "    pm.expect(responseData.sessionName).to.exist;\r",
+                  "    pm.expect(responseData.sessionDescription).to.exist;\r",
+                  "    pm.expect(responseData.sessionLength).to.exist;\r",
+                  "    pm.expect(responseData.speakers).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the speakers array\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData.speakers).to.be.an('array').and.to.have.lengthOf.at.least(1, \"Speakers array should not be empty\");\r",
+                  "\r",
+                  "    responseData.speakers.forEach(function(speaker) {\r",
+                  "        pm.expect(speaker).to.be.an('object');\r",
+                  "        pm.expect(speaker.speakerId).to.be.a('number', \"speakerId should be a number\");\r",
+                  "        pm.expect(speaker.firstName).to.be.a('string', \"firstName should be a string\");\r",
+                  "        pm.expect(speaker.lastName).to.be.a('string', \"lastName should be a string\");\r",
+                  "        pm.expect(speaker.title).to.be.a('string', \"title should be a string\");\r",
+                  "        pm.expect(speaker.company).to.be.a('string', \"company should be a string\");\r",
+                  "        pm.expect(speaker.speakerBio).to.be.a('string', \"speakerBio should be a string\");\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Speakers have non-empty strings for first and last names\", function () {\r",
+                  "  const responseData = pm.response.json();\r",
+                  "  \r",
+                  "  pm.expect(responseData.speakers).to.be.an('array');\r",
+                  "  responseData.speakers.forEach(function(speaker) {\r",
+                  "    pm.expect(speaker.firstName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"First name should not be empty\");\r",
+                  "    pm.expect(speaker.lastName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Last name should not be empty\");\r",
+                  "  });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"sessionName\": \"SOLID\",\r\n    \"sessionDescription\": \"SOLID Principles in Java\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/v1/sessions/{{randomSesId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "sessions",
+                "{{randomSesId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionDelete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.expect(pm.response.code).to.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Content type is text/plain\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/plain\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/v1/sessions/{{sesID}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "sessions",
+                "{{sesID}}"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Session_schedule req",
+      "item": [
+        {
+          "name": "SessionScheduleList",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "  pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the required fields\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+                  "\r",
+                  "    responseData.forEach(function(schedule) {\r",
+                  "        pm.expect(schedule).to.have.property('scheduleId');\r",
+                  "        pm.expect(schedule).to.have.property('timeSlot');\r",
+                  "        pm.expect(schedule).to.have.property('room');\r",
+                  "        pm.expect(schedule).to.have.property('session').that.is.an('object').and.to.have.property('sessionName');\r",
+                  "        pm.expect(schedule.session).to.have.property('sessionDescription');\r",
+                  "        pm.expect(schedule.session).to.have.property('sessionLength');\r",
+                  "        pm.expect(schedule.session).to.have.property('speakers').that.is.an('array');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate session object\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array');\r",
+                  "    responseData.forEach(function(scheduleItem) {\r",
+                  "        pm.expect(scheduleItem.session).to.exist.and.to.be.an('object');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Speakers' details must be non-empty strings\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array');\r",
+                  "    \r",
+                  "    responseData.forEach(function(schedule) {\r",
+                  "        pm.expect(schedule.session.speakers).to.be.an('array');\r",
+                  "        \r",
+                  "        schedule.session.speakers.forEach(function(speaker) {\r",
+                  "            pm.expect(speaker.firstName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"firstName should not be empty\");\r",
+                  "            pm.expect(speaker.lastName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"lastName should not be empty\");\r",
+                  "            pm.expect(speaker.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"title should not be empty\");\r",
+                  "            pm.expect(speaker.speakerBio).to.be.a('string').and.to.have.lengthOf.at.least(1, \"speakerBio should not be empty\");\r",
+                  "        });\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 400ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/session_schedule",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "session_schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionScheduleByRoom",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "  pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the required fields\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(responseData).to.be.an('array');\r",
+                  "    responseData.forEach(function(schedule) {\r",
+                  "        pm.expect(schedule).to.have.property('scheduleId');\r",
+                  "        pm.expect(schedule).to.have.property('timeSlot');\r",
+                  "        pm.expect(schedule).to.have.property('room');\r",
+                  "        pm.expect(schedule).to.have.property('session');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate session object\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array');\r",
+                  "    responseData.forEach(function(item) {\r",
+                  "        pm.expect(item.session).to.be.an('object');\r",
+                  "        pm.expect(item.session.sessionId).to.be.a('number');\r",
+                  "        pm.expect(item.session.sessionName).to.be.a('string');\r",
+                  "        pm.expect(item.session.sessionDescription).to.be.a('string');\r",
+                  "        pm.expect(item.session.sessionLength).to.be.a('number');\r",
+                  "        pm.expect(item.session.speakers).to.be.an('array');\r",
+                  "        item.session.speakers.forEach(function(speaker) {\r",
+                  "            pm.expect(speaker.speakerId).to.be.a('number');\r",
+                  "            pm.expect(speaker.firstName).to.be.a('string');\r",
+                  "            pm.expect(speaker.lastName).to.be.a('string');\r",
+                  "            pm.expect(speaker.title).to.be.a('string');\r",
+                  "            pm.expect(speaker.company).to.be.a('string');\r",
+                  "            pm.expect(speaker.speakerBio).to.be.a('string');\r",
+                  "        });\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Content-Type header is application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/session_schedule/search/ByRoom?room=hic",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "session_schedule",
+                "search",
+                "ByRoom"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "HIC",
+                  "disabled": true
+                },
+                {
+                  "key": "room",
+                  "value": "hic"
+                },
+                {
+                  "key": "room",
+                  "value": "hiC",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionScheduleBySessionID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Content-Type header is application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the structure of the response schema\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+                  "    responseData.forEach(function(schedule) {\r",
+                  "        pm.expect(schedule).to.have.property('scheduleId').that.is.a('number');\r",
+                  "        pm.expect(schedule).to.have.property('timeSlot').that.is.an('object');\r",
+                  "        pm.expect(schedule).to.have.property('room').that.is.a('string');\r",
+                  "        \r",
+                  "        pm.expect(schedule.session).to.be.an('object');\r",
+                  "        pm.expect(schedule.session).to.have.property('sessionId').that.is.a('number');\r",
+                  "        pm.expect(schedule.session).to.have.property('sessionName').that.is.a('string');\r",
+                  "        pm.expect(schedule.session).to.have.property('sessionDescription').that.is.a('string');\r",
+                  "        pm.expect(schedule.session).to.have.property('sessionLength').that.is.a('number');\r",
+                  "        \r",
+                  "        pm.expect(schedule.session.speakers).to.be.an('array').that.is.not.empty;\r",
+                  "        schedule.session.speakers.forEach(function(speaker) {\r",
+                  "            pm.expect(speaker).to.have.property('speakerId').that.is.a('number');\r",
+                  "            pm.expect(speaker).to.have.property('firstName').that.is.a('string');\r",
+                  "            pm.expect(speaker).to.have.property('lastName').that.is.a('string');\r",
+                  "            pm.expect(speaker).to.have.property('title').that.is.a('string');\r",
+                  "            pm.expect(speaker).to.have.property('company').that.is.a('string');\r",
+                  "            pm.expect(speaker).to.have.property('speakerBio').that.is.a('string');\r",
+                  "        });\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Verify that the response contains the required 'speakers' field\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(responseData).to.be.an('array');\r",
+                  "    responseData.forEach(function (item) {\r",
+                  "        pm.expect(item).to.be.an('object');\r",
+                  "        pm.expect(item).to.have.property('scheduleId');\r",
+                  "        pm.expect(item).to.have.property('timeSlot');\r",
+                  "        pm.expect(item).to.have.property('room');\r",
+                  "        pm.expect(item).to.have.property('session');\r",
+                  "        pm.expect(item.session).to.be.an('object');\r",
+                  "        pm.expect(item.session).to.have.property('sessionId');\r",
+                  "        pm.expect(item.session).to.have.property('sessionName');\r",
+                  "        pm.expect(item.session).to.have.property('sessionDescription');\r",
+                  "        pm.expect(item.session).to.have.property('sessionLength');\r",
+                  "        pm.expect(item.session).to.have.property('speakers');\r",
+                  "        pm.expect(item.session.speakers).to.be.an('array');\r",
+                  "        item.session.speakers.forEach(function (speaker) {\r",
+                  "            pm.expect(speaker).to.be.an('object');\r",
+                  "            pm.expect(speaker).to.have.property('speakerId');\r",
+                  "            pm.expect(speaker).to.have.property('firstName');\r",
+                  "            pm.expect(speaker).to.have.property('lastName');\r",
+                  "            pm.expect(speaker).to.have.property('title');\r",
+                  "            pm.expect(speaker).to.have.property('company');\r",
+                  "            pm.expect(speaker).to.have.property('speakerBio');\r",
+                  "        });\r",
+                  "    });\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/session_schedule/search/BySession?id=37",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "session_schedule",
+                "search",
+                "BySession"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "37"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionScheduleList/",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the expected Content-Type header\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/plain\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response body contains the expected welcome message\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.include(\"Welcome to SessionSchedule! Please delete '/' :)\");\r",
+                  "});\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/session_schedule/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "session_schedule",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "SessionSpeakers req",
+      "item": [
+        {
+          "name": "SessionSpeakersList",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the required Content-Type header with value application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the structure of the response JSON\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+                  "    responseData.forEach(function(session) {\r",
+                  "        pm.expect(session).to.be.an('object');\r",
+                  "        pm.expect(session.id).to.exist.and.to.be.an('object');\r",
+                  "        pm.expect(session.id.speakerId).to.be.a('number');\r",
+                  "        pm.expect(session.id.sessionId).to.be.a('number');\r",
+                  "        pm.expect(session.session).to.exist.and.to.be.an('object');\r",
+                  "        pm.expect(session.session.sessionId).to.be.a('number');\r",
+                  "        pm.expect(session.session.sessionName).to.be.a('string');\r",
+                  "        pm.expect(session.session.sessionDescription).to.be.a('string');\r",
+                  "        pm.expect(session.session.sessionLength).to.be.a('number');\r",
+                  "        pm.expect(session.session.speakers).to.be.an('array').that.is.not.empty;\r",
+                  "        session.session.speakers.forEach(function(speaker) {\r",
+                  "            pm.expect(speaker.speakerId).to.be.a('number');\r",
+                  "            pm.expect(speaker.firstName).to.be.a('string');\r",
+                  "            pm.expect(speaker.lastName).to.be.a('string');\r",
+                  "            pm.expect(speaker.title).to.be.a('string');\r",
+                  "            pm.expect(speaker.company).to.be.a('string');\r",
+                  "            pm.expect(speaker.speakerBio).to.be.a('string');\r",
+                  "        });\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 1000ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/session_speakers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "session_speakers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionSpeakersBySessionID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.expect(pm.response.code).to.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Content-Type header is application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Verify the response schema for id, sessionId, speakers, firstName, lastName, title, company, and speakerBio\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+                  "    \r",
+                  "    responseData.forEach(session => {\r",
+                  "        pm.expect(session).to.have.property('id').that.is.an('object');\r",
+                  "        pm.expect(session.id).to.have.property('speakerId').that.is.a('number');\r",
+                  "        pm.expect(session.id).to.have.property('sessionId').that.is.a('number');\r",
+                  "        \r",
+                  "        pm.expect(session).to.be.an('object');\r",
+                  "        pm.expect(session.id).to.exist.and.to.be.an('object');\r",
+                  "        pm.expect(session.id.speakerId).to.be.a('number');\r",
+                  "        pm.expect(session.id.sessionId).to.be.a('number');\r",
+                  "        pm.expect(session.session).to.exist.and.to.be.an('object');\r",
+                  "        pm.expect(session.session.sessionId).to.be.a('number');\r",
+                  "        pm.expect(session.session.sessionName).to.be.a('string');\r",
+                  "        pm.expect(session.session.sessionDescription).to.be.a('string');\r",
+                  "        pm.expect(session.session.sessionLength).to.be.a('number');\r",
+                  "        pm.expect(session.session.speakers).to.be.an('array').that.is.not.empty;\r",
+                  "        session.session.speakers.forEach(function(speaker) {\r",
+                  "            pm.expect(speaker.speakerId).to.be.a('number');\r",
+                  "            pm.expect(speaker.firstName).to.be.a('string');\r",
+                  "            pm.expect(speaker.lastName).to.be.a('string');\r",
+                  "            pm.expect(speaker.title).to.be.a('string');\r",
+                  "            pm.expect(speaker.company).to.be.a('string');\r",
+                  "            pm.expect(speaker.speakerBio).to.be.a('string');\r",
+                  "        });\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/session_speakers/search/BySession?id=7",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "session_speakers",
+                "search",
+                "BySession"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "7"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionSpeakersBySpeakerID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Content-Type header is application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the structure of the response JSON\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+                  "    responseData.forEach(function(item) {\r",
+                  "        pm.expect(item).to.be.an('object');\r",
+                  "        pm.expect(item.id).to.exist.and.to.be.an('object');\r",
+                  "        pm.expect(item.id.speakerId).to.exist.and.to.be.a('number');\r",
+                  "        pm.expect(item.id.sessionId).to.exist.and.to.be.a('number');\r",
+                  "        pm.expect(item.session).to.exist.and.to.be.an('object');\r",
+                  "        pm.expect(item.session.sessionId).to.exist.and.to.be.a('number');\r",
+                  "        pm.expect(item.session.sessionName).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(item.session.sessionDescription).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(item.session.sessionLength).to.exist.and.to.be.a('number');\r",
+                  "        pm.expect(item.session.speakers).to.exist.and.to.be.an('array').that.is.not.empty;\r",
+                  "        item.session.speakers.forEach(function(speaker) {\r",
+                  "            pm.expect(speaker.speakerId).to.exist.and.to.be.a('number');\r",
+                  "            pm.expect(speaker.firstName).to.exist.and.to.be.a('string');\r",
+                  "            pm.expect(speaker.lastName).to.exist.and.to.be.a('string');\r",
+                  "            pm.expect(speaker.title).to.exist.and.to.be.a('string');\r",
+                  "            pm.expect(speaker.company).to.exist.and.to.be.a('string');\r",
+                  "            pm.expect(speaker.speakerBio).to.exist.and.to.be.a('string');\r",
+                  "        });\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Id and sessionId objects are present and contain the expected fields\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array');\r",
+                  "    \r",
+                  "    responseData.forEach(function(item) {\r",
+                  "        pm.expect(item).to.be.an('object');\r",
+                  "        pm.expect(item.id).to.exist.and.to.be.an('object');\r",
+                  "        pm.expect(item.id.speakerId).to.exist.and.to.be.a('number');\r",
+                  "        pm.expect(item.id.sessionId).to.exist.and.to.be.a('number');\r",
+                  "        \r",
+                  "        pm.expect(item.session).to.exist.and.to.be.an('object');\r",
+                  "        pm.expect(item.session.sessionId).to.exist.and.to.be.a('number');\r",
+                  "        pm.expect(item.session.sessionName).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(item.session.sessionDescription).to.exist.and.to.be.a('string');\r",
+                  "        pm.expect(item.session.sessionLength).to.exist.and.to.be.a('number');\r",
+                  "        \r",
+                  "        item.session.speakers.forEach(function(speaker) {\r",
+                  "            pm.expect(speaker.speakerId).to.exist.and.to.be.a('number');\r",
+                  "            pm.expect(speaker.firstName).to.exist.and.to.be.a('string');\r",
+                  "            pm.expect(speaker.lastName).to.exist.and.to.be.a('string');\r",
+                  "            pm.expect(speaker.title).to.exist.and.to.be.a('string');\r",
+                  "            pm.expect(speaker.company).to.exist.and.to.be.a('string');\r",
+                  "            pm.expect(speaker.speakerBio).to.exist.and.to.be.a('string');\r",
+                  "        });\r",
+                  "    });\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/session_speakers/search/BySpeaker?id={{randomSpId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "session_speakers",
+                "search",
+                "BySpeaker"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{randomSpId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SessionSpeakersList/",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.expect(pm.response.code).to.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has the expected Content-Type header\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/plain\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response body contains the expected message\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.include(\"Welcome to SpeakerSession! Please delete '/' :)\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/session_speakers/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "session_speakers",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Speakers_req",
+      "item": [
+        {
+          "name": "SpeakerList",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Content-Type header is application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the schema for the response\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+                  "    responseData.forEach(function(speaker) {\r",
+                  "        pm.expect(speaker).to.have.property('speakerId').that.is.a('number');\r",
+                  "        pm.expect(speaker).to.have.property('firstName').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('lastName').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('title').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('company').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('speakerBio').that.is.a('string');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/speakers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "speakers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SpeakerById",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the required fields\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(responseData).to.be.an('object');\r",
+                  "    pm.expect(responseData).to.have.property('speakerId');\r",
+                  "    pm.expect(responseData).to.have.property('firstName');\r",
+                  "    pm.expect(responseData).to.have.property('lastName');\r",
+                  "    pm.expect(responseData).to.have.property('title');\r",
+                  "    pm.expect(responseData).to.have.property('company');\r",
+                  "    pm.expect(responseData).to.have.property('speakerBio');\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"SpeakerId is a non-negative integer\", function () {\r",
+                  "  const responseData = pm.response.json();\r",
+                  "\r",
+                  "  pm.expect(responseData).to.be.an('object');\r",
+                  "  pm.expect(responseData.speakerId).to.be.a('number').and.to.satisfy((val) => val >= 0, \"SpeakerId should be a non-negative integer\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Content-Type header is application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const min = 1;\r",
+                  "const max = 40;\r",
+                  "\r",
+                  "\r",
+                  "function getRandomInt(min, max) {\r",
+                  "    return Math.floor(Math.random() * (max - min + 1)) + min;\r",
+                  "}\r",
+                  "\r",
+                  "\r",
+                  "const randomSpId = getRandomInt(min, max);\r",
+                  "pm.collectionVariables.set(\"randomSpId\", randomSpId);\r",
+                  "\r",
+                  "console.log(\"Random ID generated:\", randomSpId);\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/speakers/{{randomSpId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "speakers",
+                "{{randomSpId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SpeakerCreate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 201\", function () {\r",
+                  "    pm.expect(pm.response.code).to.equal(201);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Speaker ID is present in the response\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    pm.expect(responseData.speakerId).to.exist;\r",
+                  "});\r",
+                  "pm.test(\"Extract ID from response and save it to a variable\", function () {\r",
+                  "    const responseJson = pm.response.json();\r",
+                  "    const speakID = responseJson.speakerId; \r",
+                  "    pm.collectionVariables.set(\"speakID\", speakID);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"First name should be a non-empty string\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    pm.expect(responseData.firstName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"First name should not be empty\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Last name should be a non-empty string\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    pm.expect(responseData.lastName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Last name should not be empty\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Title should be a non-empty string\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    pm.expect(responseData.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Title should not be empty\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Company should be a non-empty string\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    pm.expect(responseData.company).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Company should not be empty\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Speaker bio should be a non-empty string\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    pm.expect(responseData.speakerBio).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Speaker bio should not be empty\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is within an acceptable range\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "  {\r\n        \"firstName\": \"Sergio\",\r\n        \"lastName\": \"Mario\",\r\n        \"title\": \"Mario adventure\",\r\n        \"company\": \"Nintendo\",\r\n        \"speakerPhoto\": null,\r\n        \"speakerBio\": \"The Nintendo Switch is a video game console developed by Nintendo\"\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/v1/speakers/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "speakers",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SearchByNameOrCompany",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "  pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the required fields\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+                  "\r",
+                  "    responseData.forEach(function(speaker) {\r",
+                  "        pm.expect(speaker).to.have.property('speakerId');\r",
+                  "        pm.expect(speaker).to.have.property('firstName');\r",
+                  "        pm.expect(speaker).to.have.property('lastName');\r",
+                  "        pm.expect(speaker).to.have.property('title');\r",
+                  "        pm.expect(speaker).to.have.property('company');\r",
+                  "        pm.expect(speaker).to.have.property('speakerBio');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"SpeakerId is a non-negative integer\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    responseData.forEach(function(speaker) {\r",
+                  "        pm.expect(speaker.speakerId).to.be.a('number').and.to.satisfy((id) => id >= 0, \"SpeakerId should be a non-negative integer\");\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate response properties\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+                  "    \r",
+                  "    responseData.forEach(function(speaker) {\r",
+                  "        pm.expect(speaker.firstName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+                  "        pm.expect(speaker.lastName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+                  "        pm.expect(speaker.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+                  "        pm.expect(speaker.company).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+                  "        pm.expect(speaker.speakerBio).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+                  "    });\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/speakers/search/byName?name=BEC",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "speakers",
+                "search",
+                "byName"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "SER",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "ser",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "BEC"
+                },
+                {
+                  "key": "name",
+                  "value": "bec",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "NAT",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "nat",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SearchSpeakerBySessionId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "  pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Content-Type is application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Validate the schema for speaker object\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('array').that.is.not.empty;\r",
+                  "\r",
+                  "    responseData.forEach(function(speaker) {\r",
+                  "        pm.expect(speaker).to.have.property('speakerId').that.is.a('number');\r",
+                  "        pm.expect(speaker).to.have.property('firstName').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('lastName').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('title').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('company').that.is.a('string');\r",
+                  "        pm.expect(speaker).to.have.property('speakerBio').that.is.a('string');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Ensure non-empty strings for firstName, lastName, title, company, and speakerBio\", function () {\r",
+                  "  const responseData = pm.response.json();\r",
+                  "  \r",
+                  "  pm.expect(responseData).to.be.an('array');\r",
+                  "  responseData.forEach(function(speaker) {\r",
+                  "    pm.expect(speaker.firstName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"First name should not be empty\");\r",
+                  "    pm.expect(speaker.lastName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Last name should not be empty\");\r",
+                  "    pm.expect(speaker.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Title should not be empty\");\r",
+                  "    pm.expect(speaker.company).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Company should not be empty\");\r",
+                  "    pm.expect(speaker.speakerBio).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Speaker bio should not be empty\");\r",
+                  "  });\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/v1/speakers/search/bySession?id=16",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "speakers",
+                "search",
+                "bySession"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "16"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SpeakerModify",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "  pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the required fields\", function () {\r",
+                  "  const responseData = pm.response.json();\r",
+                  "  \r",
+                  "  pm.expect(responseData).to.be.an('object');\r",
+                  "  pm.expect(responseData).to.have.property('speakerId');\r",
+                  "  pm.expect(responseData).to.have.property('firstName');\r",
+                  "  pm.expect(responseData).to.have.property('lastName');\r",
+                  "  pm.expect(responseData).to.have.property('title');\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"SpeakerId is a non-negative integer\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(responseData.speakerId).to.be.a('number');\r",
+                  "    pm.expect(responseData.speakerId).to.be.at.least(0);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 2000ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"Ancel Bence\",\r\n    \"lastName\": \"Holzman Bance\",\r\n    \"title\": \"Senior Consultant\",\r\n    \"company\": \"Cloud Management\",\r\n    \"speakerBio\": \"TestAction\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/v1/speakers/{{speakID}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "speakers",
+                "{{speakID}}"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SpeakerUpdate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.expect(pm.response.code).to.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the required fields\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(responseData).to.be.an('object');\r",
+                  "    pm.expect(responseData).to.have.property('speakerId');\r",
+                  "    pm.expect(responseData).to.have.property('firstName');\r",
+                  "    pm.expect(responseData).to.have.property('lastName');\r",
+                  "    pm.expect(responseData).to.have.property('title');\r",
+                  "    pm.expect(responseData).to.have.property('company');\r",
+                  "    pm.expect(responseData).to.have.property('speakerBio');\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"SpeakerId is a non-negative integer\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('object');\r",
+                  "    pm.expect(responseData.speakerId).to.be.a('number').and.to.satisfy((val) => val >= 0, \"SpeakerId should be a non-negative integer\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Title, firstName, and lastName are non-empty strings\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.an('object');\r",
+                  "    pm.expect(responseData.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Title should not be empty\");\r",
+                  "    pm.expect(responseData.firstName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"First name should not be empty\");\r",
+                  "    pm.expect(responseData.lastName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Last name should not be empty\");\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Mario New adventure\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/v1/speakers/{{randomSpId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "speakers",
+                "{{randomSpId}}"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SpeakerDelete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {\r",
+                  "    pm.expect(pm.response.code).to.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Response has the required fields - ID and message\", function () {\r",
+                  "    const responseData = pm.response.text();\r",
+                  "    const ID = pm.collectionVariables.get(\"speakID\");\r",
+                  "    pm.expect(responseData).to.include(ID);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"ID is a valid integer\", function () {\r",
+                  "    const responseData = pm.response.text();\r",
+                  "    \r",
+                  "    pm.expect(responseData).to.be.a('string');\r",
+                  "    pm.expect(parseInt(responseData.match(/\\d+/)[0])).to.be.a('number');\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/v1/speakers/{{speakID}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "v1",
+                "speakers",
+                "{{speakID}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "appVersion",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "\r",
+              "\r",
+              "pm.test(\"Response status code is 200\", function () {\r",
+              "  pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Response time is less than 200ms\", function () {\r",
+              "  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Content-Type header is application/json\", function () {\r",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Response has the required field - version\", function () {\r",
+              "  const responseData = pm.response.json();\r",
+              "  pm.expect(responseData).to.be.an('object');\r",
+              "  pm.expect(responseData.version).to.exist;\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/v1/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "v1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "sesID",
+      "value": ""
+    },
+    {
+      "key": "speakID",
+      "value": ""
+    },
+    {
+      "key": "randomSpId",
+      "value": ""
+    },
+    {
+      "key": "randomSesId",
+      "value": ""
+    }
+  ]
+}
