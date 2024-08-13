@@ -46,7 +46,7 @@ public class Session {
     private List<Speaker> speakers;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "sessionId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SessionSchedule> schedules = new ArrayList<>();
 
 

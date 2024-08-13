@@ -17,19 +17,19 @@ public class SessionSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
-    private Integer scheduleId;
+    private Long scheduleId;
 
-    @NotBlank
-    @Column(name = "time_slot_id")
-    private Integer timeSlotId;
+    @ManyToOne
+    @JoinColumn(name = "time_slot_id", nullable = false)
+    private TimeSlot timeSlot;
 
     @Size(min =1, max=30)
-    @Column(name = "room")
+    @Column(name = "room", nullable = false)
     private String room;
 
     @ManyToOne
-    @JoinColumn(name = "session_id")
-    private Session sessionId;
+    @JoinColumn(name = "session_id", nullable = false)
+    private Session session;
 
     public SessionSchedule(){
     }

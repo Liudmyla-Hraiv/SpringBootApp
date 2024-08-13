@@ -60,7 +60,7 @@ public class SessionScheduleAPITests {
                 .get("/search/BySession")
                 .then()
                     .statusCode(200)
-                    .body("[0].sessionId.sessionId", equalTo(SesID));
+                    .body("[0].session.sessionId", equalTo(SesID));
     }
 
 }

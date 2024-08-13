@@ -1,6 +1,6 @@
 package com.liutyk.first_demo.services;
 
-import com.liutyk.first_demo.models.SessionSpeakers;
+import com.liutyk.first_demo.models.SessionSpeaker;
 import com.liutyk.first_demo.repositories.SessionSpeakersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +14,13 @@ public class SessionSpeakersServer {
     public SessionSpeakersServer(SessionSpeakersRepository sessionSpeakersRepository) {
         this.sessionSpeakersRepository = sessionSpeakersRepository;
     }
-    public List<SessionSpeakers> getAllSessionSpeakers(){
+    public List<SessionSpeaker> getAllSessionSpeakers(){
         return sessionSpeakersRepository.findAll();
     }
-    public List<SessionSpeakers> findBySessionId(Long sessionId){
+    public List<SessionSpeaker> findBySessionId(Long sessionId){
         return sessionSpeakersRepository.findBySessionId(sessionId);
     }
-    public List<SessionSpeakers> findBySpeakerId(Long speakerId){
+    public List<SessionSpeaker> findBySpeakerId(Long speakerId){
         return sessionSpeakersRepository.findBySpeakerId(speakerId);
     }
 

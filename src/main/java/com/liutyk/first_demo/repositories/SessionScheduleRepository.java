@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface SessionScheduleRepository extends JpaRepository<SessionSchedule, Integer> {
+public interface SessionScheduleRepository extends JpaRepository<SessionSchedule, Long> {
     @Modifying
     @Transactional
-    void deleteBySessionId_SessionId(Long sessionId);
+    void deleteBySession_SessionId(Long sessionId);
 
     @Query("SELECT s FROM session_schedule s WHERE LOWER(s.room) LIKE LOWER(CONCAT('%', :room, '%'))")
     List<SessionSchedule> findByRoomIgnoreCase(@Param("room") String keyword);

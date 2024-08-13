@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Entity(name = "session_speakers")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class SessionSpeakers {
+public class SessionSpeaker {
     @EmbeddedId
     private SessionSpeakersKey id;
 
@@ -25,7 +25,7 @@ public class SessionSpeakers {
     @MapsId("speakerId")
     @JoinColumn(name = "speaker_id")
     private Speaker speaker;
-    public SessionSpeakers(){
+    public SessionSpeaker(){
     }
 
 }

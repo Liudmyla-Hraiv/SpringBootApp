@@ -43,7 +43,7 @@ public class SessionService {
         return sessionRepository.findSessionsBySpeakerId(id);
     }
 
-    public Session createSession(Session session) {
+    public Session postSession(Session session) {
         if (session.getSpeakers()!=null && !session.getSpeakers().isEmpty()) {
             List<Speaker> attachedSpeaker = new ArrayList<>();
             for (Speaker speaker : session.getSpeakers()) {
@@ -55,7 +55,7 @@ public class SessionService {
         return sessionRepository.saveAndFlush(session);
     }
 
-    public Session updateSession(Long id, Session session) {
+    public Session putSession(Long id, Session session) {
         Optional<Session> optionalSession = sessionRepository.findById(id);
         if (optionalSession.isEmpty()) {
             throw new RuntimeException("Session with ID = " + id + " is not found");
@@ -71,7 +71,7 @@ public class SessionService {
         return sessionRepository.saveAndFlush(existingSession);
     }
 
-    public Session modifySession(Long id, Session session) {
+    public Session patchSession(Long id, Session session) {
         Optional<Session> optional = sessionRepository.findById(id);
         if (optional.isEmpty()) {
             throw new RuntimeException("Session with ID " + id + " not found");
@@ -95,7 +95,7 @@ public class SessionService {
             throw new RuntimeException("Session " + id + " does not exist");
         }
         Session session = optionalSession.get();
-        sessionScheduleRepository.deleteBySessionId_SessionId(id);
+        sessionScheduleRepository.deleteBySession_SessionId(id);
         List<Speaker> speakers = speakerRepository.findBySessionId(id);
         for (Speaker speaker : speakers) {
             speaker.getSessions().remove(session);

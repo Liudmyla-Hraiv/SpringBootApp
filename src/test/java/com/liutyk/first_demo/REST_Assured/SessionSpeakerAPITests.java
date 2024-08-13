@@ -11,7 +11,8 @@ import static org.hamcrest.Matchers.*;
 
 @SpringBootTest
 public class SessionSpeakerAPITests {
-
+    Integer SpeakID=25;
+    Integer SesID=25;
     @BeforeAll
     public static void setup(){
         RestAssured.baseURI = "http://localhost/api/v1/session_speakers";
@@ -31,7 +32,7 @@ public class SessionSpeakerAPITests {
     @Test
     @Order(2)
     public void testGetBySessionId() {
-        Integer SesID=25;
+
         given()
                 .queryParam("id", SesID)
                 .when()
@@ -43,7 +44,7 @@ public class SessionSpeakerAPITests {
     @Test
     @Order(3)
     public void testGetBySpeakerId() {
-        Integer SpeakID=25;
+
         given()
                 .queryParam("id", SpeakID)
                 .when()

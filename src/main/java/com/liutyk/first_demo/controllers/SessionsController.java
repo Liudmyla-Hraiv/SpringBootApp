@@ -71,9 +71,9 @@ public class SessionsController {
         }
     }
     @PostMapping("/")
-    public ResponseEntity<?> createSession(@RequestBody Session session ){
+    public ResponseEntity<?> postSession(@RequestBody Session session ){
         try {
-            Session ses = sessionService.createSession(session);
+            Session ses = sessionService.postSession(session);
             return ResponseEntity.status(HttpStatus.CREATED).body(ses);
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,9 +82,9 @@ public class SessionsController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateSession (@PathVariable Long id, @RequestBody Session session){
+    public ResponseEntity<?> patchSession (@PathVariable Long id, @RequestBody Session session){
         try {
-            Session ses = sessionService.updateSession(id, session);
+            Session ses = sessionService.putSession(id, session);
             return ResponseEntity.status(HttpStatus.OK).body(ses);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -96,9 +96,9 @@ public class SessionsController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> modifySession(@PathVariable Long id, @RequestBody Session session){
+    public ResponseEntity<?> putSession(@PathVariable Long id, @RequestBody Session session){
         try {
-            Session ses = sessionService.modifySession(id, session);
+            Session ses = sessionService.patchSession(id, session);
             return ResponseEntity.status(HttpStatus.OK).body(ses);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
