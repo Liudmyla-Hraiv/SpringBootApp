@@ -30,10 +30,9 @@ public class SessionServiceTests {
     @InjectMocks
     private SessionService sessionService;
 
-    private static Long testSessionID;
-    private static Long testSpeakerID;
-    private static final Long randomSessionID=15L;
-    private static final Long randomSpeakerId=5L;
+    private Long testSessionID=70L;
+    private Long randomSessionID=15L;
+    private Long randomSpeakerId=5L;
 
 
 
@@ -100,29 +99,25 @@ public class SessionServiceTests {
 
         assertNotNull(result, "The result should not be null");
         assertFalse(result.isEmpty(), "There are no sessions with this speaker id");
-        for (Session resSession : result) {
-            assertTrue(resSession.getSpeakers().stream()
-                            .anyMatch(s -> s.getSpeakerId().equals(randomSpeakerId)),
-                    "The session should contain the correct speakerId");
-        }
+        assertEquals(randomSpeakerId, result.get(0).getSpeakers().get(0).getSpeakerId());
     }
     @Test
     public void testPostSession(){
+        Speaker speaker= new Speaker();
+        speaker.setSpeakerId(randomSpeakerId);
+        List<Speaker> speakers =new ArrayList<>();
+        speakers.add(speaker);
+
         Session savedSession=new Session();
         savedSession.setSessionName("Test Session Name 111");
         savedSession.setSessionDescription("New Session Description 111");
         savedSession.setSessionLength(50);
-        Speaker tSpeaker= new Speaker();
-        tSpeaker.setSpeakerId(randomSpeakerId);
-        List<Speaker> speakers =new ArrayList<>();
-        speakers.add(tSpeaker);
-        savedSession.setSpeakers(speakers);
+        savedSession.setSpeakers(Collections.singletonList(speaker));
 
-        when(speakerRepository.findById(randomSpeakerId)).thenReturn(Optional.of(tSpeaker));
-        when(sessionRepository.saveAndFlush(any(Session.class))).thenReturn(savedSession);
+        when(speakerRepository.findById(randomSpeakerId)).thenReturn(Optional.of(speaker));
+        when(sessionRepository.saveAndFlush(savedSession)).thenReturn(savedSession);
 
         Session resultSession=sessionService.postSession(savedSession);
-        testSessionID =resultSession.getSessionId();
         assertEquals("Test Session Name 111", resultSession.getSessionName());
         assertEquals("New Session Description 111", resultSession.getSessionDescription());
         assertEquals(50, resultSession.getSessionLength());
@@ -132,36 +127,85 @@ public class SessionServiceTests {
     }
     @Test
     public void testPutSession() {
+        Speaker speaker= new Speaker();
+        speaker.setSpeakerId(randomSpeakerId);
+        List<Speaker> speakers =new ArrayList<>();
+        speakers.add(speaker);
         Session existingSession = new Session();
         existingSession.setSessionId(randomSessionID);
+        existingSession.setSessionName("SessionName");
+        existingSession.setSessionDescription("Description");
+        existingSession.setSessionLength(60);
+        existingSession.setSpeakers(Collections.singletonList(speaker));
         when(sessionRepository.findById(randomSessionID)).thenReturn(Optional.of(existingSession));
         when(sessionRepository.saveAndFlush(existingSession)).thenReturn(existingSession);
 
         Session updatedSession = new Session();
-        updatedSession.setSessionName("Updated Session Name");
-        updatedSession.setSessionDescription("Updated Session Description");
+        updatedSession.setSessionName("PUT Session Name");
+        updatedSession.setSessionDescription("PUT Session Description");
         updatedSession.setSessionLength(41);
 
-
         Session result = sessionService.putSession(randomSessionID, updatedSession);
-        assertEquals("Updated Session Name", result.getSessionName());
-        assertEquals("Updated Session Description", result.getSessionDescription());
+        assertEquals("PUT Session Name", result.getSessionName());
+        assertEquals("PUT Session Description", result.getSessionDescription());
         assertEquals(41, result.getSessionLength());
         verify(sessionRepository).saveAndFlush(existingSession);
     }
 
     @Test
+    public void testPatchSession() {
+        List<Speaker> speakers = new ArrayList<>();
+        Speaker speaker = new Speaker();
+        speaker.setSpeakerId(randomSpeakerId);
+        speakers.add(speaker);
+
+        Session existingSession = new Session();
+        existingSession.setSessionId(randomSessionID);
+        existingSession.setSessionName("Original Name");
+        existingSession.setSessionDescription("Original Description");
+        existingSession.setSessionLength(45);
+        existingSession.setSpeakers(Collections.singletonList(speaker));
+
+        when(sessionRepository.findById(randomSessionID)).thenReturn(Optional.of(existingSession));
+        when(sessionRepository.saveAndFlush(existingSession)).thenReturn(existingSession);
+
+        Session updatedSession = new Session();
+        updatedSession.setSessionName("PATCH Session");
+//        updatedSession.setSessionDescription("PATCH Description");
+
+        Session result = sessionService.patchSession(randomSessionID, updatedSession);
+        assertEquals("PATCH Session", result.getSessionName());
+        assertEquals("Original Description", result.getSessionDescription());
+        assertEquals(45, result.getSessionLength());
+        assertEquals(randomSpeakerId, result.getSpeakers().get(0).getSpeakerId());
+
+        verify(sessionRepository).saveAndFlush(existingSession);
+    }
+    @Test
     public void testDeleteById() {
+        Speaker speaker = new Speaker();
+        speaker.setSpeakerId(randomSpeakerId);
+        speaker.setSessions(new ArrayList<>());
+        List<Speaker> speakers = new ArrayList<>();
+        speakers.add(speaker);
         Session session = new Session();
         session.setSessionId(testSessionID);
+        session.setSpeakers(Collections.singletonList(speaker));
+        speaker.getSessions().add(session);
+
         when(sessionRepository.findById(testSessionID)).thenReturn(Optional.of(session));
+        //delete session schedule
         doNothing().when(sessionScheduleRepository).deleteBySession_SessionId(testSessionID);
-        List<Speaker> speakers = new ArrayList<>();
+        //cut and save speaker
         when(speakerRepository.findBySessionId(testSessionID)).thenReturn(speakers);
+        when(speakerRepository.save(speaker)).thenReturn(speaker);
+        //delete session
         doNothing().when(sessionRepository).deleteById(testSessionID);
-
         sessionService.deleteById(testSessionID);
-
+        //Check all out actions
+        assertTrue(speaker.getSessions().isEmpty(), "The session list in speaker should be empty after deletion");
+        verify(sessionScheduleRepository).deleteBySession_SessionId(testSessionID);
+        verify(speakerRepository).save(speaker);
         verify(sessionRepository).deleteById(testSessionID);
     }
 }

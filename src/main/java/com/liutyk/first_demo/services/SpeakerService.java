@@ -36,11 +36,11 @@ public class SpeakerService {
         return speakerRepository.findBySessionId(sessionId);
     }
 
-    public Speaker createSpeaker(Speaker speaker) {
+    public Speaker postSpeaker(Speaker speaker) {
         return speakerRepository.saveAndFlush(speaker);
     }
 
-    public Speaker updateSpeaker(Long id, Speaker speaker) {
+    public Speaker patchSpeaker(Long id, Speaker speaker) {
         Optional<Speaker> optional = speakerRepository.findById(id);
         if (optional.isEmpty()) {
             throw new RuntimeException("Speaker with ID " + id + " not found");
@@ -64,7 +64,7 @@ public class SpeakerService {
         return speakerRepository.saveAndFlush(existingSpeaker);
     }
 
-    public Speaker modifySpeaker(Long id, Speaker speaker) {
+    public Speaker putSpeaker(Long id, Speaker speaker) {
         Optional<Speaker> optionalSpeaker = speakerRepository.findById(id);
         if (optionalSpeaker.isEmpty()) {
             throw new RuntimeException("Speaker with ID = " + id + " is not found");

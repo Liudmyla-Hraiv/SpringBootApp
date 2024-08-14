@@ -74,9 +74,9 @@ public class SpeakersController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createSpeaker(@RequestBody Speaker speaker) {
+    public ResponseEntity<?> postSpeaker(@RequestBody Speaker speaker) {
         try {
-            Speaker savedSpeaker = speakerService.createSpeaker(speaker);
+            Speaker savedSpeaker = speakerService.postSpeaker(speaker);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedSpeaker);
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,9 +86,9 @@ public class SpeakersController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updatesSpeaker(@PathVariable Long id, @RequestBody Speaker speaker){
+    public ResponseEntity<?> patchSpeaker(@PathVariable Long id, @RequestBody Speaker speaker){
         try {
-            Speaker updatedSpeaker = speakerService.updateSpeaker(id, speaker);
+            Speaker updatedSpeaker = speakerService.patchSpeaker(id, speaker);
             return ResponseEntity.ok(updatedSpeaker);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -99,9 +99,9 @@ public class SpeakersController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> modifySpeaker(@PathVariable Long id, @RequestBody Speaker speaker){
+    public ResponseEntity<?> putSpeaker(@PathVariable Long id, @RequestBody Speaker speaker){
         try {
-            Speaker modifiedSpeaker = speakerService.modifySpeaker(id, speaker);
+            Speaker modifiedSpeaker = speakerService.putSpeaker(id, speaker);
             return ResponseEntity.ok(modifiedSpeaker);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
