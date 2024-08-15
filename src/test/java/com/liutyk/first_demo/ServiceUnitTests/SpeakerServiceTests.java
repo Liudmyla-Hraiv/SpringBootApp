@@ -1,4 +1,4 @@
-package com.liutyk.first_demo.UnitServiceTests;
+package com.liutyk.first_demo.ServiceUnitTests;
 
 import com.liutyk.first_demo.models.Session;
 import com.liutyk.first_demo.models.Speaker;

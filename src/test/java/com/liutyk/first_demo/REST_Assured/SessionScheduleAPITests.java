@@ -20,8 +20,9 @@ public class SessionScheduleAPITests {
 
     @BeforeAll
     public static void setup(){
-        RestAssured.baseURI = "http://localhost/api/v1/session_schedule";
+        RestAssured.baseURI = "http://localhost";
         RestAssured.port= 5000;
+        RestAssured.basePath="/api/v1/session_schedule";
     }
 
     @Test

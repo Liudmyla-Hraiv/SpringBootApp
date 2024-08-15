@@ -15,24 +15,24 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 
 @SpringBootTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class) //organizes the order of tests
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) //organizes storage of test variables
 public class SessionsAPITests {
 
-    private   Integer testSessionId1;
-    private  Integer testSessionId2;
+    Integer testSessionId1= 75;
+    Integer testSessionId2=67;
     Integer randomSpeakerId=3;
     Integer randomSessionId=13;
 
 
     @BeforeAll
     public static void setup(){
-        RestAssured.baseURI = "http://localhost/api/v1/sessions";
+        RestAssured.baseURI = "http://localhost";
         RestAssured.port= 5000;
+        RestAssured.basePath="/api/v1/sessions";
     }
+
     @Test
-    @Order(1)
-    public void testGetSessionsList(){
+    public void testGetAllSessions(){
         given()
                 .when()
                 .get("")
@@ -42,7 +42,6 @@ public class SessionsAPITests {
 
     }
     @Test
-    @Order(2)
     public void testPostSession() {
         String reqBody = "{\n" +
                 "\"sessionName\": \"Dicaprio's session\",\n" +
@@ -70,7 +69,6 @@ public class SessionsAPITests {
         System.out.println("POST session 1 = " + testSessionId1);
     }
     @Test
-    @Order(3)
     public void testPostSession2() {
         String reqBody = "{\n" +
                 "\"sessionName\": \"Dicaprio's session\",\n" +
@@ -98,7 +96,6 @@ public class SessionsAPITests {
         System.out.println("post session 2 = " + testSessionId2);
     }
     @Test
-    @Order(4)
     public void testGetSessionByID(){
         given()
                 .pathParam("id", randomSessionId)
@@ -110,7 +107,6 @@ public class SessionsAPITests {
                 .body("sessionId", equalTo(randomSessionId));
     }
     @Test
-    @Order(5)
     public void testGetSessionByName() {
         List<String> nameParts = Arrays.asList("des", "DES", "spr", "SPR", "get", "gET");
         Random random = new Random();
@@ -125,7 +121,6 @@ public class SessionsAPITests {
                     .body("sessionName", everyItem(containsStringIgnoringCase(randomNamePart)));
     }
     @Test
-    @Order(6)
     public void testPutSession(){
         String reqBody="{\n" +
                 "\"sessionName\": \"Dicaprio's session\", \n" +
@@ -146,7 +141,6 @@ public class SessionsAPITests {
                     .body("speakers", hasItem(hasEntry("speakerId", randomSpeakerId)));
     }
     @Test
-    @Order(7)
     public void testPatchSession(){
         String reqBody="{\n" +
                 "\"sessionName\": \"Dicaprio's session\"\n" +
@@ -167,7 +161,6 @@ public class SessionsAPITests {
                     .body("speakers", hasItem(hasEntry("speakerId", randomSpeakerId)));
     }
     @Test
-    @Order(8)
     public void testDeleteSessions(){
         System.out.println("post session 2 deleteTest = " + testSessionId2);
         given()
@@ -179,7 +172,6 @@ public class SessionsAPITests {
                     .body(equalTo("Sessions "+ testSessionId2 + " and associated schedules deleted successfully"));
     }
     @Test
-    @Order(9)
     public void testGetSessionsBySpeakerID(){
         given()
                 .queryParam("id", randomSpeakerId)

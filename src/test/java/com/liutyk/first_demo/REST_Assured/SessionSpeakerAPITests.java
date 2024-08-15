@@ -15,8 +15,9 @@ public class SessionSpeakerAPITests {
     Integer SesID=25;
     @BeforeAll
     public static void setup(){
-        RestAssured.baseURI = "http://localhost/api/v1/session_speakers";
+        RestAssured.baseURI = "http://localhost";
         RestAssured.port= 5000;
+        RestAssured.basePath="/api/v1/session_speakers";
     }
 
     @Test

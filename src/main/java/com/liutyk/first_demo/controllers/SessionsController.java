@@ -24,7 +24,7 @@ public class SessionsController {
 
 
     @GetMapping
-    public ResponseEntity<?> list(){
+    public ResponseEntity<?> getAllSessions(){
         List<Session> allSessions = sessionService.getAllSessions();
         if(allSessions.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There ara NO any information about session");
@@ -38,7 +38,7 @@ public class SessionsController {
         if (getSession.isPresent()) {
             return ResponseEntity.ok(getSession);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Session Not found");
         }
     }
 

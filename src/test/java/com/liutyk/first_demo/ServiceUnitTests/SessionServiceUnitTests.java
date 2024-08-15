@@ -1,4 +1,4 @@
-package com.liutyk.first_demo.UnitServiceTests;
+package com.liutyk.first_demo.ServiceUnitTests;
 
 
 import com.liutyk.first_demo.models.Session;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class SessionServiceTests {
+public class SessionServiceUnitTests {
     @Mock
     private SessionRepository sessionRepository;
     @Mock
@@ -34,7 +34,7 @@ public class SessionServiceTests {
      Long randomSpeakerId=5L;
 
 
-
+//GET ALL SESSIONS
     @Test
     public void testGetAllSessions(){
         List<Session> sessions= new ArrayList<>();
@@ -46,6 +46,7 @@ public class SessionServiceTests {
         assertFalse(result.isEmpty(), "The result list should not be empty");
         assertTrue(result.size()>=2, "The result list should contain at least 2 sessions");
     }
+
     @Test
     public void testGetSessionById() {
 

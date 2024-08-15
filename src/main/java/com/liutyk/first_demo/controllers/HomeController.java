@@ -1,6 +1,8 @@
 package com.liutyk.first_demo.controllers;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,9 +15,9 @@ public class HomeController {
     private String version;
 
     @GetMapping("/api/v1/")
-    public Map<String, String> getStatus(){
+    public ResponseEntity<?> getVersion(){
         Map<String, String> map= new HashMap<>();
         map.put("version", version);
-        return map;
+        return ResponseEntity.ok().body(map);
     }
 }
