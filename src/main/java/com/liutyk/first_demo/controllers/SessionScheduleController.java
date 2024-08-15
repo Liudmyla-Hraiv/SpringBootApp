@@ -43,7 +43,7 @@ public class SessionScheduleController {
     @GetMapping("/search/BySession")
     public ResponseEntity<?> findScheduleBySessionId(@RequestParam("id") Long id){
       try {
-        List<SessionSchedule> schedules = sessionScheduleServer.findScheduleBySessionId(id);
+        List<SessionSchedule> schedules = sessionScheduleServer.getScheduleBySessionId(id);
         if (schedules.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Session Schedule  have not found by Session ID = " + id);
         }
@@ -56,7 +56,7 @@ public class SessionScheduleController {
     @GetMapping("/search/ByRoom")
     public ResponseEntity<?> findByRoomIgnoreCase(@RequestParam("room") String room){
         try {
-            List<SessionSchedule> schedules = sessionScheduleServer.findByRoomIgnoreCase(room);
+            List<SessionSchedule> schedules = sessionScheduleServer.getByRoomIgnoreCase(room);
             if (schedules.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Session Schedule  have not found by Room : " + room );
             }

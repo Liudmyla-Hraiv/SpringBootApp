@@ -18,8 +18,8 @@ public interface SessionScheduleRepository extends JpaRepository<SessionSchedule
     void deleteBySession_SessionId(Long sessionId);
 
     @Query("SELECT s FROM session_schedule s WHERE LOWER(s.room) LIKE LOWER(CONCAT('%', :room, '%'))")
-    List<SessionSchedule> findByRoomIgnoreCase(@Param("room") String keyword);
+    List<SessionSchedule> getByRoomIgnoreCase(@Param("room") String keyword);
 
     @Query(value = "SELECT * FROM session_schedule sch WHERE sch.session_id = :sessionId", nativeQuery = true)
-    List<SessionSchedule> findScheduleBySessionId(@Param("sessionId") Long id);
+    List<SessionSchedule> getScheduleBySessionId(@Param("sessionId") Long id);
 }

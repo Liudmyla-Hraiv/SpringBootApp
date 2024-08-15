@@ -28,18 +28,31 @@ public class SpeakerService {
         return speakerRepository.findById(id);
     }
 
-    public List<Speaker> findByKeywordIgnoreCase(String keyword) {
-        return speakerRepository.findByKeywordIgnoreCase(keyword);
+    public List<Speaker> getByKeywordIgnoreCase(String keyword) {
+        return speakerRepository.getByKeywordIgnoreCase(keyword);
     }
 
-    public List<Speaker> findBySessionId(Long sessionId) {
-        return speakerRepository.findBySessionId(sessionId);
+    public List<Speaker> getBySessionId(Long sessionId) {
+        return speakerRepository.getBySessionId(sessionId);
     }
 
     public Speaker postSpeaker(Speaker speaker) {
         return speakerRepository.saveAndFlush(speaker);
     }
 
+    public Speaker putSpeaker(Long id, Speaker speaker) {
+        Optional<Speaker> optionalSpeaker = speakerRepository.findById(id);
+        if (optionalSpeaker.isEmpty()) {
+            throw new RuntimeException("Speaker with ID = " + id + " is not found");
+        }
+        Speaker existingSpeaker = optionalSpeaker.get();
+        existingSpeaker.setFirstName(speaker.getFirstName());
+        existingSpeaker.setLastName(speaker.getLastName());
+        existingSpeaker.setTitle(speaker.getTitle());
+        existingSpeaker.setCompany(speaker.getCompany());
+        existingSpeaker.setSpeakerBio(speaker.getSpeakerBio());
+        return speakerRepository.saveAndFlush(existingSpeaker);
+    }
     public Speaker patchSpeaker(Long id, Speaker speaker) {
         Optional<Speaker> optional = speakerRepository.findById(id);
         if (optional.isEmpty()) {
@@ -64,19 +77,7 @@ public class SpeakerService {
         return speakerRepository.saveAndFlush(existingSpeaker);
     }
 
-    public Speaker putSpeaker(Long id, Speaker speaker) {
-        Optional<Speaker> optionalSpeaker = speakerRepository.findById(id);
-        if (optionalSpeaker.isEmpty()) {
-            throw new RuntimeException("Speaker with ID = " + id + " is not found");
-        }
-        Speaker existingSpeaker = optionalSpeaker.get();
-        existingSpeaker.setFirstName(speaker.getFirstName());
-        existingSpeaker.setLastName(speaker.getLastName());
-        existingSpeaker.setTitle(speaker.getTitle());
-        existingSpeaker.setCompany(speaker.getCompany());
-        existingSpeaker.setSpeakerBio(speaker.getSpeakerBio());
-        return speakerRepository.saveAndFlush(existingSpeaker);
-    }
+
 
     public void deleteSpeaker(Long id) {
         if (!speakerRepository.existsById(id)) {

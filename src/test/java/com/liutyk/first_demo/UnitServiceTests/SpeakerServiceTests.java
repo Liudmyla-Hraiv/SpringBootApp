@@ -1,6 +1,8 @@
 package com.liutyk.first_demo.UnitServiceTests;
 
+import com.liutyk.first_demo.models.Session;
 import com.liutyk.first_demo.models.Speaker;
+import com.liutyk.first_demo.repositories.SessionRepository;
 import com.liutyk.first_demo.repositories.SessionSpeakersRepository;
 import com.liutyk.first_demo.repositories.SpeakerRepository;
 import com.liutyk.first_demo.services.SpeakerService;
@@ -11,9 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,12 +25,14 @@ public class SpeakerServiceTests {
     private SpeakerRepository speakerRepository;
     @Mock
     private SessionSpeakersRepository sessionSpeakersRepository;
+    @Mock
+    private SessionRepository sessionRepository;
     @InjectMocks
     private SpeakerService speakerService;
 
-    private Long testSpeakerID=40L;
-    private Long randomSpeaker= 17L;
-    private Long randomSession= 39L;
+     Long testSpeakerID=40L;
+     Long randomSpeakerId = 17L;
+     Long randomSessionId = 39L;
 
     @Test
     public void testGetAllSpeakers(){
@@ -42,6 +44,56 @@ public class SpeakerServiceTests {
         assertNotNull(result, "The result should not be null");
         assertFalse(result.isEmpty(), "The result list should not be empty");
         assertTrue(result.size()>=2, "The result list should contain at least two speakers");
+    }
+    @Test
+    public void testGetSpeakerById(){
+        Speaker speaker = new Speaker();
+        speaker.setSpeakerId(randomSpeakerId);
+        speaker.setFirstName("fName");
+        speaker.setLastName("lName");
+
+        when(speakerRepository.findById(randomSpeakerId)).thenReturn(Optional.of(speaker));
+        Optional<Speaker> result = speakerService.getSpeakerById(randomSpeakerId);
+        assertTrue(result.isPresent(), "The result should be present" );
+        assertEquals(randomSpeakerId, result.get().getSpeakerId());
+        assertEquals("fName", result.get().getFirstName());
+        assertEquals("lName", result.get().getLastName());
+    }
+    @Test
+    public void testGetByKeywordIgnoreCase(){
+        List<Speaker> speakers = new ArrayList<>();
+        Speaker sp1 = new Speaker();
+        sp1.setFirstName("Java Name");
+        speakers.add(sp1);
+        Speaker sp2= new Speaker();
+        sp2.setLastName(" Class jAVA");
+        speakers.add(sp2);
+        Speaker sp3= new Speaker();
+        sp3.setCompany("JAVA Inc.");
+        speakers.add(sp3);
+
+        when(speakerRepository.getByKeywordIgnoreCase("java")).thenReturn(speakers);
+        List<Speaker> result= speakerService.getByKeywordIgnoreCase("java");
+        assertFalse(result.isEmpty(), "The result should not be empty");
+        assertTrue(result.size()>=3, "The result List should be at least three");
+        assertTrue(result.get(0).getFirstName().contains("Java"), "The speaker FN should contain 'Java'");
+        assertTrue(result.get(1).getLastName().contains("jAVA"), "The speaker LN should contain 'Java'");
+        assertTrue(result.get(2).getCompany().contains("JAVA"), "The speaker company should contain 'Java'");
+    }
+    @Test
+    public void testGetBySessionId(){
+       List<Speaker> speakers =new ArrayList<>();
+       Speaker speaker= new Speaker();
+       speaker.setSpeakerId(randomSpeakerId);
+       speakers.add(speaker);
+       Session session = new Session();
+       session.setSessionId(randomSessionId);
+       session.setSpeakers(Collections.singletonList(speaker));
+
+       when(speakerRepository.getBySessionId(randomSessionId)).thenReturn(speakers);
+       List<Speaker> result= speakerService.getBySessionId(randomSessionId);
+       assertFalse(result.isEmpty(), "The result should not be empty");
+       assertEquals(result.get(0).getSpeakerId(), randomSpeakerId);
     }
     @Test
     public void testPostSpeaker(){
@@ -66,13 +118,13 @@ public class SpeakerServiceTests {
     @Test
     public void testPutSpeaker() {
         Speaker existingSpeaker = new Speaker();
-        existingSpeaker.setSpeakerId(randomSpeaker);
+        existingSpeaker.setSpeakerId(randomSpeakerId);
         existingSpeaker.setFirstName("FirstName");
         existingSpeaker.setLastName("LastName");
         existingSpeaker.setTitle("Tittle");
         existingSpeaker.setCompany("Company");
         existingSpeaker.setSpeakerBio("Bio");
-        when(speakerRepository.findById(randomSpeaker)).thenReturn(Optional.of(existingSpeaker));
+        when(speakerRepository.findById(randomSpeakerId)).thenReturn(Optional.of(existingSpeaker));
         when(speakerRepository.saveAndFlush(existingSpeaker)).thenReturn(existingSpeaker);
 
         Speaker updatedSpeaker = new Speaker();
@@ -83,8 +135,8 @@ public class SpeakerServiceTests {
         updatedSpeaker.setSpeakerBio("updatedBio");
 
 
-        Speaker result = speakerService.putSpeaker(randomSpeaker, updatedSpeaker);
-        assertEquals(randomSpeaker, result.getSpeakerId());
+        Speaker result = speakerService.putSpeaker(randomSpeakerId, updatedSpeaker);
+        assertEquals(randomSpeakerId, result.getSpeakerId());
         assertEquals("updatedFirstName", result.getFirstName());
         assertEquals("updatedLastName", result.getLastName());
         assertEquals("updatedTittle", result.getTitle());
@@ -95,13 +147,13 @@ public class SpeakerServiceTests {
     @Test
     public void testPatchSpeaker() {
         Speaker existingSpeaker = new Speaker();
-        existingSpeaker.setSpeakerId(randomSpeaker);
+        existingSpeaker.setSpeakerId(randomSpeakerId);
         existingSpeaker.setFirstName("FirstName");
         existingSpeaker.setLastName("LastName");
         existingSpeaker.setTitle("Tittle");
         existingSpeaker.setCompany("Company");
         existingSpeaker.setSpeakerBio("Bio");
-        when(speakerRepository.findById(randomSpeaker)).thenReturn(Optional.of(existingSpeaker));
+        when(speakerRepository.findById(randomSpeakerId)).thenReturn(Optional.of(existingSpeaker));
         when(speakerRepository.saveAndFlush(existingSpeaker)).thenReturn(existingSpeaker);
 
         Speaker updatedSpeaker = new Speaker();
@@ -112,8 +164,8 @@ public class SpeakerServiceTests {
 //        updatedSpeaker.setSpeakerBio("updatedBio");
 
 
-        Speaker result = speakerService.patchSpeaker(randomSpeaker, updatedSpeaker);
-        assertEquals(randomSpeaker, result.getSpeakerId());
+        Speaker result = speakerService.patchSpeaker(randomSpeakerId, updatedSpeaker);
+        assertEquals(randomSpeakerId, result.getSpeakerId());
         assertEquals("updatedFirstName", result.getFirstName());
         assertEquals("updatedLastName", result.getLastName());
         assertEquals("Tittle", result.getTitle());

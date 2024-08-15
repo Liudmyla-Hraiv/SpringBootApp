@@ -14,10 +14,10 @@ import java.util.List;
 @Repository
 public interface SessionSpeakersRepository extends JpaRepository<SessionSpeaker, SessionSpeakersKey> {
     @Query(value = "SELECT * FROM session_speakers ssp WHERE ssp.session_id = :sessionId", nativeQuery = true)
-    List<SessionSpeaker> findBySessionId(@Param("sessionId") Long id);
+    List<SessionSpeaker> getBySessionId(@Param("sessionId") Long id);
 
     @Query(value = "SELECT * FROM session_speakers ssp WHERE ssp.speaker_id = :speakerId", nativeQuery = true)
-    List<SessionSpeaker> findBySpeakerId(@Param("speakerId") Long id);
+    List<SessionSpeaker> getBySpeakerId(@Param("speakerId") Long id);
 
     @Modifying
     @Transactional

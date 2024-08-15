@@ -46,9 +46,9 @@ public class SpeakersController {
     }
 //GET by part of First/Last or company name with ignore CASE
     @GetMapping("/search/byName")
-    public ResponseEntity<?> findByKeywordIgnoreCase(@RequestParam String name) {
+    public ResponseEntity<?> getByKeywordIgnoreCase(@RequestParam String name) {
         try {
-            List<Speaker> speakers = speakerService.findByKeywordIgnoreCase(name);
+            List<Speaker> speakers = speakerService.getByKeywordIgnoreCase(name);
             if (speakers.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Speakers  have not found with keyword: " + name);
             }
@@ -60,9 +60,9 @@ public class SpeakersController {
     }
 //GET speaker by sessionId
     @GetMapping("/search/bySession")
-    public ResponseEntity<?> findSpeakerBySessionId(@RequestParam Long id) {
+    public ResponseEntity<?> getSpeakerBySessionId(@RequestParam Long id) {
         try {
-            List<Speaker> speakers = speakerService.findBySessionId(id);
+            List<Speaker> speakers = speakerService.getBySessionId(id);
             if (speakers.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Speakers  have not found by Session ID: " + id);
             }

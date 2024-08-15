@@ -17,11 +17,12 @@ public class SessionSpeakersServer {
     public List<SessionSpeaker> getAllSessionSpeakers(){
         return sessionSpeakersRepository.findAll();
     }
-    public List<SessionSpeaker> findBySessionId(Long sessionId){
-        return sessionSpeakersRepository.findBySessionId(sessionId);
+
+    public List<SessionSpeaker> getBySessionId(Long sessionId){
+        return sessionSpeakersRepository.getBySessionId(sessionId);
     }
-    public List<SessionSpeaker> findBySpeakerId(Long speakerId){
-        return sessionSpeakersRepository.findBySpeakerId(speakerId);
+    public List<SessionSpeaker> getBySpeakerId(Long speakerId){
+        return sessionSpeakersRepository.getBySpeakerId(speakerId);
     }
 
 

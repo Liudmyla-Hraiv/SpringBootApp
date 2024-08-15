@@ -42,7 +42,7 @@ public class SessionSpeakersController {
     @GetMapping("/search/BySession")
     public ResponseEntity<?> findBySessionId(@RequestParam("id") Long id){
         try {
-            List<SessionSpeaker> sort = sessionSpeakersServer.findBySessionId(id);
+            List<SessionSpeaker> sort = sessionSpeakersServer.getBySessionId(id);
             if (sort.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("SessionSpeakers  have not found by Session ID = " + id);
             }
@@ -55,7 +55,7 @@ public class SessionSpeakersController {
     @GetMapping("/search/BySpeaker")
     public ResponseEntity<?> findBySpeakerId(@RequestParam("id") Long id){
         try {
-            List<SessionSpeaker> sort = sessionSpeakersServer.findBySpeakerId(id);
+            List<SessionSpeaker> sort = sessionSpeakersServer.getBySpeakerId(id);
             if (sort.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("SessionSpeakers  have not found by Speaker ID = " + id);
             }

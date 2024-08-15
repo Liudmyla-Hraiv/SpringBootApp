@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.annotation.meta.When;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,9 +29,9 @@ public class SessionServiceTests {
     @InjectMocks
     private SessionService sessionService;
 
-    private Long testSessionID=70L;
-    private Long randomSessionID=15L;
-    private Long randomSpeakerId=5L;
+     Long testSessionID=70L;
+     Long randomSessionID=15L;
+     Long randomSpeakerId=5L;
 
 
 
@@ -45,7 +44,7 @@ public class SessionServiceTests {
         List<Session> result= sessionService.getAllSessions();
         assertNotNull(result, "The result should not be null");
         assertFalse(result.isEmpty(), "The result list should not be empty");
-        assertTrue(result.size()>=2, "The result list should contain at least two sessions");
+        assertTrue(result.size()>=2, "The result list should contain at least 2 sessions");
     }
     @Test
     public void testGetSessionById() {
@@ -64,16 +63,16 @@ public class SessionServiceTests {
     public void testGetSessionByPartialName() {
         List<Session> sessions= new ArrayList<>();
         Session session1 = new Session();
-        session1.setSessionName("Spring Boot Basics");
+        session1.setSessionName("Spring BOOT Basics");
         sessions.add(session1);
         Session session2 = new Session();
         session2.setSessionName("Advanced Bootcamp");
         sessions.add(session2);
-        when(sessionRepository.findBySessionNameContainingIgnoreCase("Boot")).thenReturn(sessions);
-        List<Session> result = sessionService.getSessionByPartialName("Boot");
+        when(sessionRepository.getBySessionNameContainingIgnoreCase("boot")).thenReturn(sessions);
+        List<Session> result = sessionService.getSessionByPartialName("boot");
         assertFalse(result.isEmpty(), "There are no sessions with this name");
         assertEquals(2, result.size(), "There should be exactly two sessions returned");
-        assertTrue(result.get(0).getSessionName().contains("Boot"), "The session name should contain 'Boot'");
+        assertTrue(result.get(0).getSessionName().contains("BOOT"), "The session name should contain 'Boot'");
         assertTrue(result.get(1).getSessionName().contains("Boot"), "The session name should contain 'Boot'");
     }
     @Test
@@ -94,7 +93,7 @@ public class SessionServiceTests {
         session.setSpeakers(Collections.singletonList(speaker));
         sessions.add(session);
 
-        when(sessionRepository.findSessionsBySpeakerId(randomSpeakerId)).thenReturn(sessions);
+        when(sessionRepository.getSessionsBySpeakerId(randomSpeakerId)).thenReturn(sessions);
         List<Session> result= sessionService.getSessionsBySpeakerId(randomSpeakerId);
 
         assertNotNull(result, "The result should not be null");
@@ -197,7 +196,7 @@ public class SessionServiceTests {
         //delete session schedule
         doNothing().when(sessionScheduleRepository).deleteBySession_SessionId(testSessionID);
         //cut and save speaker
-        when(speakerRepository.findBySessionId(testSessionID)).thenReturn(speakers);
+        when(speakerRepository.getBySessionId(testSessionID)).thenReturn(speakers);
         when(speakerRepository.save(speaker)).thenReturn(speaker);
         //delete session
         doNothing().when(sessionRepository).deleteById(testSessionID);

@@ -20,12 +20,12 @@ public class SessionScheduleServer {
         return sessionScheduleRepository.findAll();
     }
 
-    public List<SessionSchedule> findScheduleBySessionId(Long sessionId) {
-        return sessionScheduleRepository.findScheduleBySessionId(sessionId);
+    public List<SessionSchedule> getScheduleBySessionId(Long sessionId) {
+        return sessionScheduleRepository.getScheduleBySessionId(sessionId);
     }
 
-    public List<SessionSchedule> findByRoomIgnoreCase(String room) {
-        return sessionScheduleRepository.findByRoomIgnoreCase(room);
+    public List<SessionSchedule> getByRoomIgnoreCase(String room) {
+        return sessionScheduleRepository.getByRoomIgnoreCase(room);
     }
 
 }

@@ -36,11 +36,11 @@ public class SessionService {
     }
 
     public List<Session> getSessionByPartialName(String name) {
-        return sessionRepository.findBySessionNameContainingIgnoreCase(name);
+        return sessionRepository.getBySessionNameContainingIgnoreCase(name);
     }
 
     public List<Session> getSessionsBySpeakerId(Long id) {
-        return sessionRepository.findSessionsBySpeakerId(id);
+        return sessionRepository.getSessionsBySpeakerId(id);
     }
 
     public Session postSession(Session session) {
@@ -65,7 +65,7 @@ public class SessionService {
         existingSession.setSessionDescription(session.getSessionDescription());
         existingSession.setSessionLength(session.getSessionLength());
         if (session.getSpeakers() != null && !session.getSpeakers().isEmpty()) {
-            List<Speaker> speakers = speakerRepository.findBySessionId(id);
+            List<Speaker> speakers = speakerRepository.getBySessionId(id);
             existingSession.setSpeakers(speakers);
         }
         return sessionRepository.saveAndFlush(existingSession);
@@ -96,7 +96,7 @@ public class SessionService {
         }
         Session session = optionalSession.get();
         sessionScheduleRepository.deleteBySession_SessionId(id);
-        List<Speaker> speakers = speakerRepository.findBySessionId(id);
+        List<Speaker> speakers = speakerRepository.getBySessionId(id);
         for (Speaker speaker : speakers) {
             speaker.getSessions().remove(session);
             speakerRepository.save(speaker);
