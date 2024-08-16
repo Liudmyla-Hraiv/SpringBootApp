@@ -1,6 +1,7 @@
 package com.liutyk.first_demo.controllers;
 
 import com.liutyk.first_demo.models.Session;
+import com.liutyk.first_demo.services.SessionNotFoundException;
 import com.liutyk.first_demo.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,10 +47,10 @@ public class SessionsController {
     public ResponseEntity<?> getSessionByPartialName(@RequestParam String name) {
         try {
             List<Session> sessions = sessionService.getSessionByPartialName(name);
-            if (!sessions.isEmpty()) {
-                return ResponseEntity.ok(sessions);
-            } else {
+            if (sessions.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Session with name " + name + " not found" );
+            } else {
+                return ResponseEntity.ok(sessions);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,36 +68,40 @@ public class SessionsController {
             return ResponseEntity.ok(sessions);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("ERROR: GET by SpeakerId" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("ERROR: GET by SpeakerId: " + e.getMessage());
         }
     }
     @PostMapping("/")
     public ResponseEntity<?> postSession(@RequestBody Session session ){
         try {
-            Session ses = sessionService.postSession(session);
-            return ResponseEntity.status(HttpStatus.CREATED).body(ses);
+            if (session.getSpeakers()!=null && !session.getSpeakers().isEmpty()) {
+                Session ses = sessionService.postSession(session);
+                return ResponseEntity.status(HttpStatus.CREATED).body(ses);
+            }else
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Session must have at least one speaker");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("ERROR: POST Session Request " + e.getMessage());
+                    .body("ERROR: POST Session Request: " + e.getMessage());
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> patchSession (@PathVariable Long id, @RequestBody Session session){
+    public ResponseEntity<?> putSession (@PathVariable Long id, @RequestBody Session session){
         try {
             Session ses = sessionService.putSession(id, session);
             return ResponseEntity.status(HttpStatus.OK).body(ses);
-        } catch (RuntimeException e) {
+        } catch (SessionNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("ERROR: PUT Session Request" + e.getMessage());
+                    .body("ERROR: PUT Session Request: " + e.getMessage());
         }
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> putSession(@PathVariable Long id, @RequestBody Session session){
+    public ResponseEntity<?> patchSession(@PathVariable Long id, @RequestBody Session session){
         try {
             Session ses = sessionService.patchSession(id, session);
             return ResponseEntity.status(HttpStatus.OK).body(ses);

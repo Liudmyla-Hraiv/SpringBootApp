@@ -3,20 +3,21 @@ package com.liutyk.first_demo.ControllersUnitTests;
 import com.liutyk.first_demo.controllers.SessionsController;
 import com.liutyk.first_demo.models.Session;
 import com.liutyk.first_demo.models.Speaker;
+import com.liutyk.first_demo.services.SessionNotFoundException;
 import com.liutyk.first_demo.services.SessionService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -26,14 +27,12 @@ public class SessionControllersUnitTests {
     @InjectMocks
     private SessionsController sessionsController;
 
-    private MockMvc mockMvc;
 //Get all sessions
     @Test
     public void testGetAllSessions_NotEmptySessions() throws Exception{
         Speaker speaker = new Speaker();
         speaker.setSpeakerId(1L);
-        List<Speaker> speakers = new ArrayList<>();
-        speakers.add(speaker);
+
         Session session1 = new Session();
         session1.setSessionId(1L);
         session1.setSessionName("Session 1");
@@ -49,27 +48,33 @@ public class SessionControllersUnitTests {
 
         List<Session> sessions = Arrays.asList(session1, session2);
         when(sessionService.getAllSessions()).thenReturn(sessions);
-        mockMvc = MockMvcBuilders.standaloneSetup(sessionsController).build();
-        mockMvc.perform(get("/api/v1/sessions"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].sessionId").value(1L))
-                .andExpect(jsonPath("$[0].sessionName").value("Session 1"))
-                .andExpect(jsonPath("$[0].sessionDescription").value("Description for Session 1"))
-                .andExpect(jsonPath("$[0].sessionLength").value(60))
-                .andExpect(jsonPath("$[1].sessionId").value(2L))
-                .andExpect(jsonPath("$[1].sessionName").value("Session 2"))
-                .andExpect(jsonPath("$[1].sessionDescription").value("Description for Session 2"))
-                .andExpect(jsonPath("$[1].sessionLength").value(90))
-                .andExpect(jsonPath("$[1].speakers[0].speakerId").value(1L));
+
+        ResponseEntity<?> response = sessionsController.getAllSessions();
+        List<Session> responseBody= (List<Session>)response.getBody();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(responseBody);
+        assertEquals(2, responseBody.size());
+        assertEquals(1L, responseBody.get(0).getSessionId());
+        assertEquals("Session 1", responseBody.get(0).getSessionName());
+        assertEquals("Description for Session 1", responseBody.get(0).getSessionDescription());
+        assertEquals(60, responseBody.get(0).getSessionLength().intValue());
+
+        assertEquals(2L, responseBody.get(1).getSessionId());
+        assertEquals("Session 2", responseBody.get(1).getSessionName());
+        assertEquals("Description for Session 2", responseBody.get(1).getSessionDescription());
+        assertEquals(90, responseBody.get(1).getSessionLength().intValue());
+        assertEquals(1L, responseBody.get(1).getSpeakers().get(0).getSpeakerId());
+
     }
     @Test
-    public void testGetAllSessions_NoSessions() throws Exception{
+    public void testGetAllSessions_isEmpty() throws Exception{
         when(sessionService.getAllSessions()).thenReturn(Collections.emptyList());
-        mockMvc = MockMvcBuilders.standaloneSetup(sessionsController).build();
-        mockMvc.perform(get("/api/v1/sessions"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("There ara NO any information about session"));
+        ResponseEntity<?> response = sessionsController.getAllSessions();
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("There ara NO any information about session", response.getBody());
     }
+
 //Get sessions by id
     @Test
     public void testGetSessionById_SessionPresent() throws Exception{
@@ -80,31 +85,224 @@ public class SessionControllersUnitTests {
         session.setSessionLength(60);
 
         when(sessionService.getSessionById(1L)).thenReturn(Optional.of(session));
-        mockMvc = MockMvcBuilders.standaloneSetup(sessionsController).build();
-        mockMvc.perform(get("/api/v1/sessions/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.sessionId").value(1L))
-                .andExpect(jsonPath("$.sessionName").value("Session"))
-                .andExpect(jsonPath("$.sessionDescription").value("Description for Session"))
-                .andExpect(jsonPath("$.sessionLength").value(60));
+        ResponseEntity<?> response = sessionsController.getSessionById(1L);
+        Optional<Session> responseBody = (Optional<Session>) response.getBody();
+        Session actualSession = responseBody.get();
 
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(responseBody.isPresent());
+        assertEquals(1L, actualSession.getSessionId());
+        assertEquals("Session", actualSession.getSessionName());
+        assertEquals("Description for Session", actualSession.getSessionDescription());
+        assertEquals(60,actualSession.getSessionLength().intValue());
     }
     @Test
     public void testGetSessionById_SessionAbsent() throws Exception{
-        Session session = new Session();
-        session.setSessionId(1L);
-        session.setSessionName("Session");
-        session.setSessionDescription("Description for Session");
-        session.setSessionLength(60);
-
         when(sessionService.getSessionById(188L)).thenReturn(Optional.empty());
-        mockMvc = MockMvcBuilders.standaloneSetup(sessionsController).build();
-        mockMvc.perform(get("/api/v1/sessions/188"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Session Not found"));
+        ResponseEntity<?> response = sessionsController.getSessionById(188L);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Session Not found", response.getBody());
+    }
+//Get sessions by Partial Name
+    @Test
+    public void testGetSessionsByPartialName_NamePresent() throws Exception{
+        Session session1 = new Session();
+        session1.setSessionId(1L);
+        session1.setSessionName("Session JUnit");
+        session1.setSessionDescription("Description for Session 1");
+        session1.setSessionLength(60);
+
+        Session session2 = new Session();
+        session2.setSessionId(2L);
+        session2.setSessionName("JUNIT session");
+        session2.setSessionDescription("Description for Session 2");
+        session2.setSessionLength(90);
+
+        List<Session> sessions = Arrays.asList(session1, session2);
+        when(sessionService.getSessionByPartialName("junit")).thenReturn(sessions);
+
+        ResponseEntity<?> response = sessionsController.getSessionByPartialName("junit");
+        List<Session> responseBody= (List<Session>)response.getBody();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(responseBody);
+        assertEquals(2, responseBody.size());
+        assertTrue(responseBody.get(0).getSessionName().contains("JUnit"));
+        assertTrue(responseBody.get(1).getSessionName().contains("JUNIT"));
 
     }
-//
+    @Test
+    public void testGetSessionByPartialName_Exception() {
+        when(sessionService.getSessionByPartialName("")).thenThrow(new RuntimeException("Database Error"));
+
+        ResponseEntity<?> response = sessionsController.getSessionByPartialName("");
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("ERROR: GET Session by Name Request: Database Error", response.getBody());
+    }
+    @Test
+    public void testGetSessionsByPartialName_NameAbsent() throws Exception{
+        when(sessionService.getSessionByPartialName("abra")).thenReturn(Collections.emptyList());
+
+        ResponseEntity<?> response = sessionsController.getSessionByPartialName("abra");
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Session with name abra not found", response.getBody());
+    }
+//Get Sessions by SpeakerId
+    @Test
+    public void testGetSessionsBySpeakerId_SpeakerPresent() throws Exception{
+        Speaker speaker=new Speaker();
+        speaker.setSpeakerId(3L);
+
+        Session session1 = new Session();
+        session1.setSessionId(1L);
+        session1.setSessionName("Session 1");
+        session1.setSessionDescription("Description for Session 1");
+        session1.setSessionLength(60);
+        session1.setSpeakers(Collections.singletonList(speaker));
 
 
+        Session session2 = new Session();
+        session2.setSessionId(2L);
+        session2.setSessionName("Session 2");
+        session2.setSessionDescription("Description for Session 2");
+        session2.setSessionLength(90);
+        session2.setSpeakers(Collections.singletonList(speaker));
+
+        List<Session> sessions = Arrays.asList(session1, session2);
+        when(sessionService.getSessionsBySpeakerId(3L)).thenReturn(sessions);
+
+        ResponseEntity<?> response = sessionsController.getSessionsBySpeakerId(3L);
+        List<Session> responseBody= (List<Session>)response.getBody();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(responseBody);
+        assertEquals(2, responseBody.size());
+        assertEquals(3L, responseBody.get(0).getSpeakers().get(0).getSpeakerId());
+        assertEquals(3L, responseBody.get(1).getSpeakers().get(0).getSpeakerId());
+    }
+    @Test
+    public void testGetSessionsBySpeakerId_SpeakerAbsent() throws Exception{
+        when(sessionService.getSessionsBySpeakerId(190L)).thenReturn(Collections.emptyList());
+
+        ResponseEntity<?> response = sessionsController.getSessionsBySpeakerId(190L);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("No sessions found for speaker with ID: 190", response.getBody());
+    }
+    @Test
+    public void testGetSessionsBySpeakerId_Exception() {
+        when(sessionService.getSessionsBySpeakerId(155L)).thenThrow(new RuntimeException("Database Error"));
+
+        ResponseEntity<?> response = sessionsController.getSessionsBySpeakerId(155L);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("ERROR: GET by SpeakerId: Database Error", response.getBody());
+    }
+    //POST Sessions
+    @Test
+    public void testPostSession_ValidSession() {
+        Speaker speaker = new Speaker();
+        speaker.setSpeakerId(1L);
+
+        Session session = new Session();
+        session.setSessionName("Test Session");
+        session.setSessionDescription("Test Description");
+        session.setSessionLength(60);
+        session.setSpeakers(Collections.singletonList(speaker));
+
+        when(sessionService.postSession(any(Session.class))).thenReturn(session);
+
+        ResponseEntity<?> response = sessionsController.postSession(session);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getBody());
+        Session responseBody = (Session) response.getBody();
+        assertEquals("Test Session", responseBody.getSessionName());
+        assertEquals(1, responseBody.getSpeakers().size());
+    }
+
+    @Test
+    public void testPostSession_NoSpeakers() {
+        // Створення тестової сесії без спікерів
+        Session session = new Session();
+        session.setSessionName("Test Session");
+
+        // Виклик методу контролера
+        ResponseEntity<?> response = sessionsController.postSession(session);
+
+        // Перевірка результатів
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Session must have at least one speaker", response.getBody());
+    }
+
+    @Test
+    public void testPostSession_Exception() {
+        Speaker speaker = new Speaker();
+        speaker.setSpeakerId(1L);
+
+        Session session = new Session();
+        session.setSessionName("Test Session");
+        session.setSessionDescription("Test Description");
+        session.setSessionLength(60);
+        session.setSpeakers(Collections.singletonList(speaker));
+
+        when(sessionService.postSession(any(Session.class))).thenThrow(new RuntimeException("Database Error"));
+
+        ResponseEntity<?> response = sessionsController.postSession(session);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("ERROR: POST Session Request: Database Error", response.getBody());
+    }
+//PUT Sessions
+    @Test
+    public void testPutSession_ValidSession() throws SessionNotFoundException {
+        Long id=5L;
+        Speaker speaker=new Speaker();
+        speaker.setSpeakerId(3L);
+
+        Session oldSes = new Session();
+        oldSes.setSessionId(id);
+        oldSes.setSessionName("Session 1");
+        oldSes.setSessionDescription("Description for Session 1");
+        oldSes.setSessionLength(60);
+        oldSes.setSpeakers(Collections.singletonList(speaker));
+
+
+        Session newSes = new Session();
+        newSes.setSessionName("Session New");
+        newSes.setSessionDescription("Description for Session New");
+        newSes.setSessionLength(60);
+        newSes.setSpeakers(Collections.singletonList(speaker));
+        when(sessionService.putSession(id, oldSes)).thenReturn(newSes);
+        ResponseEntity<?> response= sessionsController.putSession(id, oldSes);
+        Session responseBody= (Session) response.getBody();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Session New", responseBody.getSessionName());
+        assertEquals("Description for Session New", responseBody.getSessionDescription());
+    }
+
+    @Test
+    public void testPutSession_RuntimeException() throws SessionNotFoundException {
+        Session session = new Session();
+        session.setSessionName("Test Session");
+        when(sessionService.putSession(anyLong(), any(Session.class))).thenThrow(new RuntimeException("Server error"));
+
+        ResponseEntity<?> response = sessionsController.putSession(333L, session);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("ERROR: PUT Session Request: Server error", response.getBody());
+}
+    @Test
+    public void testPutSession_SessionNotFoundException() throws SessionNotFoundException {
+        Long id = 15L;
+        Session session = new Session();
+        session.setSessionName("Test Session");
+        when(sessionService.putSession(anyLong(), any(Session.class))).thenThrow(new SessionNotFoundException(id));
+
+        ResponseEntity<?> response = sessionsController.putSession(id, session);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Session with ID = " + id + " is not found", response.getBody());
+    }
+//PATCH Sessions
+
+//DELETE Sessions
 }

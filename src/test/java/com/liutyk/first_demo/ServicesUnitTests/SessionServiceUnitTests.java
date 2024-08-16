@@ -1,4 +1,4 @@
-package com.liutyk.first_demo.ServiceUnitTests;
+package com.liutyk.first_demo.ServicesUnitTests;
 
 
 import com.liutyk.first_demo.models.Session;
@@ -6,6 +6,7 @@ import com.liutyk.first_demo.models.Speaker;
 import com.liutyk.first_demo.repositories.SessionRepository;
 import com.liutyk.first_demo.repositories.SessionScheduleRepository;
 import com.liutyk.first_demo.repositories.SpeakerRepository;
+import com.liutyk.first_demo.services.SessionNotFoundException;
 import com.liutyk.first_demo.services.SessionService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -126,7 +127,7 @@ public class SessionServiceUnitTests {
         verify(sessionRepository).saveAndFlush(savedSession);
     }
     @Test
-    public void testPutSession() {
+    public void testPutSession() throws SessionNotFoundException {
         Speaker speaker= new Speaker();
         speaker.setSpeakerId(randomSpeakerId);
         List<Speaker> speakers =new ArrayList<>();
@@ -151,6 +152,7 @@ public class SessionServiceUnitTests {
         assertEquals(41, result.getSessionLength());
         verify(sessionRepository).saveAndFlush(existingSession);
     }
+//TODO: Session NOT-FOUND
 
     @Test
     public void testPatchSession() {

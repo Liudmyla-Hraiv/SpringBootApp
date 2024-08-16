@@ -16,13 +16,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 
 @SpringBootTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class) //organizes the order of tests
-@TestInstance(TestInstance.Lifecycle.PER_CLASS) //organizes storage of test variables
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SpeakersAPITests {
-    private  Integer testSpeaker1;
-    private Integer testSpeaker2;
-    Integer randomSessionId = 33;
-    Integer randomSpeakerId=27;
+    Integer testSpeaker1=15;
+    Integer testSpeaker2=19;
+    Integer randomSessionId = 35;
+    Integer randomSpeakerId=29;
 
 @BeforeAll
     public static void setup(){
@@ -32,8 +31,7 @@ class SpeakersAPITests {
     }
 
     @Test
-    @Order(1)
-    public void testGetSpeakersList(){
+    public void testGetAllSpeakers(){
     given()
             .when()
             .get("")
@@ -42,65 +40,8 @@ class SpeakersAPITests {
             .body("size()", greaterThan(0));
 
     }
-    @Test
-    @Order(2)
-    public void testPostSpeaker(){
-        String reqBody=
-                "{ \n"+
-                        " \"firstName\": \"Sergio\", \n"+
-                        "\"lastName\": \"Mario\",\n" +
-                        "\"title\": \"Mario adventure\",\n" +
-                        "\"company\": \"Nintendo\",\n" +
-                        "\"speakerPhoto\": null,\n"+
-                        "\"speakerBio\": \"The Nintendo Switch is a video game console developed by Nintendo\" \n"+
-                        "}";
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .body(reqBody)
-                .when()
-                .post("/")
-                .then()
-                .statusCode(201)
-                .body("speakerId", notNullValue())
-                .body("firstName", equalTo("Sergio"))
-                .body("lastName", equalTo("Mario"))
-                .body("title", equalTo("Mario adventure"))
-                .body("company", equalTo("Nintendo"))
-                .extract().response();
-        testSpeaker1 = response.path("speakerId");
-        System.out.println("POST sp1: "+ testSpeaker1);
-    }
-    @Test
-    @Order(3)
-    public void testPostSpeaker2(){
-        String reqBody=
-                "{ \n"+
-                        " \"firstName\": \"Sergio\", \n"+
-                        "\"lastName\": \"Mario\",\n" +
-                        "\"title\": \"Mario adventure\",\n" +
-                        "\"company\": \"Nintendo\",\n" +
-                        "\"speakerPhoto\": null,\n"+
-                        "\"speakerBio\": \"The Nintendo Switch is a video game console developed by Nintendo\" \n"+
-                        "}";
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .body(reqBody)
-                .when()
-                .post("/")
-                .then()
-                .statusCode(201)
-                .body("speakerId", notNullValue())
-                .body("firstName", equalTo("Sergio"))
-                .body("lastName", equalTo("Mario"))
-                .body("title", equalTo("Mario adventure"))
-                .body("company", equalTo("Nintendo"))
-                .extract().response();
-        testSpeaker2 = response.path("speakerId");
-        System.out.println("POST sp2: "+ testSpeaker2);
 
-    }
     @Test
-    @Order(4)
     public void testGetSpeakersByID(){
         given()
                 .pathParam("id", randomSpeakerId)
@@ -112,7 +53,6 @@ class SpeakersAPITests {
                     .body("speakerId", equalTo(randomSpeakerId));
     }
     @Test
-    @Order(5)
     public void testGetSpeakerByNameOrCompany() {
         List<String> nameParts = Arrays.asList("ser", "SER", "MAR", "mAR", "NIN", "nin");
         Random random = new Random();
@@ -129,7 +69,6 @@ class SpeakersAPITests {
         }
 
     @Test
-    @Order(6)
     public void testGetSpeakerBySessionId(){
 
     given()
@@ -140,15 +79,39 @@ class SpeakersAPITests {
             .statusCode(200)
             .body("$", not(empty()));
     }
-
     @Test
-    @Order(7)
+    public void testPostSpeaker(){
+        String reqBody=
+                "{ \n"+
+                        " \"firstName\": \"Sergio\", \n"+
+                        "\"lastName\": \"Mario\",\n" +
+                        "\"title\": \"Mario adventure\",\n" +
+                        "\"company\": \"Nintendo\",\n" +
+                        "\"speakerPhoto\": null,\n"+
+                        "\"speakerBio\": \"The Nintendo Switch is a video game console developed by Nintendo\" \n"+
+                        "}";
+        given()
+                .contentType(ContentType.JSON)
+                .body(reqBody)
+                .when()
+                .post("/")
+                .then()
+                .statusCode(201)
+                .body("speakerId", notNullValue())
+                .body("firstName", equalTo("Sergio"))
+                .body("lastName", equalTo("Mario"))
+                .body("title", equalTo("Mario adventure"))
+                .body("company", equalTo("Nintendo"))
+                .body("speakerPhoto", equalTo(null))
+                .body("speakerBio", equalTo("The Nintendo Switch is a video game console developed by Nintendo"));
+    }
+    @Test
     public void testPutSpeaker(){
         String reqBody=
                         "{ \n"+
                         " \"firstName\": \"Mario Bros\", \n"+
-                        "\"lastName\": \"Mario\",\n" +
-                        "\"title\": \"Mario adventure 2\",\n" +
+                        "\"lastName\": \"Brothers Mario\",\n" +
+                        "\"title\": \"Mario adventure\",\n" +
                         "\"company\": \"Nintendo\",\n" +
                         "\"speakerPhoto\": null,\n"+
                         "\"speakerBio\": \"The Nintendo Switch is a video game console developed by Nintendo\" \n"+
@@ -164,12 +127,13 @@ class SpeakersAPITests {
                     .statusCode(200)
                     .body("speakerId", equalTo(testSpeaker1))
                     .body("firstName", equalTo("Mario Bros"))
-                    .body("lastName", equalTo("Mario"))
-                    .body("title", equalTo("Mario adventure 2"))
-                    .body("company", equalTo("Nintendo"));
+                    .body("lastName", equalTo("Brothers Mario"))
+                    .body("title", equalTo("Mario adventure"))
+                    .body("company", equalTo("Nintendo"))
+                    .body("speakerPhoto", equalTo(null))
+                    .body("speakerBio", equalTo("The Nintendo Switch is a video game console developed by Nintendo"));
     }
     @Test
-    @Order(8)
     public void testPatchSpeaker(){
         String reqBody=
                  "{ \n"+
@@ -188,7 +152,6 @@ class SpeakersAPITests {
                     .body("title", equalTo("Mario NEW Adventures"));
     }
     @Test
-    @Order(9)
     public void testDeleteSpeakers(){
         given()
                 .pathParam("id", testSpeaker2)

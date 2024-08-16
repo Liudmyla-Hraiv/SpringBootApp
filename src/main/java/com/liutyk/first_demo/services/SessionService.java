@@ -44,21 +44,19 @@ public class SessionService {
     }
 
     public Session postSession(Session session) {
-        if (session.getSpeakers()!=null && !session.getSpeakers().isEmpty()) {
             List<Speaker> attachedSpeaker = new ArrayList<>();
             for (Speaker speaker : session.getSpeakers()) {
                 Optional<Speaker> optional = speakerRepository.findById(speaker.getSpeakerId());
                 optional.ifPresent(attachedSpeaker::add);
             }
             session.setSpeakers(attachedSpeaker);
-        }
         return sessionRepository.saveAndFlush(session);
     }
 
-    public Session putSession(Long id, Session session) {
+    public Session putSession(Long id, Session session) throws SessionNotFoundException {
         Optional<Session> optionalSession = sessionRepository.findById(id);
         if (optionalSession.isEmpty()) {
-            throw new RuntimeException("Session with ID = " + id + " is not found");
+            throw new SessionNotFoundException(id);
         }
         Session existingSession = optionalSession.get();
         existingSession.setSessionName(session.getSessionName());
