@@ -105,12 +105,12 @@ public class SessionsController {
         try {
             Session ses = sessionService.patchSession(id, session);
             return ResponseEntity.status(HttpStatus.OK).body(ses);
-        } catch (RuntimeException e) {
+        } catch (SessionNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("ERROR: PATCH Session Request " + e.getMessage());
+                    .body("ERROR: PATCH Session Request: " + e.getMessage());
         }
     }
     @DeleteMapping("/{id}")
@@ -118,12 +118,12 @@ public class SessionsController {
         try {
             sessionService.deleteById(id);
             return ResponseEntity.status(HttpStatus.OK).body("Sessions " + id + " and associated schedules deleted successfully");
-        } catch (RuntimeException e) {
+        } catch (SessionNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("ERROR: DELETE Session Request " + e.getMessage());
+                    .body("ERROR: DELETE Session Request: " + e.getMessage());
         }
     }
 }

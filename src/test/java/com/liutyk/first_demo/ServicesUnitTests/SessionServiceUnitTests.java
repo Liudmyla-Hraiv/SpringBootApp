@@ -155,7 +155,7 @@ public class SessionServiceUnitTests {
 //TODO: Session NOT-FOUND
 
     @Test
-    public void testPatchSession() {
+    public void testPatchSession() throws SessionNotFoundException {
         List<Speaker> speakers = new ArrayList<>();
         Speaker speaker = new Speaker();
         speaker.setSpeakerId(randomSpeakerId);
@@ -184,7 +184,7 @@ public class SessionServiceUnitTests {
         verify(sessionRepository).saveAndFlush(existingSession);
     }
     @Test
-    public void testDeleteById() {
+    public void testDeleteById() throws SessionNotFoundException {
         Speaker speaker = new Speaker();
         speaker.setSpeakerId(randomSpeakerId);
         speaker.setSessions(new ArrayList<>());

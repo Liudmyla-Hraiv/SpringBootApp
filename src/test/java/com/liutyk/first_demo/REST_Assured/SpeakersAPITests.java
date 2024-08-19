@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Random;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.sessionId;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 
@@ -19,9 +18,10 @@ import static org.hamcrest.Matchers.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SpeakersAPITests {
     Integer testSpeaker1=15;
-    Integer testSpeaker2=19;
-    Integer randomSessionId = 35;
-    Integer randomSpeakerId=29;
+    Integer testSpeaker2=1; //For Delete test
+
+    Integer speakerId;
+    Integer session_speakerId=53;//pair by speakerId
 
 @BeforeAll
     public static void setup(){
@@ -44,13 +44,13 @@ class SpeakersAPITests {
     @Test
     public void testGetSpeakersByID(){
         given()
-                .pathParam("id", randomSpeakerId)
+                .pathParam("id", testSpeaker1)
                 .when()
                 .get("/{id}")
                 .then()
                     .statusCode(200)
                     .body("speakerId", notNullValue())
-                    .body("speakerId", equalTo(randomSpeakerId));
+                    .body("speakerId", equalTo(testSpeaker1));
     }
     @Test
     public void testGetSpeakerByNameOrCompany() {
@@ -71,13 +71,16 @@ class SpeakersAPITests {
     @Test
     public void testGetSpeakerBySessionId(){
 
-    given()
-            .queryParam("id", randomSessionId)
+    Response response=
+            given()
+            .queryParam("id", session_speakerId)
             .when()
             .get("/search/bySession")
             .then()
             .statusCode(200)
-            .body("$", not(empty()));
+            .body("$", not(empty()))
+                    .extract().response();
+        speakerId= response.path("get[0].speakerId");
     }
     @Test
     public void testPostSpeaker(){

@@ -17,7 +17,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -133,7 +133,7 @@ public class SessionControllersUnitTests {
 
     }
     @Test
-    public void testGetSessionByPartialName_Exception() {
+    public void testGetSessionByPartialName_RuntimeException() {
         when(sessionService.getSessionByPartialName("")).thenThrow(new RuntimeException("Database Error"));
 
         ResponseEntity<?> response = sessionsController.getSessionByPartialName("");
@@ -182,7 +182,7 @@ public class SessionControllersUnitTests {
         assertEquals(3L, responseBody.get(1).getSpeakers().get(0).getSpeakerId());
     }
     @Test
-    public void testGetSessionsBySpeakerId_SpeakerAbsent() throws Exception{
+    public void testGetSessionsBySpeakerId_SpeakerAbsent(){
         when(sessionService.getSessionsBySpeakerId(190L)).thenReturn(Collections.emptyList());
 
         ResponseEntity<?> response = sessionsController.getSessionsBySpeakerId(190L);
@@ -190,7 +190,7 @@ public class SessionControllersUnitTests {
         assertEquals("No sessions found for speaker with ID: 190", response.getBody());
     }
     @Test
-    public void testGetSessionsBySpeakerId_Exception() {
+    public void testGetSessionsBySpeakerId_RuntimeException() {
         when(sessionService.getSessionsBySpeakerId(155L)).thenThrow(new RuntimeException("Database Error"));
 
         ResponseEntity<?> response = sessionsController.getSessionsBySpeakerId(155L);
@@ -235,7 +235,7 @@ public class SessionControllersUnitTests {
     }
 
     @Test
-    public void testPostSession_Exception() {
+    public void testPostSession_RuntimeException() {
         Speaker speaker = new Speaker();
         speaker.setSpeakerId(1L);
 
@@ -269,16 +269,17 @@ public class SessionControllersUnitTests {
         Session newSes = new Session();
         newSes.setSessionName("Session New");
         newSes.setSessionDescription("Description for Session New");
-        newSes.setSessionLength(60);
+        newSes.setSessionLength(45);
         newSes.setSpeakers(Collections.singletonList(speaker));
         when(sessionService.putSession(id, oldSes)).thenReturn(newSes);
         ResponseEntity<?> response= sessionsController.putSession(id, oldSes);
         Session responseBody= (Session) response.getBody();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
+        assertNotNull(responseBody);
         assertEquals("Session New", responseBody.getSessionName());
         assertEquals("Description for Session New", responseBody.getSessionDescription());
+        assertEquals(45, responseBody.getSessionLength());
     }
 
     @Test
@@ -303,6 +304,91 @@ public class SessionControllersUnitTests {
         assertEquals("Session with ID = " + id + " is not found", response.getBody());
     }
 //PATCH Sessions
+@Test
+public void testPatchSession_ValidSession() throws SessionNotFoundException {
+    Long id=5L;
+    Speaker speaker=new Speaker();
+    speaker.setSpeakerId(3L);
 
+    Session oldSes = new Session();
+    oldSes.setSessionId(id);
+    oldSes.setSessionName("Session 1");
+    oldSes.setSessionDescription("Description for Session 1");
+    oldSes.setSessionLength(60);
+
+
+    Session newSes = new Session();
+    newSes.setSessionName("Session New");
+    newSes.setSessionDescription("Description for Session New");
+    newSes.setSessionLength(45);
+    when(sessionService.patchSession(id, oldSes)).thenReturn(newSes);
+    ResponseEntity<?> response= sessionsController.patchSession(id, oldSes);
+    Session responseBody= (Session) response.getBody();
+
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertNotNull(responseBody);
+    assertEquals("Session New", responseBody.getSessionName());
+    assertEquals("Description for Session New", responseBody.getSessionDescription());
+    assertEquals(45, responseBody.getSessionLength());
+}
+
+    @Test
+    public void testPatchSession_RuntimeException() throws SessionNotFoundException {
+        Session session = new Session();
+        session.setSessionName("Test Session");
+        when(sessionService.patchSession(anyLong(), any(Session.class))).thenThrow(new RuntimeException("Server error"));
+
+        ResponseEntity<?> response = sessionsController.patchSession(333L, session);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("ERROR: PATCH Session Request: Server error", response.getBody());
+    }
+    @Test
+    public void testPatchSession_SessionNotFoundException() throws SessionNotFoundException {
+        Long id = 15L;
+        Session session = new Session();
+        session.setSessionName("Test Session");
+        when(sessionService.patchSession(anyLong(), any(Session.class))).thenThrow(new SessionNotFoundException(id));
+
+        ResponseEntity<?> response = sessionsController.patchSession(id, session);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Session with ID = " + id + " is not found", response.getBody());
+    }
 //DELETE Sessions
+
+    @Test
+    public void testDeleteSession_ValidSession() throws SessionNotFoundException {
+        Long id=5L;
+        Session session = new Session();
+        session.setSessionId(id);
+        doNothing().when(sessionService).deleteById(id);
+        ResponseEntity<?> response= sessionsController.deleteByID(id);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Sessions " + id + " and associated schedules deleted successfully", response.getBody());
+    }
+
+    @Test
+    public void testDeleteSession_RuntimeException() throws SessionNotFoundException {
+        Long id = 16L;
+        Session session = new Session();
+        session.setSessionId(id);
+        doThrow(new RuntimeException("Server error")).when(sessionService).deleteById(id);
+
+        ResponseEntity<?> response = sessionsController.deleteByID(id);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("ERROR: DELETE Session Request: Server error", response.getBody());
+    }
+    @Test
+    public void testDeleteSession_SessionNotFoundException() throws SessionNotFoundException {
+        Long id = 15L;
+        Session session = new Session();
+        session.setSessionId(id);
+       doThrow(new SessionNotFoundException(id)).when(sessionService).deleteById(id);
+
+        ResponseEntity<?> response = sessionsController.deleteByID(id);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+
+        assertEquals("Session with ID = " + id + " is not found", response.getBody());
+    }
 }

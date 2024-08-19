@@ -69,10 +69,10 @@ public class SessionService {
         return sessionRepository.saveAndFlush(existingSession);
     }
 
-    public Session patchSession(Long id, Session session) {
+    public Session patchSession(Long id, Session session) throws SessionNotFoundException{
         Optional<Session> optional = sessionRepository.findById(id);
         if (optional.isEmpty()) {
-            throw new RuntimeException("Session with ID " + id + " not found");
+            throw new SessionNotFoundException (id);
         }
         Session existingSession = optional.get();
         if (session.getSessionName() != null && !session.getSessionName().isEmpty()) {
@@ -87,10 +87,10 @@ public class SessionService {
         return sessionRepository.saveAndFlush(existingSession);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(Long id) throws SessionNotFoundException {
         Optional<Session> optionalSession = sessionRepository.findById(id);
         if (optionalSession.isEmpty()) {
-            throw new RuntimeException("Session " + id + " does not exist");
+            throw new SessionNotFoundException(id);
         }
         Session session = optionalSession.get();
         sessionScheduleRepository.deleteBySession_SessionId(id);
