@@ -24,26 +24,28 @@ public class SpeakerService {
         return speakerRepository.findAll();
     }
 
-    public Optional<Speaker> getSpeakerById(Long id) {
-        return speakerRepository.findById(id);
+    public Speaker getSpeakerById(Long id) throws SpeakerNotFoundException{
+
+        return speakerRepository.findById(id)
+                .orElseThrow(() -> new SpeakerNotFoundException(id));
     }
 
-    public List<Speaker> getByKeywordIgnoreCase(String keyword) {
-        return speakerRepository.getByKeywordIgnoreCase(keyword);
+    public List<Speaker> getSpeakerByKeywordIgnoreCase(String keyword) {
+        return speakerRepository.getSpeakerByKeywordIgnoreCase(keyword);
     }
 
-    public List<Speaker> getBySessionId(Long sessionId) {
-        return speakerRepository.getBySessionId(sessionId);
+    public List<Speaker> getSpeakerBySessionId(Long sessionId) {
+        return speakerRepository.getSpeakerBySessionId(sessionId);
     }
 
     public Speaker postSpeaker(Speaker speaker) {
         return speakerRepository.saveAndFlush(speaker);
     }
 
-    public Speaker putSpeaker(Long id, Speaker speaker) {
+    public Speaker putSpeaker(Long id, Speaker speaker) throws SpeakerNotFoundException{
         Optional<Speaker> optionalSpeaker = speakerRepository.findById(id);
         if (optionalSpeaker.isEmpty()) {
-            throw new RuntimeException("Speaker with ID = " + id + " is not found");
+            throw new SpeakerNotFoundException(id);
         }
         Speaker existingSpeaker = optionalSpeaker.get();
         existingSpeaker.setFirstName(speaker.getFirstName());
@@ -53,10 +55,10 @@ public class SpeakerService {
         existingSpeaker.setSpeakerBio(speaker.getSpeakerBio());
         return speakerRepository.saveAndFlush(existingSpeaker);
     }
-    public Speaker patchSpeaker(Long id, Speaker speaker) {
+    public Speaker patchSpeaker(Long id, Speaker speaker) throws SpeakerNotFoundException{
         Optional<Speaker> optional = speakerRepository.findById(id);
         if (optional.isEmpty()) {
-            throw new RuntimeException("Speaker with ID " + id + " not found");
+            throw new SpeakerNotFoundException(id);
         }
         Speaker existingSpeaker = optional.get();
         if (speaker.getFirstName() != null && !speaker.getFirstName().isEmpty()) {
@@ -79,9 +81,9 @@ public class SpeakerService {
 
 
 
-    public void deleteSpeaker(Long id) {
+    public void deleteSpeaker(Long id) throws SpeakerNotFoundException{
         if (!speakerRepository.existsById(id)) {
-            throw new RuntimeException("Speaker with ID = " + id + " does not exist");
+            throw new SpeakerNotFoundException(id);
         }
         sessionSpeakersRepository.deleteBySpeakerId(id);
         speakerRepository.deleteById(id);

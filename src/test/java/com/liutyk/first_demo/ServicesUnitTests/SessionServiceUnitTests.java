@@ -56,9 +56,9 @@ public class SessionServiceUnitTests {
 
         when(sessionRepository.findById(randomSessionID)).thenReturn(Optional.of(session));
 
-        Optional<Session> result = sessionService.getSessionById(randomSessionID);
-        assertTrue(result.isPresent());
-        assertEquals(randomSessionID, result.get().getSessionId());
+        Session result = sessionService.getSessionById(randomSessionID);
+        assertNotNull(result);
+        assertEquals(randomSessionID, result.getSessionId());
     }
 
     @Test
@@ -184,7 +184,7 @@ public class SessionServiceUnitTests {
         verify(sessionRepository).saveAndFlush(existingSession);
     }
     @Test
-    public void testDeleteById() throws SessionNotFoundException {
+    public void testDeleteSessionById() throws SessionNotFoundException {
         Speaker speaker = new Speaker();
         speaker.setSpeakerId(randomSpeakerId);
         speaker.setSessions(new ArrayList<>());
@@ -199,11 +199,11 @@ public class SessionServiceUnitTests {
         //delete session schedule
         doNothing().when(sessionScheduleRepository).deleteBySession_SessionId(testSessionID);
         //cut and save speaker
-        when(speakerRepository.getBySessionId(testSessionID)).thenReturn(speakers);
+        when(speakerRepository.getSpeakerBySessionId(testSessionID)).thenReturn(speakers);
         when(speakerRepository.save(speaker)).thenReturn(speaker);
         //delete session
         doNothing().when(sessionRepository).deleteById(testSessionID);
-        sessionService.deleteById(testSessionID);
+        sessionService.deleteSessionById(testSessionID);
         //Check all out actions
         assertTrue(speaker.getSessions().isEmpty(), "The session list in speaker should be empty after deletion");
         verify(sessionScheduleRepository).deleteBySession_SessionId(testSessionID);

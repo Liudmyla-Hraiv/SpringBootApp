@@ -11,16 +11,16 @@ import java.util.Objects;
 @Setter
 @Getter
 @Embeddable
-public class SessionSpeakersKey implements Serializable {
+public class SessionSpeakerKey implements Serializable {
     @Column(name = "speaker_id")
     private Long speakerId;
 
     @Column(name = "session_id")
     private Long sessionId;
 
-    public SessionSpeakersKey(){
+    public SessionSpeakerKey(){
     }
-    public SessionSpeakersKey(Long speakerId, Long sessionId){
+    public SessionSpeakerKey(Long speakerId, Long sessionId){
         this.speakerId=speakerId;
         this.sessionId=sessionId;
     }
@@ -29,7 +29,7 @@ public class SessionSpeakersKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SessionSpeakersKey that = (SessionSpeakersKey) o;
+        SessionSpeakerKey that = (SessionSpeakerKey) o;
         return Objects.equals(speakerId, that.speakerId) &&
                 Objects.equals(sessionId, that.sessionId);
     }

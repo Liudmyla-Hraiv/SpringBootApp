@@ -34,5 +34,10 @@ public class SessionSchedule {
     public SessionSchedule(){
     }
 
-
+    public SessionSchedule(Long scheduleId, TimeSlot timeSlot, String room, Session session) {
+        this.scheduleId = scheduleId;
+        this.timeSlot = timeSlot;
+        this.room = room;
+        this.session = session;
+    }
 }

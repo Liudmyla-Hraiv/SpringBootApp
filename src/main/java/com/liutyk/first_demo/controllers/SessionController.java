@@ -14,12 +14,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/sessions")
-public class SessionsController {
+public class SessionController {
 
     private final SessionService sessionService;
 
     @Autowired
-    public SessionsController(SessionService sessionService) {
+    public SessionController(SessionService sessionService) {
         this.sessionService = sessionService;
     }
 
@@ -35,11 +35,11 @@ public class SessionsController {
 
     @GetMapping ("/{id}")
     public ResponseEntity<?> getSessionById(@PathVariable Long id){
-       Optional<Session> getSession = sessionService.getSessionById(id);
-        if (getSession.isPresent()) {
+        try {
+            Session getSession = sessionService.getSessionById(id);
             return ResponseEntity.ok(getSession);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Session Not found");
+        }catch(SessionNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -93,7 +93,7 @@ public class SessionsController {
             return ResponseEntity.status(HttpStatus.OK).body(ses);
         } catch (SessionNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: PUT Session Request: " + e.getMessage());
@@ -107,20 +107,20 @@ public class SessionsController {
             return ResponseEntity.status(HttpStatus.OK).body(ses);
         } catch (SessionNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: PATCH Session Request: " + e.getMessage());
         }
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteByID(@PathVariable Long id) {
+    public ResponseEntity<?> deleteSessionByID(@PathVariable Long id) {
         try {
-            sessionService.deleteById(id);
+            sessionService.deleteSessionById(id);
             return ResponseEntity.status(HttpStatus.OK).body("Sessions " + id + " and associated schedules deleted successfully");
         } catch (SessionNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: DELETE Session Request: " + e.getMessage());

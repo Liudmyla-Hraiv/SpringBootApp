@@ -2,29 +2,24 @@ package com.liutyk.first_demo.controllers;
 
 
 import com.liutyk.first_demo.models.Speaker;
-import com.liutyk.first_demo.repositories.SessionRepository;
-import com.liutyk.first_demo.repositories.SpeakerRepository;
-import com.liutyk.first_demo.repositories.SessionSpeakersRepository;
+import com.liutyk.first_demo.services.SpeakerNotFoundException;
 import com.liutyk.first_demo.services.SpeakerService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequestMapping("/api/v1/speakers")
-public class SpeakersController {
+public class SpeakerController {
     private final SpeakerService speakerService;
 
     @Autowired
-    public SpeakersController(SpeakerService speakerService) {
+    public SpeakerController(SpeakerService speakerService) {
         this.speakerService = speakerService;
     }
 
@@ -33,43 +28,46 @@ public class SpeakersController {
     public ResponseEntity<?> getAllSpeakers() {
         List<Speaker> speakers = speakerService.getAllSpeakers();
         if(speakers.isEmpty()){
-            return status(HttpStatus.NOT_FOUND).body("No speakers found");
+            return status(HttpStatus.NOT_FOUND).body("Speakers don't found");
         } else return ResponseEntity.ok(speakers);
     }
 //GET speaker with speakerID
     @GetMapping("/{id}")
     public ResponseEntity<?> getSpeakerById(@PathVariable Long id) {
-        Speaker speaker = speakerService.getSpeakerById(id).orElse(null);
-        if (speaker==null){
-            return status(HttpStatus.NOT_FOUND).body("Speaker with ID = "+ id + "  have not found ");
-        }else  return ResponseEntity.ok(speaker);
+        try {
+            Speaker speaker = speakerService.getSpeakerById(id);
+            return ResponseEntity.ok(speaker);
+        }catch (SpeakerNotFoundException e) {
+            return status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 //GET by part of First/Last or company name with ignore CASE
     @GetMapping("/search/byName")
-    public ResponseEntity<?> getByKeywordIgnoreCase(@RequestParam String name) {
+    public ResponseEntity<?> getSpeakerByKeywordIgnoreCase(@RequestParam String name) {
         try {
-            List<Speaker> speakers = speakerService.getByKeywordIgnoreCase(name);
+            List<Speaker> speakers = speakerService.getSpeakerByKeywordIgnoreCase(name);
             if (speakers.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Speakers  have not found with keyword: " + name);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Speakers don't found with keyword: " + name);
             }
             return ResponseEntity.ok(speakers);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR while search by FirstName OR LastName OR Company");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("ERROR: in getByKeywordIgnoreCase");
         }
     }
 //GET speaker by sessionId
     @GetMapping("/search/bySession")
     public ResponseEntity<?> getSpeakerBySessionId(@RequestParam Long id) {
         try {
-            List<Speaker> speakers = speakerService.getBySessionId(id);
+            List<Speaker> speakers = speakerService.getSpeakerBySessionId(id);
             if (speakers.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Speakers  have not found by Session ID: " + id);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Speaker don't found by Session ID: " + id);
             }
             return ResponseEntity.ok(speakers);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR while search by Session ID ");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: in getSpeakerBySessionId");
         }
     }
 
@@ -79,9 +77,8 @@ public class SpeakersController {
             Speaker savedSpeaker = speakerService.postSpeaker(speaker);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedSpeaker);
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
-                    .body("Error occurred while creating speaker");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("ERROR: POST speaker: FirstName OR LastName Or Title OR Company Or speakerBio");
         }
     }
 
@@ -90,12 +87,12 @@ public class SpeakersController {
         try {
             Speaker updatedSpeaker = speakerService.patchSpeaker(id, speaker);
             return ResponseEntity.ok(updatedSpeaker);
-        } catch (RuntimeException e) {
+        } catch (SpeakerNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("ERROR: PATCH Speaker " + e.getMessage());
+                    .body("ERROR: PATCH Speaker: " + e.getMessage());
         }
     }
     @PutMapping("/{id}")
@@ -103,12 +100,12 @@ public class SpeakersController {
         try {
             Speaker modifiedSpeaker = speakerService.putSpeaker(id, speaker);
             return ResponseEntity.ok(modifiedSpeaker);
-        } catch (RuntimeException e) {
+        } catch (SpeakerNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("ERROR: PUT Speaker request " + e.getMessage());
+                    .body("ERROR: PUT Speaker: " + e.getMessage());
         }
     }
 
@@ -117,7 +114,7 @@ public class SpeakersController {
         try {
             speakerService.deleteSpeaker(id);
             return ResponseEntity.ok("Speaker with ID = " + id + " deleted");
-        } catch (RuntimeException e) {
+        } catch (SpeakerNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();

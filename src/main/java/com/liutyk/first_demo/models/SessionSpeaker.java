@@ -12,7 +12,7 @@ import lombok.Setter;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SessionSpeaker {
     @EmbeddedId
-    private SessionSpeakersKey id;
+    private SessionSpeakerKey id;
 
 
     @ManyToOne
@@ -28,5 +28,9 @@ public class SessionSpeaker {
     public SessionSpeaker(){
     }
 
+    public SessionSpeaker(Session session, Speaker speaker) {
+        this.session = session;
+        this.speaker = speaker;
+    }
 }
 

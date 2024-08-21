@@ -31,8 +31,9 @@ public class SessionService {
         return sessionRepository.findAll();
     }
 
-    public Optional<Session> getSessionById(Long id) {
-        return sessionRepository.findById(id);
+    public Session getSessionById(Long id) throws SessionNotFoundException {
+        return sessionRepository.findById(id)
+                .orElseThrow(() -> new SessionNotFoundException(id));
     }
 
     public List<Session> getSessionByPartialName(String name) {
@@ -63,7 +64,7 @@ public class SessionService {
         existingSession.setSessionDescription(session.getSessionDescription());
         existingSession.setSessionLength(session.getSessionLength());
         if (session.getSpeakers() != null && !session.getSpeakers().isEmpty()) {
-            List<Speaker> speakers = speakerRepository.getBySessionId(id);
+            List<Speaker> speakers = speakerRepository.getSpeakerBySessionId(id);
             existingSession.setSpeakers(speakers);
         }
         return sessionRepository.saveAndFlush(existingSession);
@@ -87,14 +88,14 @@ public class SessionService {
         return sessionRepository.saveAndFlush(existingSession);
     }
 
-    public void deleteById(Long id) throws SessionNotFoundException {
+    public void deleteSessionById(Long id) throws SessionNotFoundException {
         Optional<Session> optionalSession = sessionRepository.findById(id);
         if (optionalSession.isEmpty()) {
             throw new SessionNotFoundException(id);
         }
         Session session = optionalSession.get();
         sessionScheduleRepository.deleteBySession_SessionId(id);
-        List<Speaker> speakers = speakerRepository.getBySessionId(id);
+        List<Speaker> speakers = speakerRepository.getSpeakerBySessionId(id);
         for (Speaker speaker : speakers) {
             speaker.getSessions().remove(session);
             speakerRepository.save(speaker);

@@ -5,6 +5,7 @@ import com.liutyk.first_demo.models.Speaker;
 import com.liutyk.first_demo.repositories.SessionRepository;
 import com.liutyk.first_demo.repositories.SessionSpeakersRepository;
 import com.liutyk.first_demo.repositories.SpeakerRepository;
+import com.liutyk.first_demo.services.SpeakerNotFoundException;
 import com.liutyk.first_demo.services.SpeakerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,14 +54,14 @@ public class SpeakerServiceTests {
         speaker.setLastName("lName");
 
         when(speakerRepository.findById(randomSpeakerId)).thenReturn(Optional.of(speaker));
-        Optional<Speaker> result = speakerService.getSpeakerById(randomSpeakerId);
-        assertTrue(result.isPresent(), "The result should be present" );
-        assertEquals(randomSpeakerId, result.get().getSpeakerId());
-        assertEquals("fName", result.get().getFirstName());
-        assertEquals("lName", result.get().getLastName());
+        Speaker result = speakerService.getSpeakerById(randomSpeakerId);
+        assertNotNull(result);
+        assertEquals(randomSpeakerId, result.getSpeakerId());
+        assertEquals("fName", result.getFirstName());
+        assertEquals("lName", result.getLastName());
     }
     @Test
-    public void testGetByKeywordIgnoreCase(){
+    public void testGetSpeakerByKeywordIgnoreCase(){
         List<Speaker> speakers = new ArrayList<>();
         Speaker sp1 = new Speaker();
         sp1.setFirstName("Java Name");
@@ -72,8 +73,8 @@ public class SpeakerServiceTests {
         sp3.setCompany("JAVA Inc.");
         speakers.add(sp3);
 
-        when(speakerRepository.getByKeywordIgnoreCase("java")).thenReturn(speakers);
-        List<Speaker> result= speakerService.getByKeywordIgnoreCase("java");
+        when(speakerRepository.getSpeakerByKeywordIgnoreCase("java")).thenReturn(speakers);
+        List<Speaker> result= speakerService.getSpeakerByKeywordIgnoreCase("java");
         assertFalse(result.isEmpty(), "The result should not be empty");
         assertTrue(result.size()>=3, "The result List should be at least three");
         assertTrue(result.get(0).getFirstName().contains("Java"), "The speaker FN should contain 'Java'");
@@ -90,8 +91,8 @@ public class SpeakerServiceTests {
        session.setSessionId(randomSessionId);
        session.setSpeakers(Collections.singletonList(speaker));
 
-       when(speakerRepository.getBySessionId(randomSessionId)).thenReturn(speakers);
-       List<Speaker> result= speakerService.getBySessionId(randomSessionId);
+       when(speakerRepository.getSpeakerBySessionId(randomSessionId)).thenReturn(speakers);
+       List<Speaker> result= speakerService.getSpeakerBySessionId(randomSessionId);
        assertFalse(result.isEmpty(), "The result should not be empty");
        assertEquals(result.get(0).getSpeakerId(), randomSpeakerId);
     }
@@ -116,7 +117,7 @@ public class SpeakerServiceTests {
 //TODO: work with SpeakerPhoto
 
     @Test
-    public void testPutSpeaker() {
+    public void testPutSpeaker() throws SpeakerNotFoundException {
         Speaker existingSpeaker = new Speaker();
         existingSpeaker.setSpeakerId(randomSpeakerId);
         existingSpeaker.setFirstName("FirstName");
@@ -145,7 +146,7 @@ public class SpeakerServiceTests {
 
     }
     @Test
-    public void testPatchSpeaker() {
+    public void testPatchSpeaker() throws SpeakerNotFoundException {
         Speaker existingSpeaker = new Speaker();
         existingSpeaker.setSpeakerId(randomSpeakerId);
         existingSpeaker.setFirstName("FirstName");
@@ -173,7 +174,7 @@ public class SpeakerServiceTests {
         assertEquals("Bio", result.getSpeakerBio());
     }
     @Test
-    public void testDeleteById() {
+    public void testDeleteById() throws SpeakerNotFoundException {
         Speaker speaker = new Speaker();
         speaker.setSpeakerId(testSpeakerID);
 

@@ -27,12 +27,12 @@ public class SessionScheduleController {
         try {
             List<SessionSchedule> list= sessionScheduleServer.getAllSessionSchedules();
             if (list.isEmpty()){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Content");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Schedules Not Found");
             }
             else return ResponseEntity.ok(list);
         }catch (Exception e){
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR session_schedule GET: "+ e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: GET ALL schedules: "+ e.getMessage());
         }
     }
     @RequestMapping("/")
@@ -45,12 +45,12 @@ public class SessionScheduleController {
       try {
         List<SessionSchedule> schedules = sessionScheduleServer.getScheduleBySessionId(id);
         if (schedules.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Session Schedule  have not found by Session ID = " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Schedule NOT FOUND by Session ID = " + id);
         }
         return ResponseEntity.ok(schedules);
     } catch (Exception e) {
         e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR while search by Session ID " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: GET Schedule by Session ID: " + e.getMessage());
     }
     }
     @GetMapping("/search/ByRoom")
@@ -58,12 +58,12 @@ public class SessionScheduleController {
         try {
             List<SessionSchedule> schedules = sessionScheduleServer.getByRoomIgnoreCase(room);
             if (schedules.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Session Schedule  have not found by Room : " + room );
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Schedule by Room NOT FOUND: " + room );
             }
             return ResponseEntity.ok(schedules);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR while search by Session ID " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: GET schedule by ROOM Name: " + e.getMessage());
         }
     }
 }

@@ -13,9 +13,9 @@ public interface SpeakerRepository extends JpaRepository<Speaker, Long> {
 
     @Query(value = "SELECT * FROM speakers sp WHERE sp.speaker_id IN " +
             "(SELECT sps.speaker_id FROM session_speakers sps WHERE sps.session_id = :sessionId)", nativeQuery = true)
-    List<Speaker> getBySessionId(@Param("sessionId") Long sessionId);
+    List<Speaker> getSpeakerBySessionId(@Param("sessionId") Long sessionId);
 
 
     @Query("SELECT s FROM speakers s WHERE LOWER(s.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(s.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(s.company) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-    List<Speaker> getByKeywordIgnoreCase(@Param("keyword") String keyword);
+    List<Speaker> getSpeakerByKeywordIgnoreCase(@Param("keyword") String keyword);
 }

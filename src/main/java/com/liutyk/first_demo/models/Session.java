@@ -51,6 +51,7 @@ public class Session {
 
 
 
+
     public Session(Long sessionId, String sessionName, String sessionDescription, Integer sessionLength, List<Speaker> speakers, List<SessionSchedule> schedules) {
         this.sessionId = sessionId;
         this.sessionName = sessionName;
