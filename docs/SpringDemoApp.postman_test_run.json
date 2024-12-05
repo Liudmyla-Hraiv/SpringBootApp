@@ -1,0 +1,2231 @@
+{
+	"id": "f6a44e77-bc81-47a9-8868-c463c9c2959d",
+	"name": "SpringDemoApp",
+	"timestamp": "2024-12-05T15:18:00.401Z",
+	"collection_id": "9005161-540378de-3b46-4614-be2f-73efc861f573",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 189,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2024-12-05T15:17:54.534Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "7c7f7a47-54f3-44e1-ac4c-0a2b45bf1fbe",
+			"name": "SessionByID_404",
+			"url": "http://localhost:5000/api/v1/sessions/361",
+			"time": 31,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				31
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "4db3868c-83bc-44b7-937f-74cf89715eee",
+			"name": "SessionCreate_400",
+			"url": "http://localhost:5000/api/v1/sessions/",
+			"time": 62,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response status code is 400": true,
+				"Response content type is text/plain": true,
+				"Response message is 'Session must have at least one speaker'": true,
+				"Response time is less than 200ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response content type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response message is 'Session must have at least one speaker'": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				62
+			],
+			"allTests": [
+				{
+					"Response status code is 400": true,
+					"Response content type is text/plain": true,
+					"Response message is 'Session must have at least one speaker'": true,
+					"Response time is less than 200ms": true
+				}
+			]
+		},
+		{
+			"id": "72fbf76c-9d17-45ab-8775-78a39844b403",
+			"name": "SessionByName_404",
+			"url": "http://localhost:5000/api/v1/sessions/search/byName?name=abc",
+			"time": 41,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Response status code is 404": true,
+				"Verify that the response contains the correct message": true,
+				"Response Content-Type is text/plain": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				41
+			],
+			"allTests": [
+				{
+					"Response status code is 404": true,
+					"Verify that the response contains the correct message": true,
+					"Response Content-Type is text/plain": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "c497ddb6-62b4-49f5-bdae-bd94e985b921",
+			"name": "SessionsBySpeakerID_404",
+			"url": "http://localhost:5000/api/v1/sessions/search/bySpeaker?id=124",
+			"time": 12,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Response status code is 404": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is within an acceptable range": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Response status code is 404": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is within an acceptable range": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "3c0285d2-f060-4194-90d7-d26fca3f1080",
+			"name": "SessionModify_404",
+			"url": "http://localhost:5000/api/v1/sessions/236",
+			"time": 17,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "113e94a9-b65c-4719-b788-d1e79e707cbf",
+			"name": "SessionUpdate_404",
+			"url": "http://localhost:5000/api/v1/sessions/227",
+			"time": 14,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "b2dcfd63-8a28-47ad-a2a5-b6b10689138c",
+			"name": "SessionDelete_404",
+			"url": "http://localhost:5000/api/v1/sessions/297",
+			"time": 12,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "0822b97b-8392-4257-ad18-536d8537e9b0",
+			"name": "SessionList",
+			"url": "http://localhost:5000/api/v1/sessions",
+			"time": 119,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response Content-Type is application/json": true,
+				"Validate sessionId, sessionName, sessionDescription, sessionLength, and speakers fields in the response": true,
+				"Verify the format of speakers array fields": true,
+				"Response time is less than 2000ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response Content-Type is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate sessionId, sessionName, sessionDescription, sessionLength, and speakers fields in the response": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify the format of speakers array fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 2000ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				119
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response Content-Type is application/json": true,
+					"Validate sessionId, sessionName, sessionDescription, sessionLength, and speakers fields in the response": true,
+					"Verify the format of speakers array fields": true,
+					"Response time is less than 2000ms": true
+				}
+			]
+		},
+		{
+			"id": "f019c5cb-ba37-47ea-8563-0235e89e41e4",
+			"name": "SessionsBySpeakerID",
+			"url": "http://localhost:5000/api/v1/sessions/search/bySpeaker?id=35",
+			"time": 18,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response Content-Type is application/json": true,
+				"Response time is within an acceptable range": true,
+				"Validate the session object": true,
+				"Validate the speakers array and its properties": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response Content-Type is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the session object": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the speakers array and its properties": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				18
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response Content-Type is application/json": true,
+					"Response time is within an acceptable range": true,
+					"Validate the session object": true,
+					"Validate the speakers array and its properties": true
+				}
+			]
+		},
+		{
+			"id": "58d92ed5-1abf-4293-8b82-cffa8dd1b356",
+			"name": "SessionByName",
+			"url": "http://localhost:5000/api/v1/sessions/search/byName?name=APP",
+			"time": 28,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response has the required fields": true,
+				"Session length is a non-negative integer": true,
+				"Speakers is an array": true,
+				"Response time is less than 400ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Session length is a non-negative integer": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Speakers is an array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 400ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				28
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response has the required fields": true,
+					"Session length is a non-negative integer": true,
+					"Speakers is an array": true,
+					"Response time is less than 400ms": true
+				}
+			]
+		},
+		{
+			"id": "7e8e8415-75a0-42f0-af53-e43dc6430de5",
+			"name": "SessionByID",
+			"url": "http://localhost:5000/api/v1/sessions/26",
+			"time": 20,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is application/json": true,
+				"Validate the session object": true,
+				"Validate the speakers array and its elements": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the session object": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the speakers array and its elements": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				20
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is application/json": true,
+					"Validate the session object": true,
+					"Validate the speakers array and its elements": true
+				}
+			]
+		},
+		{
+			"id": "b011536a-5b2b-483b-8fa5-4c6420b7066d",
+			"name": "SessionCreate",
+			"url": "http://localhost:5000/api/v1/sessions/",
+			"time": 294,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Response status code is 201": true,
+				"Response has the required fields": true,
+				"Validate the speakers array and its elements": true,
+				"Response time is within an acceptable range time below 2000": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the speakers array and its elements": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range time below 2000": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				294
+			],
+			"allTests": [
+				{
+					"Response status code is 201": true,
+					"Response has the required fields": true,
+					"Validate the speakers array and its elements": true,
+					"Response time is within an acceptable range time below 2000": true
+				}
+			]
+		},
+		{
+			"id": "38e7c669-a8bb-4dea-809e-576d6ebd8997",
+			"name": "SessionModify",
+			"url": "http://localhost:5000/api/v1/sessions/7",
+			"time": 80,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is within an acceptable range time below 1000": true,
+				"Validate the response schema for sessionId, sessionName, sessionDescription, sessionLength, and speakers array": true,
+				"Each speaker object in the speakers array contains required properties": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range time below 1000": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the response schema for sessionId, sessionName, sessionDescription, sessionLength, and speakers array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Each speaker object in the speakers array contains required properties": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				80
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is within an acceptable range time below 1000": true,
+					"Validate the response schema for sessionId, sessionName, sessionDescription, sessionLength, and speakers array": true,
+					"Each speaker object in the speakers array contains required properties": true
+				}
+			]
+		},
+		{
+			"id": "b8ec9f9f-fc12-4f41-8bbe-193131d39290",
+			"name": "SessionUpdate",
+			"url": "http://localhost:5000/api/v1/sessions/29",
+			"time": 27,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response has the required fields": true,
+				"Validate the speakers array": true,
+				"Speakers have non-empty strings for first and last names": true,
+				"Response time is less than 200ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the speakers array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Speakers have non-empty strings for first and last names": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				27
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response has the required fields": true,
+					"Validate the speakers array": true,
+					"Speakers have non-empty strings for first and last names": true,
+					"Response time is less than 200ms": true
+				}
+			]
+		},
+		{
+			"id": "8adc1a3c-f1db-491f-ba09-cf331d5e9cf0",
+			"name": "SessionDelete",
+			"url": "http://localhost:5000/api/v1/sessions/63",
+			"time": 72,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Content type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				72
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Content type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "36c64ae4-ac20-4c46-900f-4a7d548c7b70",
+			"name": "SessionScheduleByRoom_404",
+			"url": "http://localhost:5000/api/v1/session_schedule/search/ByRoom?room=xyz",
+			"time": 16,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct message": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct message": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "e6ae0281-1989-4fcf-8e55-4c0522c09cef",
+			"name": "SessionScheduleBySessionID_404",
+			"url": "http://localhost:5000/api/v1/session_schedule/search/BySession?id=166",
+			"time": 12,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "a7c8e17a-0003-494d-82da-8ab573a38658",
+			"name": "SessionScheduleList",
+			"url": "http://localhost:5000/api/v1/session_schedule",
+			"time": 222,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response has the required fields": true,
+				"Validate session object": true,
+				"Speakers' details must be non-empty strings": true,
+				"Response time is less than 400ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate session object": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Speakers' details must be non-empty strings": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 400ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				222
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response has the required fields": true,
+					"Validate session object": true,
+					"Speakers' details must be non-empty strings": true,
+					"Response time is less than 400ms": true
+				}
+			]
+		},
+		{
+			"id": "0f28eb69-c1e6-48f5-892a-9a41716fe5bf",
+			"name": "SessionScheduleByRoom",
+			"url": "http://localhost:5000/api/v1/session_schedule/search/ByRoom?room=hic",
+			"time": 45,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response has the required fields": true,
+				"Validate session object": true,
+				"Response time is less than 200ms": true,
+				"Content-Type header is application/json": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate session object": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				45
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response has the required fields": true,
+					"Validate session object": true,
+					"Response time is less than 200ms": true,
+					"Content-Type header is application/json": true
+				}
+			]
+		},
+		{
+			"id": "154b0643-946c-422b-b395-639adadc0c0e",
+			"name": "SessionScheduleBySessionID",
+			"url": "http://localhost:5000/api/v1/session_schedule/search/BySession?id=15",
+			"time": 15,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Content-Type header is application/json": true,
+				"Validate the structure of the response schema": true,
+				"Verify that the response contains the required 'speakers' field": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the structure of the response schema": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the required 'speakers' field": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				15
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Content-Type header is application/json": true,
+					"Validate the structure of the response schema": true,
+					"Verify that the response contains the required 'speakers' field": true
+				}
+			]
+		},
+		{
+			"id": "d4b8838b-4e6f-4caa-9202-96829da594c8",
+			"name": "SessionScheduleList/",
+			"url": "http://localhost:5000/api/v1/session_schedule/",
+			"time": 9,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Response has the expected Content-Type header": true,
+				"Response body contains the expected welcome message": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the expected Content-Type header": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains the expected welcome message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				9
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Response has the expected Content-Type header": true,
+					"Response body contains the expected welcome message": true
+				}
+			]
+		},
+		{
+			"id": "6d9057e4-757a-4e8b-99cc-3055eb743eb8",
+			"name": "SessionSpeakersBySessionID_404",
+			"url": "http://localhost:5000/api/v1/session_speakers/search/BySession?id=257",
+			"time": 8,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				8
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "1c977fea-6fb4-4c87-9c2e-f66ebd7a5bc2",
+			"name": "SessionSpeakersBySpeakerID_404",
+			"url": "http://localhost:5000/api/v1/session_speakers/search/BySpeaker?id=300",
+			"time": 8,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				8
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "7e9d8136-8ac2-477d-a8d9-df82945155af",
+			"name": "SessionSpeakersList",
+			"url": "http://localhost:5000/api/v1/session_speakers",
+			"time": 166,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response has the required Content-Type header with value application/json": true,
+				"Validate the structure of the response JSON": true,
+				"Response time is less than 2000ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required Content-Type header with value application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the structure of the response JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 2000ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				166
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response has the required Content-Type header with value application/json": true,
+					"Validate the structure of the response JSON": true,
+					"Response time is less than 2000ms": true
+				}
+			]
+		},
+		{
+			"id": "dc613951-1234-4138-952c-503611a59784",
+			"name": "SessionSpeakersBySessionID",
+			"url": "http://localhost:5000/api/v1/session_speakers/search/BySession?id=55",
+			"time": 11,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Content-Type header is application/json": true,
+				"Verify the response schema for id, sessionId, speakers, firstName, lastName, title, company, and speakerBio": true,
+				"Response time is less than 200ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify the response schema for id, sessionId, speakers, firstName, lastName, title, company, and speakerBio": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				11
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Content-Type header is application/json": true,
+					"Verify the response schema for id, sessionId, speakers, firstName, lastName, title, company, and speakerBio": true,
+					"Response time is less than 200ms": true
+				}
+			]
+		},
+		{
+			"id": "1bfa3326-74a0-4528-a268-55617540b761",
+			"name": "SessionSpeakersBySpeakerID",
+			"url": "http://localhost:5000/api/v1/session_speakers/search/BySpeaker?id=19",
+			"time": 14,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Content-Type header is application/json": true,
+				"Validate the structure of the response JSON": true,
+				"Id and sessionId objects are present and contain the expected fields": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the structure of the response JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Id and sessionId objects are present and contain the expected fields": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Content-Type header is application/json": true,
+					"Validate the structure of the response JSON": true,
+					"Id and sessionId objects are present and contain the expected fields": true
+				}
+			]
+		},
+		{
+			"id": "412233ac-6b66-48af-95d9-0082a73622bd",
+			"name": "SessionSpeakersList/",
+			"url": "http://localhost:5000/api/v1/session_speakers/",
+			"time": 5,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Response has the expected Content-Type header": true,
+				"Response body contains the expected message": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the expected Content-Type header": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains the expected message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				5
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Response has the expected Content-Type header": true,
+					"Response body contains the expected message": true
+				}
+			]
+		},
+		{
+			"id": "bde1ae21-8fdd-46f6-814c-bab7ae996b95",
+			"name": "SearchByNameOrCompany_404",
+			"url": "http://localhost:5000/api/v1/speakers/search/byName?name=xyz",
+			"time": 19,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct message": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				19
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct message": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "6a54c935-fe8a-4745-9514-d0ec1e9f9a82",
+			"name": "SpeakerById_404",
+			"url": "http://localhost:5000/api/v1/speakers/100",
+			"time": 13,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				13
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "c602c44c-744d-4c9b-8c67-de328f497973",
+			"name": "SearchSpeakerBySessionId_404",
+			"url": "http://localhost:5000/api/v1/speakers/search/bySession?id=225",
+			"time": 9,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				9
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "09a7bd34-629e-48cc-a268-5e5e3bb86b0f",
+			"name": "CeateSpeaker_400",
+			"url": "http://localhost:5000/api/v1/speakers/",
+			"time": 52,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response status code is 400": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				52
+			],
+			"allTests": [
+				{
+					"Response status code is 400": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true
+				}
+			]
+		},
+		{
+			"id": "3a97b6d7-c67e-46bb-9139-5dce4de86fb0",
+			"name": "SpeakerModify_400",
+			"url": "http://localhost:5000/api/v1/speakers/194",
+			"time": 15,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				15
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "21838501-cbbb-4606-99b8-561aa82ad73a",
+			"name": "SpeakerUpdate_404",
+			"url": "http://localhost:5000/api/v1/speakers/312",
+			"time": 11,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				11
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "b529219a-f637-48cf-93dc-f2989c24cfd9",
+			"name": "SpeakerDelete_404",
+			"url": "http://localhost:5000/api/v1/speakers/167",
+			"time": 29,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Validate 404 status": true,
+				"Verify that the response contains the correct messag": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is text/plain": true
+			},
+			"testPassFailCounts": {
+				"Validate 404 status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct messag": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				29
+			],
+			"allTests": [
+				{
+					"Validate 404 status": true,
+					"Verify that the response contains the correct messag": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is text/plain": true
+				}
+			]
+		},
+		{
+			"id": "6ef707df-c9e8-4449-9ea5-98539e027121",
+			"name": "SpeakerList",
+			"url": "http://localhost:5000/api/v1/speakers",
+			"time": 33,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Content-Type header is application/json": true,
+				"Validate the schema for the response": true,
+				"Response time is less than 200ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the schema for the response": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				33
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Content-Type header is application/json": true,
+					"Validate the schema for the response": true,
+					"Response time is less than 200ms": true
+				}
+			]
+		},
+		{
+			"id": "07a514a2-d565-46bc-ad1c-7b2467aed711",
+			"name": "SpeakerById",
+			"url": "http://localhost:5000/api/v1/speakers/37",
+			"time": 19,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response has the required fields": true,
+				"SpeakerId is a non-negative integer": true,
+				"Response time is less than 200ms": true,
+				"Content-Type header is application/json": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"SpeakerId is a non-negative integer": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				19
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response has the required fields": true,
+					"SpeakerId is a non-negative integer": true,
+					"Response time is less than 200ms": true,
+					"Content-Type header is application/json": true
+				}
+			]
+		},
+		{
+			"id": "bc19cf22-5a31-4154-8181-ba2d2a3adbd9",
+			"name": "SearchByNameOrCompany",
+			"url": "http://localhost:5000/api/v1/speakers/search/byName?name=BEC",
+			"time": 18,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Response has the required fields": true,
+				"SpeakerId is a non-negative integer": true,
+				"Validate response properties": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"SpeakerId is a non-negative integer": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate response properties": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				18
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Response has the required fields": true,
+					"SpeakerId is a non-negative integer": true,
+					"Validate response properties": true
+				}
+			]
+		},
+		{
+			"id": "12bb070e-ea10-4b90-b389-3aef0c9a6d2d",
+			"name": "SearchSpeakerBySessionId",
+			"url": "http://localhost:5000/api/v1/speakers/search/bySession?id=49",
+			"time": 17,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Content-Type is application/json": true,
+				"Validate the schema for speaker object": true,
+				"Ensure non-empty strings for firstName, lastName, title, company, and speakerBio": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the schema for speaker object": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Ensure non-empty strings for firstName, lastName, title, company, and speakerBio": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Content-Type is application/json": true,
+					"Validate the schema for speaker object": true,
+					"Ensure non-empty strings for firstName, lastName, title, company, and speakerBio": true
+				}
+			]
+		},
+		{
+			"id": "8c7402a2-edfa-4420-ac15-a44a2e246aec",
+			"name": "SpeakerCreate",
+			"url": "http://localhost:5000/api/v1/speakers/",
+			"time": 22,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Response status code is 201": true,
+				"Speaker ID is present in the response": true,
+				"Extract ID from response and save it to a variable": true,
+				"First name should be a non-empty string": true,
+				"Last name should be a non-empty string": true,
+				"Title should be a non-empty string": true,
+				"Company should be a non-empty string": true,
+				"Speaker bio should be a non-empty string": true,
+				"Response time is within an acceptable range": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Speaker ID is present in the response": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Extract ID from response and save it to a variable": {
+					"pass": 1,
+					"fail": 0
+				},
+				"First name should be a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Last name should be a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Title should be a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Company should be a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Speaker bio should be a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				22
+			],
+			"allTests": [
+				{
+					"Response status code is 201": true,
+					"Speaker ID is present in the response": true,
+					"Extract ID from response and save it to a variable": true,
+					"First name should be a non-empty string": true,
+					"Last name should be a non-empty string": true,
+					"Title should be a non-empty string": true,
+					"Company should be a non-empty string": true,
+					"Speaker bio should be a non-empty string": true,
+					"Response time is within an acceptable range": true
+				}
+			]
+		},
+		{
+			"id": "9c8cfb8c-415d-4866-ac12-80e2937e21f7",
+			"name": "SpeakerModify",
+			"url": "http://localhost:5000/api/v1/speakers/42",
+			"time": 27,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response has the required fields": true,
+				"SpeakerId is a non-negative integer": true,
+				"Response time is less than 2000ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"SpeakerId is a non-negative integer": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 2000ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				27
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response has the required fields": true,
+					"SpeakerId is a non-negative integer": true,
+					"Response time is less than 2000ms": true
+				}
+			]
+		},
+		{
+			"id": "c9f141c4-6bf6-4b28-9ae1-aa2a5173f11b",
+			"name": "SpeakerUpdate",
+			"url": "http://localhost:5000/api/v1/speakers/16",
+			"time": 17,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response has the required fields": true,
+				"SpeakerId is a non-negative integer": true,
+				"Title, firstName, and lastName are non-empty strings": true,
+				"Response time is less than 200ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"SpeakerId is a non-negative integer": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Title, firstName, and lastName are non-empty strings": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response has the required fields": true,
+					"SpeakerId is a non-negative integer": true,
+					"Title, firstName, and lastName are non-empty strings": true,
+					"Response time is less than 200ms": true
+				}
+			]
+		},
+		{
+			"id": "7945ac98-3fac-429b-bab9-c6ca33047a9e",
+			"name": "SpeakerDelete",
+			"url": "http://localhost:5000/api/v1/speakers/30",
+			"time": 32,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Verify that the response contains the correct message": true,
+				"Content-Type is text/plain": true,
+				"Response time is within an acceptable range": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Verify that the response contains the correct message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is text/plain": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				32
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Verify that the response contains the correct message": true,
+					"Content-Type is text/plain": true,
+					"Response time is within an acceptable range": true
+				}
+			]
+		},
+		{
+			"id": "c5e8a32d-2f1f-4b4a-a7ac-61edd98c55ed",
+			"name": "appVersion",
+			"url": "http://localhost:5000/api/v1/",
+			"time": 12,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Content-Type header is application/json": true,
+				"Response has the required field - version": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required field - version": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Content-Type header is application/json": true,
+					"Response has the required field - version": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 1723,
+	"collection": {
+		"requests": [
+			{
+				"id": "7c7f7a47-54f3-44e1-ac4c-0a2b45bf1fbe",
+				"method": "GET"
+			},
+			{
+				"id": "4db3868c-83bc-44b7-937f-74cf89715eee",
+				"method": "POST"
+			},
+			{
+				"id": "72fbf76c-9d17-45ab-8775-78a39844b403",
+				"method": "GET"
+			},
+			{
+				"id": "c497ddb6-62b4-49f5-bdae-bd94e985b921",
+				"method": "GET"
+			},
+			{
+				"id": "3c0285d2-f060-4194-90d7-d26fca3f1080",
+				"method": "PUT"
+			},
+			{
+				"id": "113e94a9-b65c-4719-b788-d1e79e707cbf",
+				"method": "PATCH"
+			},
+			{
+				"id": "b2dcfd63-8a28-47ad-a2a5-b6b10689138c",
+				"method": "DELETE"
+			},
+			{
+				"id": "0822b97b-8392-4257-ad18-536d8537e9b0",
+				"method": "GET"
+			},
+			{
+				"id": "f019c5cb-ba37-47ea-8563-0235e89e41e4",
+				"method": "GET"
+			},
+			{
+				"id": "58d92ed5-1abf-4293-8b82-cffa8dd1b356",
+				"method": "GET"
+			},
+			{
+				"id": "7e8e8415-75a0-42f0-af53-e43dc6430de5",
+				"method": "GET"
+			},
+			{
+				"id": "b011536a-5b2b-483b-8fa5-4c6420b7066d",
+				"method": "POST"
+			},
+			{
+				"id": "38e7c669-a8bb-4dea-809e-576d6ebd8997",
+				"method": "PUT"
+			},
+			{
+				"id": "b8ec9f9f-fc12-4f41-8bbe-193131d39290",
+				"method": "PATCH"
+			},
+			{
+				"id": "8adc1a3c-f1db-491f-ba09-cf331d5e9cf0",
+				"method": "DELETE"
+			},
+			{
+				"id": "36c64ae4-ac20-4c46-900f-4a7d548c7b70",
+				"method": "GET"
+			},
+			{
+				"id": "e6ae0281-1989-4fcf-8e55-4c0522c09cef",
+				"method": "GET"
+			},
+			{
+				"id": "a7c8e17a-0003-494d-82da-8ab573a38658",
+				"method": "GET"
+			},
+			{
+				"id": "0f28eb69-c1e6-48f5-892a-9a41716fe5bf",
+				"method": "GET"
+			},
+			{
+				"id": "154b0643-946c-422b-b395-639adadc0c0e",
+				"method": "GET"
+			},
+			{
+				"id": "d4b8838b-4e6f-4caa-9202-96829da594c8",
+				"method": "GET"
+			},
+			{
+				"id": "6d9057e4-757a-4e8b-99cc-3055eb743eb8",
+				"method": "GET"
+			},
+			{
+				"id": "1c977fea-6fb4-4c87-9c2e-f66ebd7a5bc2",
+				"method": "GET"
+			},
+			{
+				"id": "7e9d8136-8ac2-477d-a8d9-df82945155af",
+				"method": "GET"
+			},
+			{
+				"id": "dc613951-1234-4138-952c-503611a59784",
+				"method": "GET"
+			},
+			{
+				"id": "1bfa3326-74a0-4528-a268-55617540b761",
+				"method": "GET"
+			},
+			{
+				"id": "412233ac-6b66-48af-95d9-0082a73622bd",
+				"method": "GET"
+			},
+			{
+				"id": "bde1ae21-8fdd-46f6-814c-bab7ae996b95",
+				"method": "GET"
+			},
+			{
+				"id": "6a54c935-fe8a-4745-9514-d0ec1e9f9a82",
+				"method": "GET"
+			},
+			{
+				"id": "c602c44c-744d-4c9b-8c67-de328f497973",
+				"method": "GET"
+			},
+			{
+				"id": "09a7bd34-629e-48cc-a268-5e5e3bb86b0f",
+				"method": "POST"
+			},
+			{
+				"id": "3a97b6d7-c67e-46bb-9139-5dce4de86fb0",
+				"method": "PUT"
+			},
+			{
+				"id": "21838501-cbbb-4606-99b8-561aa82ad73a",
+				"method": "PATCH"
+			},
+			{
+				"id": "b529219a-f637-48cf-93dc-f2989c24cfd9",
+				"method": "DELETE"
+			},
+			{
+				"id": "6ef707df-c9e8-4449-9ea5-98539e027121",
+				"method": "GET"
+			},
+			{
+				"id": "07a514a2-d565-46bc-ad1c-7b2467aed711",
+				"method": "GET"
+			},
+			{
+				"id": "bc19cf22-5a31-4154-8181-ba2d2a3adbd9",
+				"method": "GET"
+			},
+			{
+				"id": "12bb070e-ea10-4b90-b389-3aef0c9a6d2d",
+				"method": "GET"
+			},
+			{
+				"id": "8c7402a2-edfa-4420-ac15-a44a2e246aec",
+				"method": "POST"
+			},
+			{
+				"id": "9c8cfb8c-415d-4866-ac12-80e2937e21f7",
+				"method": "PUT"
+			},
+			{
+				"id": "c9f141c4-6bf6-4b28-9ae1-aa2a5173f11b",
+				"method": "PATCH"
+			},
+			{
+				"id": "7945ac98-3fac-429b-bab9-c6ca33047a9e",
+				"method": "DELETE"
+			},
+			{
+				"id": "c5e8a32d-2f1f-4b4a-a7ac-61edd98c55ed",
+				"method": "GET"
+			}
+		]
+	}
+}

@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.status;
@@ -16,6 +17,7 @@ import static org.springframework.http.ResponseEntity.status;
 @RestController
 @RequestMapping("/api/v1/speakers")
 public class SpeakerController {
+    private static final Logger logger = LoggerFactory.getLogger(SpeakerController.class);
     private final SpeakerService speakerService;
 
     @Autowired
@@ -38,7 +40,8 @@ public class SpeakerController {
             Speaker speaker = speakerService.getSpeakerById(id);
             return ResponseEntity.ok(speaker);
         }catch (SpeakerNotFoundException e) {
-            return status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            logger.error("ERROR 404: While get Speaker by ID = "+ id, e.getMessage(), e);
+            return status(HttpStatus.NOT_FOUND).body(e.getMessage()); //SpeakerNotFoundException
         }
     }
 //GET by part of First/Last or company name with ignore CASE
@@ -51,7 +54,7 @@ public class SpeakerController {
             }
             return ResponseEntity.ok(speakers);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR 500: While get Speaker by Keyword = " + name, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: in getByKeywordIgnoreCase");
         }
@@ -66,7 +69,7 @@ public class SpeakerController {
             }
             return ResponseEntity.ok(speakers);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR 500: While get Speaker by Session ID = "+ id, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: in getSpeakerBySessionId");
         }
     }
@@ -77,6 +80,7 @@ public class SpeakerController {
             Speaker savedSpeaker = speakerService.postSpeaker(speaker);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedSpeaker);
         } catch (Exception e) {
+            logger.error("ERROR 400: While post Speaker", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("ERROR: POST speaker: FirstName OR LastName Or Title OR Company Or speakerBio");
         }
@@ -88,9 +92,10 @@ public class SpeakerController {
             Speaker updatedSpeaker = speakerService.patchSpeaker(id, speaker);
             return ResponseEntity.ok(updatedSpeaker);
         } catch (SpeakerNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            logger.error("ERROR 404: While patch Speaker by ID = " + id, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); //SpeakerNotFoundException
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR 500: While patch Speaker by ID = "+id, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: PATCH Speaker: " + e.getMessage());
         }
@@ -101,9 +106,10 @@ public class SpeakerController {
             Speaker modifiedSpeaker = speakerService.putSpeaker(id, speaker);
             return ResponseEntity.ok(modifiedSpeaker);
         } catch (SpeakerNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            logger.error("ERROR 404: While put Speaker by ID = "+ id, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());//SpeakerNotFoundException
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR 500: While put Speaker by ID = "+id, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: PUT Speaker: " + e.getMessage());
         }
@@ -115,9 +121,10 @@ public class SpeakerController {
             speakerService.deleteSpeaker(id);
             return ResponseEntity.ok("Speaker with ID = " + id + " deleted");
         } catch (SpeakerNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            logger.error("ERROR 404: While delete Speaker by ID = "+id, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());//SpeakerNotFoundException
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR 500: While delete Speaker by ID = "+ id, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR while DELETE speaker");
         }

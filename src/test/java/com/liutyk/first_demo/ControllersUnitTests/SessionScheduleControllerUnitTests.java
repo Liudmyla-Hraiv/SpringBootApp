@@ -40,7 +40,6 @@ public class SessionScheduleControllerUnitTests {
     }
     @Test
     public void testGetAllSessionSchedules_NotFound(){
-        Long id=200L;
         when(sessionScheduleServer.getAllSessionSchedules()).thenReturn(Collections.emptyList());
         ResponseEntity<?> response = sessionScheduleController.getAllSessionSchedule();
 

@@ -26,8 +26,6 @@ public class SpeakerServiceTests {
     private SpeakerRepository speakerRepository;
     @Mock
     private SessionSpeakersRepository sessionSpeakersRepository;
-    @Mock
-    private SessionRepository sessionRepository;
     @InjectMocks
     private SpeakerService speakerService;
 

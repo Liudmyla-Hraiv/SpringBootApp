@@ -172,10 +172,8 @@ public class SessionControllerUnitTests {
     public void testPostSession_Success() {
         Speaker speaker = new Speaker();
         speaker.setSpeakerId(1L);
-
         Session session = new Session(2L, "Test Session", "Test Description", 90, Collections.singletonList(speaker), Collections.emptyList());
 
-        List<Session> sessions = List.of(session);
         when(sessionService.postSession(any(Session.class))).thenReturn(session);
 
         ResponseEntity<?> response = sessionsController.postSession(session);

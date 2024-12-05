@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/api/v1/sessions")
 public class SessionController {
-
+    private static final Logger logger = LoggerFactory.getLogger(SessionController.class);
     private final SessionService sessionService;
 
     @Autowired
@@ -28,7 +28,7 @@ public class SessionController {
     public ResponseEntity<?> getAllSessions(){
         List<Session> allSessions = sessionService.getAllSessions();
         if(allSessions.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There ara NO any information about session");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There ara NO any information about sessions");
         }
         else return ResponseEntity.ok(allSessions);
     }
@@ -39,7 +39,8 @@ public class SessionController {
             Session getSession = sessionService.getSessionById(id);
             return ResponseEntity.ok(getSession);
         }catch(SessionNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            logger.error("ERROR 404: While get Session by ID = "+ id, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); //SessionNotFoundException
         }
     }
 
@@ -53,7 +54,7 @@ public class SessionController {
                 return ResponseEntity.ok(sessions);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR 500: While get Session by Name = "+ name, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: GET Session by Name Request: " + e.getMessage());
         }
@@ -67,7 +68,7 @@ public class SessionController {
             }
             return ResponseEntity.ok(sessions);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR 500: While get Session by Speaker ID = " +id , e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: GET by SpeakerId: " + e.getMessage());
         }
@@ -81,7 +82,7 @@ public class SessionController {
             }else
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Session must have at least one speaker");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR 500: While post Session", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: POST Session Request: " + e.getMessage());
         }
@@ -94,7 +95,7 @@ public class SessionController {
         } catch (SessionNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR 500: While put Session ID = "+id, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: PUT Session Request: " + e.getMessage());
         }
@@ -108,7 +109,7 @@ public class SessionController {
         } catch (SessionNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR 500: While patch Session by ID = "+ id, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: PATCH Session Request: " + e.getMessage());
         }
@@ -121,7 +122,7 @@ public class SessionController {
         } catch (SessionNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR 500: While delete Session by ID = ", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("ERROR: DELETE Session Request: " + e.getMessage());
         }
