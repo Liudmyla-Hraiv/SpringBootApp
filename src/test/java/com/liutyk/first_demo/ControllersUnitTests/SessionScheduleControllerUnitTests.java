@@ -48,11 +48,11 @@ public class SessionScheduleControllerUnitTests {
     }
     @Test
     public void testGetAllSessionSchedules_Exception(){
-        when(sessionScheduleServer.getAllSessionSchedules()).thenThrow(new RuntimeException("Server Error"));
+        when(sessionScheduleServer.getAllSessionSchedules()).thenThrow(new RuntimeException("Server error"));
         ResponseEntity<?> response= sessionScheduleController.getAllSessionSchedule();
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("ERROR: GET ALL schedules: Server Error", response.getBody());
+        assertEquals("ERROR: GET ALL schedules: Server error", response.getBody());
     }
     //GET by Session ID
     @Test
@@ -82,11 +82,11 @@ public class SessionScheduleControllerUnitTests {
     @Test
     public void testGetScheduleBySessionId_Exception(){
         Long id=200L;
-        when(sessionScheduleServer.getScheduleBySessionId(id)).thenThrow(new RuntimeException("Server Error"));
+        when(sessionScheduleServer.getScheduleBySessionId(id)).thenThrow(new RuntimeException("Server error"));
         ResponseEntity<?> response= sessionScheduleController.getScheduleBySessionId(id);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("ERROR: GET Schedule by Session ID: Server Error", response.getBody());
+        assertEquals("ERROR: GET Schedule by Session ID: Server error", response.getBody());
     }
 //Get by ROOM
     @Test
@@ -119,10 +119,10 @@ public class SessionScheduleControllerUnitTests {
     }
     @Test
     public void testGetByRoomIgnoreCase_Exception(){
-        when(sessionScheduleServer.getByRoomIgnoreCase("name")).thenThrow(new RuntimeException("Server Error"));
+        when(sessionScheduleServer.getByRoomIgnoreCase("name")).thenThrow(new RuntimeException("Server error"));
         ResponseEntity<?> response= sessionScheduleController.getByRoomIgnoreCase("name");
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("ERROR: GET schedule by ROOM Name: Server Error", response.getBody());
+        assertEquals("ERROR: GET schedule by ROOM Name: Server error", response.getBody());
     }
 }

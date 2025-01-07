@@ -33,7 +33,7 @@ public class SessionScheduleController {
             else return ResponseEntity.ok(list);
         }catch (Exception e){
             logger.error("ERROR 500: While get SessionSchedule list", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: GET ALL schedules: "+ e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: GET ALL schedules: Server error");
         }
     }
     @RequestMapping("/")
@@ -51,7 +51,7 @@ public class SessionScheduleController {
         return ResponseEntity.ok(schedules);
     } catch (Exception e) {
           logger.error("ERROR 500: While get Schedule by Session", e.getMessage(), e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: GET Schedule by Session ID: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: GET Schedule by Session ID: Server error");
     }
     }
     @GetMapping("/search/ByRoom")
@@ -64,7 +64,7 @@ public class SessionScheduleController {
             return ResponseEntity.ok(schedules);
         } catch (Exception e) {
             logger.error("ERROR 500: While get Schedule by Room", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: GET schedule by ROOM Name: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: GET schedule by ROOM Name: Server error");
         }
     }
 }

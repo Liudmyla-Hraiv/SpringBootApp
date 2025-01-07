@@ -39,10 +39,12 @@ public class SpeakerService {
     }
 
     public Speaker postSpeaker(Speaker speaker) {
+        validateSpeakerFields(speaker);
         return speakerRepository.saveAndFlush(speaker);
     }
 
     public Speaker putSpeaker(Long id, Speaker speaker) throws SpeakerNotFoundException{
+        validateSpeakerFields(speaker);
         Optional<Speaker> optionalSpeaker = speakerRepository.findById(id);
         if (optionalSpeaker.isEmpty()) {
             throw new SpeakerNotFoundException(id);
@@ -61,19 +63,19 @@ public class SpeakerService {
             throw new SpeakerNotFoundException(id);
         }
         Speaker existingSpeaker = optional.get();
-        if (speaker.getFirstName() != null && !speaker.getFirstName().isEmpty()) {
+        if (speaker.getFirstName() != null && !speaker.getFirstName().isBlank()) {
             existingSpeaker.setFirstName(speaker.getFirstName());
         }
-        if (speaker.getLastName() != null && !speaker.getLastName().isEmpty()) {
+        if (speaker.getLastName() != null  && !speaker.getLastName().isBlank()) {
             existingSpeaker.setLastName(speaker.getLastName());
         }
-        if (speaker.getTitle() != null && !speaker.getTitle().isEmpty()) {
+        if (speaker.getTitle() != null && !speaker.getTitle().isBlank()) {
             existingSpeaker.setTitle(speaker.getTitle());
         }
-        if (speaker.getCompany() != null && !speaker.getCompany().isEmpty()) {
+        if (speaker.getCompany() != null && !speaker.getCompany().isBlank()) {
             existingSpeaker.setCompany(speaker.getCompany());
         }
-        if (speaker.getSpeakerBio() != null && !speaker.getSpeakerBio().isEmpty()) {
+        if (speaker.getSpeakerBio() != null && !speaker.getSpeakerBio().isBlank()) {
             existingSpeaker.setSpeakerBio(speaker.getSpeakerBio());
         }
         return speakerRepository.saveAndFlush(existingSpeaker);
@@ -87,5 +89,15 @@ public class SpeakerService {
         }
         sessionSpeakersRepository.deleteBySpeakerId(id);
         speakerRepository.deleteById(id);
+    }
+
+
+    private void validateSpeakerFields(Speaker speaker) {
+        if (speaker.getFirstName() == null || speaker.getFirstName().isBlank()) {
+            throw new IllegalArgumentException("First name must not be blank");
+        }
+        if (speaker.getLastName() == null || speaker.getLastName().isBlank()) {
+            throw new IllegalArgumentException("Last name must not be blank");
+        }
     }
 }

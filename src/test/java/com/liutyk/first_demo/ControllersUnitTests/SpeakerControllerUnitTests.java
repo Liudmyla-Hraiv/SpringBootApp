@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,10 +25,13 @@ import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 public class SpeakerControllerUnitTests {
-    @Mock
-    private SpeakerService speakerService;
     @InjectMocks
     private SpeakerController speakerController;
+    @Mock
+    private SpeakerService speakerService;
+
+    @Mock
+    private BindingResult bindingResult;
 //GET all speakers
     @Test
     public void testGetAllSpeakers_Success(){
@@ -152,8 +157,9 @@ public class SpeakerControllerUnitTests {
     @Test
     public void testPostSpeaker_Success(){
         Speaker speaker= new Speaker(35L,"First Name", "Last Name","title","Incorporation","Speaker Bio",  Collections.emptyList(), null);
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(speakerService.postSpeaker(speaker)).thenReturn(speaker);
-        ResponseEntity<?> response = speakerController.postSpeaker(speaker);
+        ResponseEntity<?> response = speakerController.postSpeaker(speaker, bindingResult);
         Speaker resBody=(Speaker) response.getBody();
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -165,14 +171,6 @@ public class SpeakerControllerUnitTests {
         assertEquals("Incorporation", resBody.getCompany());
         assertEquals("Speaker Bio", resBody.getSpeakerBio());
     }
-    @Test void testPostSpeaker_BadRequest(){
-        Speaker speaker= new Speaker();
-        when(speakerService.postSpeaker(speaker)).thenThrow(new IllegalArgumentException());
-        ResponseEntity<?> response = speakerController.postSpeaker(speaker);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("ERROR: POST speaker: FirstName OR LastName Or Title OR Company Or speakerBio", response.getBody());
-    }
 //PUT Speaker
     @Test
     public void testPutSpeaker_Success(){
@@ -180,9 +178,12 @@ public class SpeakerControllerUnitTests {
         Speaker oldSpeaker=  new Speaker(id,"First Name", "Last Name","title","Incorporation","Speaker Bio",  Collections.emptyList(),null);
         Speaker newSpeaker= new Speaker(id,"First New", "Last New","title new","Incorporation New","New Bio",  Collections.emptyList(),null);
 
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(speakerService.putSpeaker(id, oldSpeaker)).thenReturn(newSpeaker);
-        ResponseEntity<?> response= speakerController.putSpeaker(id, oldSpeaker);
+
+        ResponseEntity<?> response= speakerController.putSpeaker(id, oldSpeaker,bindingResult);
         Speaker resBody= (Speaker) response.getBody();
+
         assertNotNull(resBody);
         assertEquals(id, resBody.getSpeakerId());
         assertEquals("First New", resBody.getFirstName());
@@ -197,8 +198,11 @@ public class SpeakerControllerUnitTests {
         Long id = 35L;
         Speaker speaker= new Speaker();
         speaker.setSpeakerId(id);
+
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(speakerService.putSpeaker(anyLong(), any(Speaker.class))).thenThrow(new SpeakerNotFoundException(id));
-        ResponseEntity<?> response = speakerController.putSpeaker(id, speaker);
+
+        ResponseEntity<?> response = speakerController.putSpeaker(id, speaker,bindingResult);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Speaker with ID = " + id + " is not found",response.getBody());
@@ -208,8 +212,11 @@ public class SpeakerControllerUnitTests {
         Long id = 15L;
         Speaker speaker= new Speaker();
         speaker.setSpeakerId(id);
+
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(speakerService.putSpeaker(anyLong(),any(Speaker.class))).thenThrow(new RuntimeException("Server error"));
-        ResponseEntity<?> response = speakerController.putSpeaker(id, speaker);
+
+        ResponseEntity<?> response = speakerController.putSpeaker(id, speaker,bindingResult);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("ERROR: PUT Speaker: Server error", response.getBody());
@@ -217,32 +224,36 @@ public class SpeakerControllerUnitTests {
 //PATCH Speaker
     @Test
     public void testPatchSpeaker_Success(){
-        Long id = 35L;
-        Speaker oldSpeaker= new Speaker();
-        oldSpeaker.setSpeakerId(id);
-        oldSpeaker.setFirstName("First Name");
-        oldSpeaker.setLastName("Last Name");
+        Long id = 10L;
+        Speaker partialUpdate = new Speaker(null, "Updated FirstName", null, null, null, null, null, null);
+        Speaker existingSpeaker = new Speaker(id, "Original FirstName", "Original LastName", "Title", "Company", "Bio", Collections.emptyList(), null);
+        Speaker updatedSpeaker = new Speaker(id, "Updated FirstName", "Original LastName", "Title", "Company", "Bio", Collections.emptyList(), null);
 
-        Speaker newSpeaker= new Speaker();
-        newSpeaker.setSpeakerId(id);
-        newSpeaker.setFirstName("First New");
-        newSpeaker.setLastName("Last New");
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(speakerService.patchSpeaker(id, partialUpdate)).thenReturn(updatedSpeaker);
 
-        when(speakerService.patchSpeaker(id, oldSpeaker)).thenReturn(newSpeaker);
-        ResponseEntity<?> response= speakerController.patchSpeaker(id, oldSpeaker);
-        Speaker resBody= (Speaker) response.getBody();
+        ResponseEntity<?> response = speakerController.patchSpeaker(id, partialUpdate, bindingResult);
+        Speaker resBody = (Speaker) response.getBody();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(resBody);
-        assertEquals(id, resBody.getSpeakerId());
-        assertEquals("First New", resBody.getFirstName());
-        assertEquals("Last New", resBody.getLastName());
-}
+        assertEquals("Updated FirstName", resBody.getFirstName());
+        assertEquals("Original LastName", resBody.getLastName());
+        assertEquals("Title", resBody.getTitle());
+        assertEquals("Company", resBody.getCompany());
+        assertEquals("Bio", resBody.getSpeakerBio());
+    }
+
     @Test
     public void testPatchSpeaker_NotFound() throws SpeakerNotFoundException {
         Long id = 35L;
         Speaker speaker= new Speaker();
         speaker.setSpeakerId(id);
+
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(speakerService.patchSpeaker(anyLong(), any(Speaker.class))).thenThrow(new SpeakerNotFoundException(id));
-        ResponseEntity<?> response = speakerController.patchSpeaker(id, speaker);
+
+        ResponseEntity<?> response = speakerController.patchSpeaker(id, speaker, bindingResult);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Speaker with ID = " + id + " is not found",response.getBody());
@@ -253,7 +264,7 @@ public class SpeakerControllerUnitTests {
         Speaker speaker= new Speaker();
         speaker.setSpeakerId(id);
         when(speakerService.patchSpeaker(anyLong(),any(Speaker.class))).thenThrow(new RuntimeException("Server error"));
-        ResponseEntity<?> response = speakerController.patchSpeaker(id, speaker);
+        ResponseEntity<?> response = speakerController.patchSpeaker(id, speaker,bindingResult);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("ERROR: PATCH Speaker: Server error", response.getBody());

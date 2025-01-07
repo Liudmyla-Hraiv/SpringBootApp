@@ -12,7 +12,7 @@ CREATE TABLE sessions
 (
     session_id          BIGINT PRIMARY KEY AUTO_INCREMENT,
     session_name        VARCHAR(80)   NOT NULL,
-    session_description VARCHAR(1024) NOT NULL,
+    session_description VARCHAR(1024) NULL,
     session_length      INTEGER       NOT NULL
 );
 
@@ -33,9 +33,9 @@ CREATE TABLE speakers
     speaker_id    BIGINT PRIMARY KEY AUTO_INCREMENT,
     first_name    VARCHAR(30)   NOT NULL,
     last_name     VARCHAR(30)   NOT NULL,
-    title         VARCHAR(40)   NOT NULL,
-    company       VARCHAR(50)   NOT NULL,
-    speaker_bio   VARCHAR(2000) NOT NULL,
+    title         VARCHAR(40)   NULL,
+    company       VARCHAR(50)   NULL,
+    speaker_bio   VARCHAR(2000) NULL,
     speaker_photo BLOB   		NULL
 );
 

@@ -130,14 +130,18 @@ public class SessionServiceUnitTests {
     public void testPutSession() throws SessionNotFoundException {
         Speaker speaker= new Speaker();
         speaker.setSpeakerId(randomSpeakerId);
+        speaker.setFirstName("FirstName");
+        speaker.setLastName("LastName");
         List<Speaker> speakers =new ArrayList<>();
         speakers.add(speaker);
+
         Session existingSession = new Session();
         existingSession.setSessionId(randomSessionID);
-        existingSession.setSessionName("SessionName");
+        existingSession.setSessionName("Session Name");
         existingSession.setSessionDescription("Description");
         existingSession.setSessionLength(60);
         existingSession.setSpeakers(Collections.singletonList(speaker));
+
         when(sessionRepository.findById(randomSessionID)).thenReturn(Optional.of(existingSession));
         when(sessionRepository.saveAndFlush(existingSession)).thenReturn(existingSession);
 
@@ -145,6 +149,7 @@ public class SessionServiceUnitTests {
         updatedSession.setSessionName("PUT Session Name");
         updatedSession.setSessionDescription("PUT Session Description");
         updatedSession.setSessionLength(41);
+        updatedSession.setSpeakers(Collections.singletonList(speaker));
 
         Session result = sessionService.putSession(randomSessionID, updatedSession);
         assertEquals("PUT Session Name", result.getSessionName());
@@ -152,7 +157,6 @@ public class SessionServiceUnitTests {
         assertEquals(41, result.getSessionLength());
         verify(sessionRepository).saveAndFlush(existingSession);
     }
-//TODO: Session NOT-FOUND
 
     @Test
     public void testPatchSession() throws SessionNotFoundException {

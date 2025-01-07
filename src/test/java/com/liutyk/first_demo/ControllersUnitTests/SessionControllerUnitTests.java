@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import java.util.*;
 
@@ -22,11 +24,13 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class SessionControllerUnitTests {
-    @Mock
-    private SessionService sessionService;
     @InjectMocks
     private SessionController sessionsController;
+    @Mock
+    private SessionService sessionService;
 
+    @Mock
+    private BindingResult bindingResult;
 //Get all sessions
     @Test
     public void testGetAllSessions_Success(){
@@ -62,7 +66,7 @@ public class SessionControllerUnitTests {
         when(sessionService.getAllSessions()).thenReturn(Collections.emptyList());
         ResponseEntity<?> response = sessionsController.getAllSessions();
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("There ara NO any information about session", response.getBody());
+        assertEquals("There ara NO any information about sessions", response.getBody());
     }
 
 //Get sessions by id
@@ -174,9 +178,11 @@ public class SessionControllerUnitTests {
         speaker.setSpeakerId(1L);
         Session session = new Session(2L, "Test Session", "Test Description", 90, Collections.singletonList(speaker), Collections.emptyList());
 
+        when(bindingResult.hasErrors()).thenReturn(false);
+
         when(sessionService.postSession(any(Session.class))).thenReturn(session);
 
-        ResponseEntity<?> response = sessionsController.postSession(session);
+        ResponseEntity<?> response = sessionsController.postSession(session, bindingResult);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -185,16 +191,6 @@ public class SessionControllerUnitTests {
         assertEquals(1, responseBody.getSpeakers().size());
     }
 
-    @Test
-    public void testPostSession_BadRequest() {
-        Session session = new Session();
-        session.setSessionName("Test Session");
-
-        ResponseEntity<?> response = sessionsController.postSession(session);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Session must have at least one speaker", response.getBody());
-    }
 
     @Test
     public void testPostSession_Exception() {
@@ -202,9 +198,10 @@ public class SessionControllerUnitTests {
         speaker.setSpeakerId(1L);
         Session session = new Session(2L, "Test Session", "Test Description", 90, Collections.singletonList(speaker), Collections.emptyList());
 
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(sessionService.postSession(any(Session.class))).thenThrow(new RuntimeException("Server error"));
 
-        ResponseEntity<?> response = sessionsController.postSession(session);
+        ResponseEntity<?> response = sessionsController.postSession(session, bindingResult);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("ERROR: POST Session Request: Server error", response.getBody());
     }
@@ -218,8 +215,10 @@ public class SessionControllerUnitTests {
         Session oldSes =  new Session(2L, "Session 1", "Description for Session 1", 60, Collections.singletonList(speaker), Collections.emptyList());
         Session newSes =  new Session(2L, "Session New", "Description for Session New", 45, Collections.singletonList(speaker), Collections.emptyList());
 
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(sessionService.putSession(id, oldSes)).thenReturn(newSes);
-        ResponseEntity<?> response= sessionsController.putSession(id, oldSes);
+
+        ResponseEntity<?> response= sessionsController.putSession(id, oldSes, bindingResult);
         Session responseBody= (Session) response.getBody();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -233,9 +232,11 @@ public class SessionControllerUnitTests {
     public void testPutSession_Exception() throws SessionNotFoundException {
         Session session = new Session();
         session.setSessionName("Test Session");
+
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(sessionService.putSession(anyLong(), any(Session.class))).thenThrow(new RuntimeException("Server error"));
 
-        ResponseEntity<?> response = sessionsController.putSession(333L, session);
+        ResponseEntity<?> response = sessionsController.putSession(333L, session,bindingResult);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("ERROR: PUT Session Request: Server error", response.getBody());
 }
@@ -244,13 +245,16 @@ public class SessionControllerUnitTests {
         Long id = 15L;
         Session session = new Session();
         session.setSessionId(id);
+
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(sessionService.putSession(anyLong(), any(Session.class))).thenThrow(new SessionNotFoundException(id));
 
-        ResponseEntity<?> response = sessionsController.putSession(id, session);
+        ResponseEntity<?> response = sessionsController.putSession(id, session,bindingResult);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Session with ID = " + id + " is not found", response.getBody());
     }
-//PATCH Sessions
+
+    //PATCH Sessions
 @Test
 public void testPatchSession_Success() throws SessionNotFoundException {
     Long id=5L;
@@ -260,8 +264,10 @@ public void testPatchSession_Success() throws SessionNotFoundException {
     Session oldSes =  new Session(2L, "Session 1", "Description for Session 1", 60, Collections.singletonList(speaker), Collections.emptyList());
     Session newSes =  new Session(2L, "Session New", "Description for Session New", 45, Collections.singletonList(speaker), Collections.emptyList());
 
+    when(bindingResult.hasErrors()).thenReturn(false);
     when(sessionService.patchSession(id, oldSes)).thenReturn(newSes);
-    ResponseEntity<?> response= sessionsController.patchSession(id, oldSes);
+
+    ResponseEntity<?> response= sessionsController.patchSession(id, oldSes, bindingResult);
     Session responseBody= (Session) response.getBody();
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -275,9 +281,11 @@ public void testPatchSession_Success() throws SessionNotFoundException {
     public void testPatchSession_Exception() throws SessionNotFoundException {
         Session session = new Session();
         session.setSessionName("Test Session");
+
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(sessionService.patchSession(anyLong(), any(Session.class))).thenThrow(new RuntimeException("Server error"));
 
-        ResponseEntity<?> response = sessionsController.patchSession(333L, session);
+        ResponseEntity<?> response = sessionsController.patchSession(333L, session, bindingResult);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("ERROR: PATCH Session Request: Server error", response.getBody());
     }
@@ -286,12 +294,15 @@ public void testPatchSession_Success() throws SessionNotFoundException {
         Long id = 15L;
         Session session = new Session();
         session.setSessionName("Test Session");
+
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(sessionService.patchSession(anyLong(), any(Session.class))).thenThrow(new SessionNotFoundException(id));
 
-        ResponseEntity<?> response = sessionsController.patchSession(id, session);
+        ResponseEntity<?> response = sessionsController.patchSession(id, session, bindingResult);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Session with ID = " + id + " is not found", response.getBody());
     }
+
 //DELETE Sessions
 
     @Test

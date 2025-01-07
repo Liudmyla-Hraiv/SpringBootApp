@@ -3,6 +3,7 @@ package com.liutyk.first_demo.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -23,17 +24,18 @@ public class Session {
     @Column(name = "session_id")
     private Long sessionId;
 
-    @NotEmpty
-    @Size(min = 3, max = 80)
-    @Column(name = "session_name")
+    //@NotBlank is impossible to add because PATCH started to use it like mandatory fields
+    //Verification added in SessionService
+    @Size(min = 3, max = 80, message = "Session name must be between {min} and {max} characters")
+    @Column(name = "session_name", nullable = false, length = 80)
     private String sessionName;
 
-    @Size(min = 1, max = 1024)
-    @Column(name = "session_description")
+    @Size(min = 5, max = 1024, message = "Session description must be between {min} and {max} characters")
+    @Column(name = "session_description", nullable = true, length = 1024)
     private String sessionDescription;
 
-    @Positive
-    @Column(name = "session_length" )
+    @Positive(message = "Session length must be a positive number")
+    @Column(name = "session_length", nullable = false)
     private Integer sessionLength;
 
     public Session(){
@@ -48,8 +50,6 @@ public class Session {
     @JsonIgnore
     @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SessionSchedule> schedules = new ArrayList<>();
-
-
 
 
     public Session(Long sessionId, String sessionName, String sessionDescription, Integer sessionLength, List<Speaker> speakers, List<SessionSchedule> schedules) {

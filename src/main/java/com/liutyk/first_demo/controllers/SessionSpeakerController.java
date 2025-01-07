@@ -34,8 +34,8 @@ public class SessionSpeakerController {
             }
             else return  ResponseEntity.ok(list);
         }catch (Exception e){
-            logger.error("ERROR 500: While get Session - Speaker list", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: SpeakerSession GET ALL: "+ e.getMessage());
+            logger.error("ERROR 500: While get Session - Speaker list {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR: SpeakerSession GET ALL: Server error");
         }
     }
     @GetMapping("/")
@@ -52,8 +52,8 @@ public class SessionSpeakerController {
             }
             return ResponseEntity.ok(sort);
         } catch (Exception e) {
-            logger.error("ERROR 500: While get Speakers by Session ID = "+id, e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR while search SessionSpeakers by Session ID: " + e.getMessage());
+            logger.error("ERROR 500: While get Speakers by Session ID = {} : {}",id, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR while search SessionSpeakers by Session ID: Server error");
         }
     }
     @GetMapping("/search/BySpeaker")
@@ -65,8 +65,8 @@ public class SessionSpeakerController {
             }
             return ResponseEntity.ok(sort);
         } catch (Exception e) {
-            logger.error("ERROR 500: While get Sessions by Speaker ID = " +id , e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR while search SessionSpeakers by Speaker ID: " + e.getMessage());
+            logger.error("ERROR 500: While get Sessions by Speaker ID = {} : {}" ,id , e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR while search SessionSpeakers by Speaker ID: Server error");
         }
     }
 }

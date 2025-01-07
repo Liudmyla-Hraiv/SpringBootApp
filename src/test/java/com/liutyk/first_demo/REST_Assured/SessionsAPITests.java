@@ -105,13 +105,16 @@ public class SessionsAPITests {
     }
     @Test
     public void testPutSession(){
-        String reqBody="{\n" +
-                "\"sessionName\": \"Dicaprio's session\", \n" +
-                "\"sessionDescription\": \"Dicaprio meeting\", \n" +
+        String reqBody = "{\n" +
+                "\"sessionName\": \"Dicaprio's session\",\n" +
+                "\"sessionDescription\": \"Dicaprio meeting\",\n" +
                 "\"sessionLength\": 30, \n" +
+                "\"speakers\": [{\n"+
                 "\"speakerId\": " + session2_SpeakerId + "\n"+
                 "}] \n"+
                 "}\n";
+
+
         given()
                 .contentType(ContentType.JSON)
                 .pathParam("id", testSessionId2)
@@ -123,6 +126,7 @@ public class SessionsAPITests {
                     .body("sessionId", equalTo(testSessionId2))
                     .body("sessionName", equalTo("Dicaprio's session"))
                     .body("sessionDescription", equalTo("Dicaprio meeting"))
+                    .body("sessionLength", equalTo(30))
                     .body("speakers", hasItem(hasEntry("speakerId", session2_SpeakerId)));
     }
     @Test

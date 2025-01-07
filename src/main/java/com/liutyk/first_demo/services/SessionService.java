@@ -45,12 +45,8 @@ public class SessionService {
     }
 
     public Session postSession(Session session) {
-            List<Speaker> attachedSpeaker = new ArrayList<>();
-            for (Speaker speaker : session.getSpeakers()) {
-                Optional<Speaker> optional = speakerRepository.findById(speaker.getSpeakerId());
-                optional.ifPresent(attachedSpeaker::add);
-            }
-            session.setSpeakers(attachedSpeaker);
+            validateSessionFields(session);
+            validateAndAttachSpeakers(session);
         return sessionRepository.saveAndFlush(session);
     }
 
@@ -59,14 +55,14 @@ public class SessionService {
         if (optionalSession.isEmpty()) {
             throw new SessionNotFoundException(id);
         }
+        validateSessionFields(session);
+        validateAndAttachSpeakers(session);
+
         Session existingSession = optionalSession.get();
         existingSession.setSessionName(session.getSessionName());
         existingSession.setSessionDescription(session.getSessionDescription());
         existingSession.setSessionLength(session.getSessionLength());
-        if (session.getSpeakers() != null && !session.getSpeakers().isEmpty()) {
-            List<Speaker> speakers = speakerRepository.getSpeakerBySessionId(id);
-            existingSession.setSpeakers(speakers);
-        }
+        existingSession.setSpeakers(session.getSpeakers());
         return sessionRepository.saveAndFlush(existingSession);
     }
 
@@ -76,14 +72,19 @@ public class SessionService {
             throw new SessionNotFoundException (id);
         }
         Session existingSession = optional.get();
-        if (session.getSessionName() != null && !session.getSessionName().isEmpty()) {
+
+        if (session.getSessionName() != null && !session.getSessionName().isBlank()) {
             existingSession.setSessionName(session.getSessionName());
         }
-        if (session.getSessionDescription() != null && !session.getSessionDescription().isEmpty()) {
+        if (session.getSessionDescription() != null && !session.getSessionDescription().isBlank()) {
             existingSession.setSessionDescription(session.getSessionDescription());
         }
-        if (session.getSessionLength() != null) {
+        if (session.getSessionLength() != null && session.getSessionLength()>0) {
             existingSession.setSessionLength(session.getSessionLength());
+        }
+        if (session.getSpeakers() !=null && !session.getSpeakers().isEmpty()){
+            validateAndAttachSpeakers(session);
+            existingSession.setSpeakers(session.getSpeakers());
         }
         return sessionRepository.saveAndFlush(existingSession);
     }
@@ -102,4 +103,29 @@ public class SessionService {
         }
         sessionRepository.deleteById(id);
     }
+
+    private void validateSessionFields(Session session) {
+        if (session.getSessionName() == null || session.getSessionName().isBlank()) {
+            throw new IllegalArgumentException("Session name must not be blank");
+        }
+    }
+    private void validateAndAttachSpeakers(Session session) {
+        if (session.getSpeakers() == null || session.getSpeakers().isEmpty()) {
+            throw new IllegalArgumentException("Session must have at least one speaker");
+        }
+
+        boolean hasValidSpeakers = session.getSpeakers().stream()
+                .allMatch(speaker -> speaker.getSpeakerId() > 0);
+        if (!hasValidSpeakers) {
+            throw new IllegalArgumentException("Session must have at least one valid speaker with a positive ID");
+        }
+
+        List<Speaker> attachedSpeakers = new ArrayList<>();
+        for (Speaker speaker : session.getSpeakers()) {
+            Optional<Speaker> optionalSpeaker = speakerRepository.findById(speaker.getSpeakerId());
+            optionalSpeaker.ifPresent(attachedSpeakers::add);
+        }
+        session.setSpeakers(attachedSpeakers);
+    }
+
 }

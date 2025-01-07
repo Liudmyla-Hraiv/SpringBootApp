@@ -3,9 +3,7 @@ package com.liutyk.first_demo.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,30 +20,35 @@ public class Speaker {
     @Column(name = "speaker_id")
     private  Long speakerId;
 
-    @Size(min = 3, max =30)
-    @Column(name = "first_name")
+    //@NotBlank is impossible to add because PATCH started to use it like mandatory fields
+    //Verification added in SpeakerService
+    @Size(min = 2, max =30, message = "Speaker first_name must be between {min} and {max} characters")
+    @Column(name = "first_name",nullable = false, length = 30)
     private String firstName;
 
-    @Size(min = 3, max = 30)
-    @Column(name = "last_name")
+    //@NotBlank is impossible to add because PATCH started to use it like mandatory fields
+    //Verification added in SpeakerService
+    @Size(min = 2, max = 30, message = "Speaker last_name must be between {min} and {max} characters")
+    @Column(name = "last_name", nullable = false, length = 30)
     private String lastName;
 
-    @Size(min = 3, max = 40)
-    @Column(name = "title")
+    @Size(max = 40, message = "Speaker title must be maximum {max} characters")
+    @Column(name = "title", nullable = true, length = 40)
     private String title;
 
-    @Column(name = "company")
-    @Size(max = 50)
+    @Size(max = 50, message = "Speaker company name must be maximum {max} characters")
+    @Column(name = "company", nullable = true, length = 50)
     private String company;
 
-    @Column(name = "speaker_bio")
-    @Size(max = 2000)
+
+    @Size(max = 2000, message = "Speaker Bio must be maximum {max} characters")
+    @Column(name = "speaker_bio", nullable = true, length = 2000)
     private String speakerBio;
 
 
     @JsonIgnore
-    @Size(max = 3145728)
-    @Column (name = "speaker_photo", columnDefinition="BLOB")
+    @Size(max = 3145728, message = "Speaker photo must be maximum {max} characters")
+    @Column (name = "speaker_photo", columnDefinition="BLOB", nullable = true, length = 3145728)
     private byte[] speakerPhoto;
 
     @JsonIgnore
